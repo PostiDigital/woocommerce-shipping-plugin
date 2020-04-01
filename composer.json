@@ -6,6 +6,11 @@
   "homepage": "http://seravo.com",
   "authors": [
     {
+      "name": "Joose Vettenranta",
+      "email": "joose.vettenranta@posti.com",
+      "homepage": "https://github.com/joosev"
+    }, 
+    {
       "name": "Otto Kekäläinen",
       "email": "otto@seravo.com",
       "homepage": "https://github.com/ottok"
