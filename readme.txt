@@ -1,7 +1,6 @@
-=== WooCommerce Pakettikauppa ===
+=== Posti Shipping ===
 Contributors: joosev, ottok, leotoikka, serter, k1sul1
-Donate link: https://seravo.com/
-Tags: woocommerce, shipping, toimitustavat, smartship, pakettikauppa, posti, smartpost, prinetti, matkahuolto, schenker, seravo, gls
+Tags: woocommerce, shipping, toimitustavat, smartship, posti, smartpost, prinetti
 Requires at least: 4.6
 Tested up to: 5.3
 Requires PHP: 7.1
@@ -9,7 +8,7 @@ Stable tag: trunk
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-This plugin enables WooCommerce orders to ship using pretty much any shipping method available in Finland via Pakettikauppa.
+This plugin enables WooCommerce orders to ship using Posti.
 
 == Description ==
 
