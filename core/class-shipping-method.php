@@ -243,24 +243,14 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
                 <?php foreach ( $all_additional_services as $method_code => $additional_services ) : ?>
                   <div class="pk-services-<?php echo $method_id; ?>" style='display: none;' id="services-<?php echo $method_id; ?>-<?php echo $method_code; ?>">
                     <?php foreach ( $additional_services as $additional_service ) : ?>
-                      <?php if ( empty($additional_service->specifiers) || in_array($additional_service->service_code, array( '3102', '2106' ), true) ) : ?>
-                        <?php
-                        $checked = false;
-                        if ( empty($values[ $method_id ][ $method_code ]['additional_services'][ $additional_service->service_code ]) ) {
-                            if ( $additional_service->service_code == '2106' && in_array($method_code, array( '2103', '90080', '90010', '90084', '80010' )) ) {
-                                $checked = true;
-                            }
-                        } else if ( $values[ $method_id ][ $method_code ]['additional_services'][ $additional_service->service_code ] === 'yes' ) {
-                          $checked = true;
-                        }
-                        ?>
+                      <?php if ( empty($additional_service->specifiers) || in_array($additional_service->service_code, array( '3102' ), true) ) : ?>
                         <input type="hidden"
                                 name="<?php echo esc_html($field_key) . '[' . esc_attr($method_id) . '][' . esc_attr($method_code) . '][additional_services][' . $additional_service->service_code . ']'; ?>"
                                 value="no">
                         <p>
                           <input type="checkbox"
                                   name="<?php echo esc_html($field_key) . '[' . esc_attr($method_id) . '][' . esc_attr($method_code) . '][additional_services][' . $additional_service->service_code . ']'; ?>"
-                                  value="yes" <?php echo $checked ? 'checked' : ''; ?>>
+                                  value="yes" <?php echo (! empty($values[ $method_id ][ $method_code ]['additional_services'][ $additional_service->service_code ]) && $values[ $method_id ][ $method_code ]['additional_services'][ $additional_service->service_code ] === 'yes') ? 'checked' : ''; ?>>
                           <?php echo $additional_service->name; ?>
                         </p>
                       <?php endif; ?>
