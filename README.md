@@ -61,11 +61,8 @@ This project has a `.travis-ci.yml` definition which can be used by anybody. Jus
 1. Create an account at [Travis-CI.org](https://travis-ci.org/) by logging in with your Github.com account.
 2. Make sure you have a fork of this repository in your own Github.com account.
 3. Open the [Travis-CI.org settings page](https://travis-ci.org/account/repositories) and click "Sync repositories"
-![Travis CI: Sync repositories](.github/travis-ci-sync.png)
 4. Search for `woocommerce-shipping-plugin` in your repository list and enable automatic testing for the repository it.
-![Travis CI: Activate](.github/travis-ci-repo-active.png)
 5. Initially the page `https://travis-ci.org/<username>/woocommerce-shipping-plugin` will be empty, but as soon as you push your first commit Travis-CI will run the first built. You can also manually trigger a build to get it started.
-![Travis CI: Trigger manual build](.github/travis-ci-manual-trigger.png)
 
 ## Branching and releases
 
