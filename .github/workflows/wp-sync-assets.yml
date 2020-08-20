@@ -13,4 +13,4 @@ jobs:
       uses: seravo/action-wordpress-plugin-asset-update@master
       env:
         SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
-        SVN_USERNAME: seravo
+        SVN_USERNAME: jooseposti
