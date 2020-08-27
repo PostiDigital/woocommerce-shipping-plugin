@@ -35,45 +35,7 @@ This plugin requires at least WooCommerce version 3.4.
 1. Use the Settings->WooCommerce Posti screen to configure the plugin
 1. The plugin requires WooCommerce to be installed, with shipping zones configured and this plugin activated and settings set.
 
-This plugin can also be installed directly from Github or using `composer require seravo/woo-pakettikauppa`.
-
-== Developer notes ==
-
-= Hooks =
-
-* pakettikauppa_prepare_create_shipment
-
-arguments: $order, $service_id, $additional_services
-
-* pakettikauppa_post_create_shipment
-
-arguments: $order
-
-= Actions =
-
-* pakettikauppa_create_shipments
-
-Call for example:
-
-    $pdf = '';
-    $order_ids = array (15, 16, 17);
-    $args = array( $order_ids, &$pdf );
-    do_action_ref_array('pakettikauppa_create_shipments', $args);"
-
-* pakettikauppa_fetch_shipping_labels
-
-Call for example:
-
-    $tracking_code='';
-    $args = array( $order_id, &$tracking_code );
-    do_action_ref_array('pakettikauppa_fetch_tracking_code', $args);
-
-* pakettikauppa_fetch_tracking_code
-
-Call for example:
-
-    $args = array( $order_id, $order_id2, ... );
-    do_action('pakettikauppa_create_shipments', $args);
+This plugin can also be installed directly from Github or using `composer require posti/woocommerce-shipping-plugin`.
 
 == Frequently Asked Questions ==
 
