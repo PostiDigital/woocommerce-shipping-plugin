@@ -55,5 +55,8 @@ You can use plugin (f.ex. Polylang) to translate shipping method names.
 4. Setup wizard
 
 == Changelog ==
+= 1.0.1 =
+* Tracking URL change
+
 = 1.0.0 =
 * Initial release for General Availability.
