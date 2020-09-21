@@ -43,4 +43,8 @@ class Text extends \Woo_Pakettikauppa_Core\Text {
   public function activated_core_plugin_error() {
     return __('WooCommerce Posti can\'t be activated at the same time with WooCommerce Pakettikauppa. Deactivate WooCommerce Pakettikauppa!', 'woo-posti_shipping');
   }
+
+  public function unable_connect_to_vendor_server() {
+    return __('Can not connect to Posti server - please check Posti API credentials, servers error log and firewall settings.', 'woo-pakettikauppa');
+  }
 }
