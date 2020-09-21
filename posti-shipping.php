@@ -95,19 +95,30 @@ class Woo_Posti_Shipping extends Woo_Pakettikauppa_Core\Core {
 
     return $shipment;
   }
-    public function add_shipping_method() {
-      add_filter(
-        'woocommerce_shipping_methods',
-        function( $methods ) {
-          // Ideally we'd control the class init ourselves, but the legacy shipping method doesn't work
-          // if WC doesn't control it.
-          // $methods[$this->shippingmethod] = $this->shipping_method_instance;
 
-          $methods[$this->shippingmethod] = '\Woo_Posti_Shipping\Shipping_Method';
-          return $methods;
-        }
-      );
-    }
+  protected function load_admin_class() {
+    require_once 'core/class-admin.php';
+    require_once 'posti_shipping/classes/class-admin.php';
+
+    $admin = new \Woo_Posti_Shipping\Admin($this);
+    $admin->load();
+
+    return $admin;
+  }
+
+  public function add_shipping_method() {
+    add_filter(
+      'woocommerce_shipping_methods',
+      function( $methods ) {
+        // Ideally we'd control the class init ourselves, but the legacy shipping method doesn't work
+        // if WC doesn't control it.
+        // $methods[$this->shippingmethod] = $this->shipping_method_instance;
+
+        $methods[$this->shippingmethod] = '\Woo_Posti_Shipping\Shipping_Method';
+        return $methods;
+      }
+    );
+  }
 
 
   public function load_textdomain() {
