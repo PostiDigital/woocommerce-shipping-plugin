@@ -2,7 +2,7 @@
 Contributors: joosev, ottok, leotoikka, serter, k1sul1
 Tags: woocommerce, shipping, toimitustavat, smartship, posti, smartpost, prinetti
 Requires at least: 4.6
-Tested up to: 5.4
+Tested up to: 5.5
 Requires PHP: 7.1
 Stable tag: trunk
 License: GPLv3 or later
@@ -41,7 +41,7 @@ This plugin can also be installed directly from Github or using `composer requir
 
 = Is this ready for production use? =
 
-Yes! If you encounter any issues related to this plugin, please report at https://github.com/Seravo/woo-pakettikauppa/issues or to asiakaspalvelu@pakettikauppa.fi
+Yes! If you encounter any issues related to this plugin, please report at https://github.com/Seravo/woo-pakettikauppa/issues or Posti customer service
 
 = Can Shipping method names be translated? =
 
@@ -55,6 +55,13 @@ You can use plugin (f.ex. Polylang) to translate shipping method names.
 4. Setup wizard
 
 == Changelog ==
+
+= 1.1.0 =
+* Small tweaks to UX in settings
+* Ability to choose pickup point when creating custom shipment
+* Removed obsolete Posti shipping method
+* Various bug fixes
+
 = 1.0.2 =
 * Various small fixes to functionality and translations
 
