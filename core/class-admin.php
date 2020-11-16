@@ -996,7 +996,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
           update_post_meta($order->get_id(), '_' . $this->core->prefix . '_tracking_code', '');
 
           /* translators: %%s: tracking code */
-          $order->add_order_note(sprintf(esc_attr__('Successfully deleted Pakettikauppa shipping label %s.', 'woo-pakettikauppa'), $tracking_code));
+          $order->add_order_note(sprintf(esc_attr__('Successfully deleted Posti shipping label %s.', 'woo-pakettikauppa'), $tracking_code));
         } else {
           $return_shipments = get_post_meta($order->get_id(), '_' . $this->core->prefix . '_return_shipment');
 
@@ -1004,7 +1004,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
             if ( $return_shipment['tracking_code'] === $tracking_code ) {
               delete_post_meta($order->get_id(), '_' . $this->core->prefix . '_return_shipment', $return_shipment);
               /* translators: %%s: tracking code */
-              $order->add_order_note(sprintf(esc_attr__('Successfully deleted Pakettikauppa shipping label %s.', 'woo-pakettikauppa'), $tracking_code));
+              $order->add_order_note(sprintf(esc_attr__('Successfully deleted Posti shipping label %s.', 'woo-pakettikauppa'), $tracking_code));
               return;
             }
           }
@@ -1022,7 +1022,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
         $order->add_order_note(
           sprintf(
             /* translators: %s: Error message */
-            esc_attr__('Deleting Pakettikauppa shipment failed! Errors: %s', 'woo-pakettikauppa'),
+            esc_attr__('Deleting Posti shipment failed! Errors: %s', 'woo-pakettikauppa'),
             $e->getMessage()
           )
         );
