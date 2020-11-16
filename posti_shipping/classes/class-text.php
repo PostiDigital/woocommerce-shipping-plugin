@@ -37,7 +37,7 @@ class Text extends \Woo_Pakettikauppa_Core\Text {
   }
 
   public function no_woo_error() {
-    return __('WooCommerce Posti requires WooCommerce to be installed and activated!', 'woo-pakettikauppa');
+    return __('WooCommerce Posti requires WooCommerce to be installed and activated!', 'woo-posti_shipping');
   }
 
   public function activated_core_plugin_error() {
@@ -45,6 +45,6 @@ class Text extends \Woo_Pakettikauppa_Core\Text {
   }
 
   public function unable_connect_to_vendor_server() {
-    return __('Can not connect to Posti server - please check Posti API credentials, servers error log and firewall settings.', 'woo-pakettikauppa');
+    return __('Can not connect to Posti server - please check Posti API credentials, servers error log and firewall settings.', 'woo-posti_shipping');
   }
 }
