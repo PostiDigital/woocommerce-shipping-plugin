@@ -12,21 +12,21 @@ This plugin enables WooCommerce orders to ship using Posti.
 
 == Description ==
 
-[Posti](https://www.posti.fi/) is a shipping service provider in Finland. This plugin integrates their service into WooCommerce. To start shipping, all your WooCommerce needs is this plugin and a API credentials of your account registered with Posti.
+[Posti](https://www.posti.fi/) is a shipping service provider in Finland. This plugin integrates Posti’s parcel shipping services into WooCommerce. To start shipping, all your WooCommerce needs is this plugin and API credentials of your account registered with Posti. Order API credentials to use the plugin. (https://www.posti.fi/fi/yrityksille/tehosta-logistiikkaa/digitaaliset-palvelut-ja-rajapinnat/verkkokaupan-lisaosat)
 
 This plugin requires at least WooCommerce version 3.4.
 
 == Features ==
 
-* Integrates Posti with WooCommerce
-* Supports WooCommerce shipping zones and classes
-* Customers can choose to ship products to an address or to any pickup point available from the Postis
-* Store owners can add pickup points to any shipping zones shipping method
-* Store owners can specify themselves any fixed rate for a shipping or have free shipping if the order value is above a certain limit
-* Store owners can generate the shipping label in one click
-* Store owners can generate shipping labels as mass action from orders view
-* Store owners and customers get tracking code links and status information
-* Support for Cash-On-Delivery
+* Integrates Posti parcel shipping services with WooCommerce.
+* Supports WooCommerce shipping zones and classes.
+* Customers can choose to ship products to an address or to any pickup point.
+* Store owners can add pickup points to any shipping zone’s shipping method.
+* Store owners can specify themselves any fixed rate for a shipping or have free shipping if the order value is above a certain limit.
+* Store owners can generate the shipping label by one click.
+* Store owners can generate shipping labels as mass action from orders view.
+* Store owners and customers get tracking code links and status information.
+* Support for Cash-On-Delivery.
 
 == Installation ==
 
@@ -35,24 +35,20 @@ This plugin requires at least WooCommerce version 3.4.
 1. Use the Settings->WooCommerce Posti screen to configure the plugin
 1. The plugin requires WooCommerce to be installed, with shipping zones configured and this plugin activated and settings set.
 
-This plugin can also be installed directly from Github or using `composer require posti/woocommerce-shipping-plugin`.
+This plugin can also be installed directly from Github.
 
 == Frequently Asked Questions ==
 
 = Is this ready for production use? =
 
-Yes! If you encounter any issues related to this plugin, please report at https://github.com/Seravo/woo-pakettikauppa/issues or Posti customer service
-
-= Can Shipping method names be translated? =
-
-You can use plugin (f.ex. Polylang) to translate shipping method names.
+Yes! If you encounter any issues related to this plugin, please report at https://github.com/Seravo/woo-pakettikauppa/issues or [Posti customer service](https://www.posti.fi/verkkokauppiaat/)
 
 == Screenshots ==
 
-1. Checkout in twentynineteen theme
-2. Order confirmation in twentynineteen theme
-3. Order screen in admin
-4. Setup wizard
+1. Order screen in admin
+2. Checkout in twentynineteen theme
+3. Checkout in twentynineteen theme
+4. Settings screen in admin
 
 == Changelog ==
 
