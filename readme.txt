@@ -55,6 +55,9 @@ You can use plugin (f.ex. Polylang) to translate shipping method names.
 4. Setup wizard
 
 == Changelog ==
+= 1.0.3 =
+* Fix tracking url
+
 = 1.0.2 =
 * Various small fixes to functionality and translations
 
