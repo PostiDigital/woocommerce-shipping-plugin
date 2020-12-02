@@ -382,7 +382,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
       if ( empty($tracking_code) ) {
         return '';
       }
-      $tracking_url = 'https://www.pakettikauppa.fi/seuranta/?' . $tracking_code;
+      $tracking_url = 'https://www.posti.fi/fi/seuranta#/lahetys/' . $tracking_code;
 
       return $tracking_url;
     }
