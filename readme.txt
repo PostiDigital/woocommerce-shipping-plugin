@@ -1,8 +1,8 @@
 === Posti Shipping ===
 Contributors: joosev, ottok, leotoikka, serter, k1sul1
 Tags: woocommerce, shipping, toimitustavat, smartship, posti, smartpost, prinetti
-Requires at least: 4.6
-Tested up to: 5.5
+Requires at least: 5.0
+Tested up to: 5.6
 Requires PHP: 7.1
 Stable tag: trunk
 License: GPLv3 or later
@@ -51,6 +51,54 @@ Yes! If you encounter any issues related to this plugin, please report at https:
 4. Settings screen in admin
 
 == Changelog ==
+= 3.1.1 =
+* If product does not exists, display "unknown product"
+* Change versioning to identical to Pakettikauppa plugin
+
+= 3.1.0 =
+* Create multiple shipping labels from order view
+* Allow editing of order phone number and email address
+* Make pickup point search optional
+* Various bug fixes
+
+= 3.0.1 =
+* Fix bug in pickup point saving in checkout
+
+= 3.0.0 =
+* Remove Pakettikauppa shipping method option
+* Add possibility to choose pickup point in order view
+* Fix bug for pickup point not saving in checkout
+
+= 2.4.0 =
+* New pickup point chooser for checkout
+* Fixing pickup point related bugs
+
+= 2.3.3 =
+* Some plugins brake because of forced validation of chosen pickup points. This update loosens the validation little bit
+
+= 2.3.2 =
+* Fix to validation that checks if pickup point is chosen
+* Add checks that billing email and/or phone exists before adding those to shipping
+
+= 2.3.1 =
+* Fix to help to fill orders from previous versions when using pickup points as shipping method
+
+= 2.3.0 =
+* Many small changes: f.ex. adding new fields to checkout and to sender configuration
+* Fixes compatibility with Klarna
+* Fixes return shipments
+
+= 2.2.0 =
+* Properly catch exceptions so faulty orders don't cause a fatal error
+* Allow supplying a different address for pickup point search
+* Fix headers so files download properly
+
+= 2.1.2 =
+* Fixed a bug breaking the setup wizard
+
+= 2.1.1 =
+* Fixed a bug breaking shipping methods created the old way.
+
 = 1.1.2 =
 * Better error handling if API credentials are wrong
 
