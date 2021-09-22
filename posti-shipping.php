@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Posti Shipping
- * Version: 1.1.2
+ * Version: 3.1.1
  * Plugin URI: https://github.com/PostiDigital/woocommerce-shipping-plugin
  * Description: Posti shipping service for WooCommerce.
  * Author: Posti
@@ -174,6 +174,7 @@ $instance = new Woo_Posti_Shipping(
  	'posti_auth_url' => 'https://oauth.posti.com',
       ], 
     ], // Overrides defaults and UI settings
+    'tracking_base_url' => 'https://www.posti.fi/fi/seuranta#/lahetys/',
     // 'pakettikauppa_api_comment' => 'From WooCommerce', // Overrides default
   ]
 );
