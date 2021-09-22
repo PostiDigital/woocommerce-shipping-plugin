@@ -51,6 +51,9 @@ Yes! If you encounter any issues related to this plugin, please report at https:
 4. Settings screen in admin
 
 == Changelog ==
+= 3.1.2 =
+* Backwards compatibility for bulk actions
+
 = 3.1.1 =
 * If product does not exists, display "unknown product"
 * Change versioning to identical to Pakettikauppa plugin
