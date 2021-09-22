@@ -15,3 +15,4 @@ jobs:
         SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
         SVN_USERNAME: jooseposti
         SLUG: posti-shipping
+
