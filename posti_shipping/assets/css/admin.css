@@ -1,0 +1,296 @@
+p.pakettikauppa-shipment {
+  border-bottom: 1px solid #dddddd;
+  padding-left: 12px;
+  padding-right: 12px;
+  margin-left: -12px;
+  margin-right: -12px;
+  margin-bottom: 10px;
+  padding-bottom: 15px;
+}
+
+.pakettikauppa-services fieldset h4 {
+  margin: 10px 0 5px;
+}
+
+.pakettikauppa-services div#woo-pakettikauppa-pickup-points-wrapper {
+  width: 95%;
+}
+
+.wc_pakettikauppa_pickup_point_id {
+  width: 100%;
+}
+
+.pakettikauppa-services div#woo-pakettikauppa-cod-amount-wrapper,
+.pakettikauppa-services div#woo-pakettikauppa-cod-reference-wrapper,
+.pakettikauppa-services div#woo-pakettikauppa-pickup-points-wrapper
+{
+  display: none;
+}
+
+.button.woo-pakettikauppa-delete-button {
+    color: #a00 !important;
+}
+
+.woo-pakettikauppa-metabox-error {
+  color: #a00;
+}
+
+.widefat .column-wc_actions a.pakettikauppa_create_shipping_label::after {
+  content: '\f491';
+}
+
+select.pakettikauppa_metabox_values {
+  width: 100%;
+}
+
+.pakettikauppa-notice {
+  background: #fff;
+  border: 1px solid #ccd0d4;
+  border-left-width: 4px;
+  box-shadow: 0 1px 1px rgba(0,0,0,.04);
+  padding: 1px 12px;
+}
+
+.pakettikauppa-notice p {
+  margin: .5em 0;
+  padding: 2px;
+}
+
+table .pakettikauppa-notice {
+  margin-left: -10px;
+}
+
+table .pakettikauppa-notice p {
+  margin: .5em 0;
+  font-size: 13px;
+}
+
+.pakettikauppa-notice.notice-error {
+  border-left-color: #dc3232;
+}
+
+.row-disabled > th,
+.row-disabled > td {
+  position: relative;
+}
+
+.row-disabled > th:after,
+.row-disabled > td:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: #f1f1f1;
+  opacity: 0.7;
+}
+
+.pakettikauppa-notice--setup {
+  display: flex;
+  flex-flow: column nowrap;
+
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+  text-align: center;
+  color: #000;
+}
+
+.pakettikauppa-notice--setup p {
+  font-size: 1.3em;
+  max-width: 700px;
+}
+
+.pakettikauppa-notice--setup .pakettikauppa-notice__content {
+  margin: 0;
+  padding: 0;
+  flex: 1 1 70%;
+}
+
+.pakettikauppa-notice--setup .pakettikauppa-notice__logo {
+  margin-bottom: 1rem;
+  flex: 1 1 20%;
+  text-align: center;
+  /* max-width: 250px; */
+}
+
+.pakettikauppa-pickup-changer > div {
+  margin-bottom: 10px;
+}
+
+.pakettikauppa-pickup-changer textarea {
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.pakettikauppa-pickup-search > * {
+  vertical-align: middle;
+}
+
+.pakettikauppa-msg-error {
+  color: #a00;
+}
+
+.pakettikauppa-metabox-footer {
+  margin: 0;
+  padding-top: 10px;  
+  border-top: 1px solid #ddd;
+}
+
+.pakettikauppa-metabox-footer .button { 
+  width: 100%;  
+  margin-bottom: 7px; 
+} 
+    
+.pakettikauppa-metabox-footer .button:last-child {  
+  margin-bottom: 0; 
+}
+
+#order_data .order_data_column p.pakettikauppa-field {
+  width: 100%;
+  margin-bottom: 9px;
+}
+
+.pakettikauppa-section-title h3 {
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+.pakettikauppa-global-labels-buttons {
+  margin-bottom: 15px;
+}
+.pakettikauppa-global-labels-buttons button {
+  width: 100%;
+}
+
+/* Labels folded-corner design */
+.pakettikauppa-design-foldedcorner {
+  padding: 1em;
+  position: relative;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  -moz-border-radius: 5px 0 5px 5px;
+  border-radius: 5px 0 5px 5px;
+  transition: all 0.3s ease;
+}
+.pakettikauppa-design-foldedcorner.pakettikauppa-shiplabel {
+  background: #f9fdff;
+}
+.pakettikauppa-design-foldedcorner.pakettikauppa-returnlabel {
+  background: #fffff9;
+}
+.pakettikauppa-design-foldedcorner p { /* TEMPORARY */
+  margin: 0;
+}
+.pakettikauppa-design-foldedcorner p.pakettikauppa-shipment { /* TEMPORARY */
+  display: none;
+}
+.pakettikauppa-design-foldedcorner .delete {
+  color: #a00;
+}
+.pakettikauppa-design-foldedcorner .corner {
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  width: 2em;
+  height: 2em;
+  background-color: #ddd;
+  border-width: 8px;
+  border-color: #fff #fff transparent transparent;
+  -moz-border-radius: 0 0 0 5px;
+  border-radius: 0 0 0 5px;
+  transition: all 0.3s ease;
+}
+.pakettikauppa-design-foldedcorner .corner-triangle {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 2em 2em 0;
+  border-color: transparent #fff transparent transparent;
+}
+.pakettikauppa-design-foldedcorner:hover {
+  border-color: #007cba;
+}
+.pakettikauppa-design-foldedcorner:hover .corner {
+  background-color: #007cba;
+}
+
+/* Multiple tracking codes */
+.pakettikauppa-metabox-products {
+  padding-top: 10px;
+  border-top: 1px solid #ddd;
+  margin-bottom: 10px;
+}
+.pakettikauppa-metabox-products h4 {
+  margin: 0 0 10px;
+}
+#prod_select_droptxt {
+  padding: 1px 8px;
+  width: 100%;
+  cursor: pointer;
+  box-sizing: border-box;
+  background-color: #eee;
+  resize: none;
+}
+.prod_select_dropdown {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+.prod_select_dropdown .content {
+  display: none;
+  position: absolute;
+  background-color: #eee;
+  min-width: 200px;
+  width: 100%;
+  width: calc(100% - 2px);
+  overflow: auto;
+  margin-top: -3px;
+  border: 1px solid #7e8993;
+  border-radius: 4px;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, .2);
+  z-index: 1
+}
+.prod_select_dropdown .quantity {
+  float: right;
+  line-height: 1;
+  min-height: unset;
+  padding: 2px 3px;
+  text-align: center;
+  width: 50px;
+}
+.prod_select_dropdown .content label {
+  display: block;
+  padding: 10px 15px;
+}
+.prod_select_dropdown .content label:hover {
+  background-color: #ddd
+}
+.prod_select_dropdown .content input[type="checkbox"] {
+  margin-top: 0;
+}
+.prod_select_dropdown .show {
+  display: block
+}
+
+#order_data .order_data_column .edit_address.pakettikauppa {
+  overflow: hidden;
+}
+#order_data .order_data_column .pakettikauppa ._shipping_email {
+  float: right;
+  clear: right;
+}
+
+/* Responsive */
+@media (min-width: 1200px) {
+  .pakettikauppa-notice--setup {
+    flex-flow: row nowrap;
+    text-align: left;
+  }
+
+  .pakettikauppa-notice--setup .pakettikauppa-notice__logo {
+    margin-right: 1rem;
+    margin-bottom: 0;
+  }
+}
