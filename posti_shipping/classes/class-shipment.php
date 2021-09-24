@@ -14,11 +14,11 @@ class Shipment extends \Woo_Pakettikauppa_Core\Shipment {
     return $methods;
   }
 
-  public static function tracking_url( $tracking_code ) {
-    if ( empty($tracking_code) ) {
+  public static function tracking_url( $tracking_base_url, $tracking_code ) {
+    if ( empty($tracking_base_url) || empty($tracking_code) ) {
       return '';
     }
-    $tracking_url = 'https://www.posti.fi/fi/seuranta#/lahetys/' . $tracking_code;
+    $tracking_url = $tracking_base_url . $tracking_code;
 
     return $tracking_url;
   }
