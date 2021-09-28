@@ -90,13 +90,9 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
         $token = get_transient($transient_name);
         if ( empty($token) ) {
           $token = $this->client->getToken();
-          if ( isset($token->expires_in) ) {
-            set_transient($transient_name, $token, $token->expires_in - 100);
-          }
+          set_transient($transient_name, $token, $token->expires_in - 100);
         }
-        if ( isset($token->access_token) ) {
-          $this->client->setAccessToken($token->access_token);
-        }
+        $this->client->setAccessToken($token->access_token);
       }
 
       $this->is_loaded = true;

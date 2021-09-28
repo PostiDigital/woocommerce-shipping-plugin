@@ -771,16 +771,6 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
         if ( empty($token) ) {
           $token = $this->client->getToken();
 
-          if ( isset($token->error) ) {
-            add_action(
-                'admin_notices',
-                function() use ( $token ) {
-                    echo '<div class="notice notice-error"><p><b>' . $this->core->vendor_fullname . ' ' . __('error', 'woo-posti_shipping') . ':</b> ' . $token->message . '</p></div>';
-                }
-            );
-            return;
-          }
-
           // let's remove 100 seconds from expires_in time so in case of a network lag, requests will still be valid on server side
           set_transient($transient_name, $token, $token->expires_in - 100);
         }
