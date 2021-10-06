@@ -54,7 +54,7 @@ class Woo_Posti_Shipping extends Woo_Pakettikauppa_Core\Core {
   }
 
   public function can_load() {
-    if ( class_exists('Woo_Pakettikauppa') ) {
+    if ( class_exists('Wc_Pakettikauppa') ) {
       add_action(
         'admin_notices',
         function() {
