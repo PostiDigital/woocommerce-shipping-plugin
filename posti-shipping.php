@@ -158,20 +158,21 @@ $instance = new Woo_Posti_Shipping(
     'version' => get_file_data(__FILE__, array( 'Version' ), 'plugin')[0],
     'shipping_method_name' => 'posti_shipping_method',
     'vendor_name' => 'Posti',
+    'vendor_fullname' => 'Posti Shipping',
     'vendor_url' => 'https://www.posti.fi/',
     'vendor_logo' => 'assets/img/posti-logo.png',
     'setup_background' => 'assets/img/posti-background.jpg',
     'setup_page' => 'wcpk-setup',
     'pakettikauppa_api_config' => [
       'production' => [
-	'base_uri' => 'https://nextshipping.posti.fi',
-	'use_posti_auth' => true,
- 	'posti_auth_url' => 'https://oauth.posti.com',
+        'base_uri' => 'https://nextshipping.posti.fi',
+        'use_posti_auth' => true,
+        'posti_auth_url' => 'https://oauth.posti.com',
       ],
       'test' => [
-	'base_uri' => 'https://nextshipping.posti.fi',
-	'use_posti_auth' => true,
- 	'posti_auth_url' => 'https://oauth.posti.com',
+        'base_uri' => 'https://nextshipping.posti.fi',
+        'use_posti_auth' => true,
+        'posti_auth_url' => 'https://oauth.posti.com',
       ], 
     ], // Overrides defaults and UI settings
     'tracking_base_url' => 'https://www.posti.fi/fi/seuranta#/lahetys/',
