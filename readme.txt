@@ -51,6 +51,9 @@ Yes! If you encounter any issues related to this plugin, please report at https:
 4. Settings screen in admin
 
 == Changelog ==
+= 3.2.3 =
+* Minor bugfix for token authentication
+
 = 3.2.2 =
 * Minor bugfix
 
