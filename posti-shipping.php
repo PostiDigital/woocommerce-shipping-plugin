@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Posti Shipping
- * Version: 3.2.3
+ * Version: 3.3.0
  * Plugin URI: https://github.com/PostiDigital/woocommerce-shipping-plugin
  * Description: Posti shipping service for WooCommerce.
  * Author: Posti
@@ -11,9 +11,9 @@
  * License: GPL v3 or later
  *
  * WC requires at least: 3.4
- * WC tested up to: 4.7
+ * WC tested up to: 5.9.0
  *
- * Copyright: © 2017-2019 Seravo Oy
+ * Copyright: © 2017-2019 Seravo Oy, 2020-2021 Posti Oy
  * License: GNU General Public License v3.0
  * License URI: http://www.gnu.org/licenses/gpl-3.0.html
  */
