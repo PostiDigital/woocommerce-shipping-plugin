@@ -2,7 +2,7 @@
 Contributors: joosev, ottok, leotoikka, serter, k1sul1
 Tags: woocommerce, shipping, toimitustavat, smartship, posti, smartpost, prinetti
 Requires at least: 5.0
-Tested up to: 5.8.1
+Tested up to: 5.8.2
 Requires PHP: 7.1
 Stable tag: trunk
 License: GPLv3 or later
@@ -51,6 +51,12 @@ Yes! If you encounter any issues related to this plugin, please report at https:
 4. Settings screen in admin
 
 == Changelog ==
+= 3.3.0 =
+* New feature: Diagnostic tool to check everything is working correctly
+* New feature: If using only one provider in pickup point searches, don't show the provider name
+* Bug fix: Allow saving if more than 16 shipping methods
+* Bug fix: Various small bug fixes
+
 = 3.2.3 =
 * Minor bugfix for token authentication
 
