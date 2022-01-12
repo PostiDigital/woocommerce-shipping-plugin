@@ -51,6 +51,9 @@ Yes! If you encounter any issues related to this plugin, please report at https:
 4. Settings screen in admin
 
 == Changelog ==
+= 3.4.1 =
+* Bug fix related to token caching
+
 = 3.4.0 =
 * New feature: Updated diagnostic tool to check versions and cached tokens
 * New feature: Additional info to shipping labels in custom shipment
