@@ -14,7 +14,7 @@ This plugin enables WooCommerce orders to ship using Posti.
 
 [Posti](https://www.posti.fi/) is a shipping service provider in Finland. This plugin integrates Posti’s parcel shipping services into WooCommerce. To start shipping, all your WooCommerce needs is this plugin and API credentials of your account registered with Posti. Order API credentials to use the plugin. (https://www.posti.fi/fi/yrityksille/tehosta-logistiikkaa/digitaaliset-palvelut-ja-rajapinnat/verkkokaupan-lisaosat)
 
-This plugin requires at least WooCommerce version 3.4.
+This plugin requires at least WooCommerce version 4.7.0.
 
 == Features ==
 
@@ -51,6 +51,10 @@ Yes! If you encounter any issues related to this plugin, please report at https:
 4. Settings screen in admin
 
 == Changelog ==
+= 3.5.0 =
+* Customer facing templates (checkout & view order) can now be replaced in own theme dir
+* Minumum woocommerce version is now 4.7.0 and tested against woocommerce 6.1.0
+
 = 3.4.1 =
 * Bug fix related to token caching
 
