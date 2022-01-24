@@ -74,4 +74,8 @@ Very small bugfixes that don't need any reviews (e.g. fixing spelling errors) ca
 
 As this is a WordPress plugin, there can only be one version released. Thus there are no separate maintenance release branches (once 2.1.x has been released, the next release must be 2.1.y or higher, there cannot be any maintenance releases for 2.0.x).
 
+`Text` is bit of a special case, it's only real purpose is to serve as a key-value store for strings that require translation. Currently the plugin has `__` and `_e` calls scattered all over it – in the future, all of them should live in `Text`. The advantage of doing so is being able to replace any text in the whitelabel forks.
 
+### Templates
+
+The plugin have some template files, which is displaying via `wc_get_template` function, so they can be overrided in the theme. To do that, need copy files from Pakettikauppa plugin directory (`/wp-content/plugins/woo-pakettikauppa/templates/pakettikauppa`) to Wordpress theme directory (`/wp-content/themes/<theme_name>/woocommerce/pakettikauppa`).
