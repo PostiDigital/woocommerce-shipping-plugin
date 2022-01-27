@@ -51,6 +51,9 @@ Yes! If you encounter any issues related to this plugin, please report at https:
 4. Settings screen in admin
 
 == Changelog ==
+= 3.5.1 =
+* Bug fix
+
 = 3.5.0 =
 * Customer facing templates (checkout & view order) can now be replaced in own theme dir
 * Minumum woocommerce version is now 4.7.0 and tested against woocommerce 6.1.0
