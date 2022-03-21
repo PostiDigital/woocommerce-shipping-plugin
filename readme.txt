@@ -2,7 +2,7 @@
 Contributors: joosev, ottok, leotoikka, serter, k1sul1
 Tags: woocommerce, shipping, toimitustavat, smartship, posti, smartpost, prinetti
 Requires at least: 5.0
-Tested up to: 5.8.2
+Tested up to: 5.9.2
 Requires PHP: 7.1
 Stable tag: trunk
 License: GPLv3 or later
@@ -51,6 +51,13 @@ Yes! If you encounter any issues related to this plugin, please report at https:
 4. Settings screen in admin
 
 == Changelog ==
+= 3.5.2 =
+* Diagnostic tool bug fix when using Posti Shipping version
+* Add error message if mass action operation fails
+* Update automated tests and PHP 8.x tests
+* Convert API secret as password field for added security
+* Update Pakettikauppa API library to latest version
+
 = 3.5.1 =
 * Bug fix
 
