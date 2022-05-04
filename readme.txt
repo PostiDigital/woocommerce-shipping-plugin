@@ -18,6 +18,7 @@ This plugin requires at least WooCommerce version 4.7.0.
 
 == Features ==
 
+<<<<<<< HEAD
 * Integrates Posti parcel shipping services with WooCommerce.
 * Supports WooCommerce shipping zones and classes.
 * Customers can choose to ship products to an address or to any pickup point.
@@ -27,6 +28,19 @@ This plugin requires at least WooCommerce version 4.7.0.
 * Store owners can generate shipping labels as mass action from orders view.
 * Store owners and customers get tracking code links and status information.
 * Support for Cash-On-Delivery.
+=======
+* Integrates Pakettikauppa with WooCommerce
+* Based on the official [Pakettikauppa API library](https://github.com/Pakettikauppa/api-library)
+* Supports WooCommerce shipping zones and classes (though Pakettikauppa is currently only available in Finland)
+* Customers can choose to ship products to an address or to any pickup point available from the Pakettikauppa shipping methods
+* Store owners can add pickup points to any shipping zones shipping method
+* Store owners can use whatever shipping pricing plugin
+* Store owners can generate the shipping label in one click
+* Store owners can generate shipping labels as mass action from orders view
+* Store owners and customers get tracking code links and status information
+* Support for Cash-On-Delivery
+* Test mode available that uses the testing API without registration
+>>>>>>> pakettikauppa/master
 
 == Installation ==
 
@@ -51,6 +65,9 @@ Yes! If you encounter any issues related to this plugin, please report at https:
 4. Settings screen in admin
 
 == Changelog ==
+= 3.6.1 =
+* Bug fix
+
 = 3.6.0 =
 * New feature: LQ-shipments
 * New feature: If shipping postcode is missing, use billing address
