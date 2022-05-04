@@ -22,7 +22,7 @@ This plugin requires at least WooCommerce version 4.7.0.
 * Supports WooCommerce shipping zones and classes.
 * Customers can choose to ship products to an address or to any pickup point.
 * Store owners can add pickup points to any shipping zone’s shipping method.
-* Store owners can specify themselves any fixed rate for a shipping or have free shipping if the order value is above a certain limit.
+* Store owners can use whatever shipping pricing plugin
 * Store owners can generate the shipping label by one click.
 * Store owners can generate shipping labels as mass action from orders view.
 * Store owners and customers get tracking code links and status information.
@@ -51,6 +51,9 @@ Yes! If you encounter any issues related to this plugin, please report at https:
 4. Settings screen in admin
 
 == Changelog ==
+= 3.6.1 =
+* Bug fix
+
 = 3.6.0 =
 * New feature: LQ-shipments
 * New feature: If shipping postcode is missing, use billing address
