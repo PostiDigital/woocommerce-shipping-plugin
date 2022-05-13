@@ -51,6 +51,9 @@ Yes! If you encounter any issues related to this plugin, please report at https:
 4. Settings screen in admin
 
 == Changelog ==
+= 3.6.2 =
+* Bug fix: load product class when not in admin view
+
 = 3.6.1 =
 * Bug fix
 
