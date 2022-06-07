@@ -24,8 +24,55 @@ function get_plugin_directory( $replace = false ) {
   return str_replace('woo-pakettikauppa', 'wc-pakettikauppa', dirname(__DIR__));
 }
 
+
+/**
+ * Dynamically find plugin main file name from plugin root dir.
+ *
+ * @return string|null Plugin file name or null if none found.
+ */
 function get_plugin_main_filename() {
-  return basename(get_plugin_directory(true)) . '.php';
+  $plugin_dir = get_plugin_directory(true);
+  $plugin_dir = rtrim($plugin_dir, '/\\');
+  // phpcs:ignore PHPCS_SecurityAudit.BadFunctions.FilesystemFunctions.WarnFilesystem
+  $files = scandir($plugin_dir);
+
+  if ( ! $files ) {
+    return null;
+  }
+
+  // phpcs:ignore PHPCS_SecurityAudit.BadFunctions.CallbackFunctions.WarnCallbackFunctions
+  $files = array_filter(
+    // phpcs:ignore PHPCS_SecurityAudit.BadFunctions.FilesystemFunctions.WarnFilesystem
+    $files,
+    function ( $filename ) {
+      return '.php' === substr($filename, - 4);
+    }
+  );
+
+  foreach ( $files as $file ) {
+    // phpcs:ignore PHPCS_SecurityAudit.BadFunctions.FilesystemFunctions.WarnFilesystem, WordPress.WP.AlternativeFunctions.file_system_read_fopen
+    $fh = fopen("$plugin_dir/$file", 'rb');
+
+    if ( $fh === false ) {
+      return null;
+    }
+
+    // Find plugin name declaration from first 20 lines.
+    for ( $i = 0; $i < 20; $i ++ ) {
+      // phpcs:ignore PHPCS_SecurityAudit.BadFunctions.FilesystemFunctions.WarnFilesystem
+      $line = fgets($fh);
+
+      if ( false === $line ) {
+        break;
+      }
+
+      if ( 1 === preg_match('/^\s?\*?\s?Plugin Name:\s.+\n?$/', $line) ) {
+        return $file;
+      }
+    }
+  }
+
+  return null;
 }
 
 function get_plugin_config() {
