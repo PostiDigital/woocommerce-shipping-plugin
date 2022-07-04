@@ -2,7 +2,7 @@
 Contributors: joosev, ottok, leotoikka, serter, k1sul1
 Tags: woocommerce, shipping, toimitustavat, smartship, posti, smartpost, prinetti
 Requires at least: 5.0
-Tested up to: 5.9.2
+Tested up to: 6.0
 Requires PHP: 7.1
 Stable tag: trunk
 License: GPLv3 or later
@@ -51,6 +51,12 @@ Yes! If you encounter any issues related to this plugin, please report at https:
 4. Settings screen in admin
 
 == Changelog ==
+= 3.7.0 =
+* New feature: Support for different label sizes
+* New feature: Shipping phone number optional / mandatory settings
+* New feature: LV translations
+* Refactoring: Arranging settings regrading checkout settings
+
 = 3.6.2 =
 * Bug fix: load product class when not in admin view
 
