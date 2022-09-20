@@ -37,6 +37,45 @@ This plugin requires at least WooCommerce version 4.7.0.
 
 This plugin can also be installed directly from Github.
 
+== Developer notes ==
+
+= Hooks =
+
+* pakettikauppa_prepare_create_shipment
+
+arguments: $order, $service_id, $additional_services
+
+* pakettikauppa_post_create_shipment
+
+arguments: $order
+
+= Actions =
+
+* pakettikauppa_create_shipments
+
+Call for example:
+
+    $pdf = '';
+    $order_ids = array (15, 16, 17);
+    $args = array( $order_ids, &$pdf );
+    do_action_ref_array('pakettikauppa_create_shipments', $args);"
+
+* pakettikauppa_fetch_shipping_labels
+
+Call for example:
+
+    $tracking_codes=array();
+    $args = array( $order_id, &$tracking_code );
+    do_action_ref_array('pakettikauppa_fetch_tracking_codes', $args);
+
+* pakettikauppa_fetch_tracking_codes
+
+Call for example:
+
+    $args = array( $order_id, $order_id2, ... );
+    do_action('pakettikauppa_create_shipments', $args);
+>>>>>>> pakettikauppa/master
+
 == Frequently Asked Questions ==
 
 = Is this ready for production use? =
@@ -51,6 +90,11 @@ Yes! If you encounter any issues related to this plugin, please report at https:
 4. Settings screen in admin
 
 == Changelog ==
+= 3.7.1 =
+* Fix for pickup point searches
+* Fix for pakettikauppa_fetch_tracking_codes -action
+* Various small fixes
+
 = 3.7.0 =
 * New feature: Support for different label sizes
 * New feature: Shipping phone number optional / mandatory settings
