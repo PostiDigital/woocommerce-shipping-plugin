@@ -51,6 +51,11 @@ Yes! If you encounter any issues related to this plugin, please report at https:
 4. Settings screen in admin
 
 == Changelog ==
+= 3.7.1 =
+* Fix for pickup point searches
+* Fix for pakettikauppa_fetch_tracking_codes -action
+* Various small fixes
+
 = 3.7.0 =
 * New feature: Support for different label sizes
 * New feature: Shipping phone number optional / mandatory settings
