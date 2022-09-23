@@ -51,6 +51,9 @@ Yes! If you encounter any issues related to this plugin, please report at https:
 4. Settings screen in admin
 
 == Changelog ==
+= 3.7.2 =
+* Fix small pickup point search bug
+
 = 3.7.1 =
 * Fix for pickup point searches
 * Fix for pakettikauppa_fetch_tracking_codes -action
