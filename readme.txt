@@ -51,6 +51,10 @@ Yes! If you encounter any issues related to this plugin, please report at https:
 4. Settings screen in admin
 
 == Changelog ==
+= 3.8.0 =
+* Support for shortcodes
+* Support for variable products SKU on shipping labels
+
 = 3.7.2 =
 * Fix small pickup point search bug
 
