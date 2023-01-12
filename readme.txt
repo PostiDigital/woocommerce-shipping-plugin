@@ -51,6 +51,14 @@ Yes! If you encounter any issues related to this plugin, please report at https:
 4. Settings screen in admin
 
 == Changelog ==
+= 3.9.0 =
+* New feature: Support for order pickups
+* New feature: Pickup point filtering
+* New feature: Email info as template
+* New feature: Custom bulk create order
+* New feature: Option to create return labels automatically
+* Bug fix: Weight and volume information to shipping labels if variable product
+
 = 3.8.0 =
 * Support for shortcodes
 * Support for variable products SKU on shipping labels
