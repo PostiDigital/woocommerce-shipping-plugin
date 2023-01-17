@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Posti Shipping
- * Version: 3.9.0
+ * Version: 3.9.1
  * Plugin URI: https://github.com/PostiDigital/woocommerce-shipping-plugin
  * Description: Posti shipping service for WooCommerce.
  * Author: Posti
