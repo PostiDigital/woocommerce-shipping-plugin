@@ -6,5 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Tests\\Pakettikauppa\\' => array($vendorDir . '/pakettikauppa/api-library/src/Tests/Pakettikauppa'),
     'Pakettikauppa\\' => array($vendorDir . '/pakettikauppa/api-library/src/Pakettikauppa'),
 );

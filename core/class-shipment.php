@@ -837,6 +837,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
       );
 
       $this->client = new \Pakettikauppa\Client($configs, $mode);
+      $this->client->setSenderSystemName('Woocommerce');
       $this->client->setComment($this->core->api_comment);
 
       if ( $configs[$mode]['use_posti_auth'] ) {
