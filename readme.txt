@@ -2,7 +2,7 @@
 Contributors: joosev, ottok, leotoikka, serter, k1sul1
 Tags: woocommerce, shipping, toimitustavat, smartship, posti, smartpost, prinetti
 Requires at least: 5.0
-Tested up to: 6.1
+Tested up to: 6.3.1
 Requires PHP: 7.1
 Stable tag: trunk
 License: GPLv3 or later
@@ -51,6 +51,11 @@ Yes! If you encounter any issues related to this plugin, please report at https:
 4. Settings screen in admin
 
 == Changelog ==
+= 3.9.2 =
+* WP and Woo compatibility update
+* Update to latest API library
+* Various small fixes
+
 = 3.9.1 =
 * WP compatibility update
 * Bug fix: Attach tracking info to email
