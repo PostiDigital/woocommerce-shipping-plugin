@@ -51,6 +51,10 @@ Yes! If you encounter any issues related to this plugin, please report at https:
 4. Settings screen in admin
 
 == Changelog ==
+= 3.9.3 =
+* Fix missing variable preventing list type of pickup points showing at checkout
+* Fix PHP 8.2 related fixes
+
 = 3.9.2 =
 * WP and Woo compatibility update
 * Update to latest API library
