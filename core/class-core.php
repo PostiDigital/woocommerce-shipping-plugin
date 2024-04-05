@@ -11,6 +11,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Core') ) {
   abstract class Core {
     public $version = null;
 
+    public $root_file;
     public $basename;
     public $dir;
     public $dir_url;
@@ -63,6 +64,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Core') ) {
      */
     public function __construct( $config = array() ) {
       $this->version = $config['version'];
+      $this->root_file = $config['root'];
       $this->basename = plugin_basename($config['root']);
       $this->dir = plugin_dir_path($config['root']);
       $this->dir_url = plugin_dir_url($config['root']);
@@ -100,6 +102,9 @@ if ( ! class_exists(__NAMESPACE__ . '\Core') ) {
 
       self::$instance = $this;
 
+      $this->load_wc_hpos_class();
+      //add_action('before_woocommerce_init', array($this, 'woocommerce_compatibility'));
+
       add_action(
         'plugins_loaded', //'wp_loaded',
         function() {
@@ -130,6 +135,12 @@ if ( ! class_exists(__NAMESPACE__ . '\Core') ) {
       }
 
       return false;
+    }
+
+    public function woocommerce_compatibility() {
+      if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+        \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', $this->root_file, true );
+      }
     }
 
     /**
@@ -284,6 +295,18 @@ if ( ! class_exists(__NAMESPACE__ . '\Core') ) {
       $admin->load();
 
       return $admin;
+    }
+
+    /**
+     * Override this method to load a custom Admin class
+     */
+    protected function load_wc_hpos_class() {
+      require_once 'class-wc-hpos.php';
+
+      $wc_hpos = new Wc_Hpos($this);
+      $wc_hpos->load();
+
+      return $wc_hpos;
     }
 
     /**
