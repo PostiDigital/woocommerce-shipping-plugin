@@ -48,6 +48,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
       add_action('woocommerce_email_order_meta', array( $this, 'attach_tracking_to_email' ), 10, 4);
       add_action('woocommerce_admin_order_data_after_shipping_address', array( $this, 'show_pickup_point_in_admin_order_meta' ), 10, 1);
       add_action('save_post', array( $this, 'save_admin_order_meta' ));
+      add_action('woocommerce_update_order', array( $this, 'save_admin_order_meta_hpos' ));
       add_action('handle_bulk_actions-edit-shop_order', array( $this, 'create_multiple_shipments' ), 10, 2); // admin_action_{action name}
       add_action($this->core->params_prefix . 'create_shipments', array( $this, 'hook_create_shipments' ), 10, 2);
       add_action($this->core->params_prefix . 'fetch_shipping_labels', array( $this, 'hook_fetch_shipping_labels' ), 10, 2);
@@ -216,7 +217,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
         wp_die('', '', 501);
       }
 
-      $this->meta_box(get_post((int) $_POST['post_id']));
+      $this->meta_box(wc_get_order((int) $_POST['post_id']));
       wp_die();
     }
 
@@ -576,6 +577,11 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
      */
     public function register_meta_boxes() {
       foreach ( wc_get_order_types('order-meta-boxes') as $type ) {
+        $screen = Wc_Hpos::get_admin_order_page_screen_id();
+        if ( ! $screen ) {
+          $screen = $type;
+        }
+
         add_meta_box(
           'woo-pakettikauppa', // Using a variable WILL BREAK JS
           // $this->core->prefix,
@@ -584,9 +590,9 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
             $this,
             'meta_box',
           ),
-          $type,
+          $screen,
           'side',
-          'default'
+          'core'
         );
       }
     }
@@ -621,7 +627,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
      * @param WC_Order $order The order that is currently being viewed in wp-admin
      */
     public function show_pickup_point_in_admin_order_meta( $order ) {
-      $service_id = get_post_meta($order->get_id(), '_' . $this->core->prefix . '_custom_service_id', true);
+      $service_id = $order->get_meta('_' . $this->core->prefix . '_custom_service_id', true);
       $default_service_id = $this->shipment->get_service_id_from_order($order, false);
       if ( empty($service_id) && empty($default_service_id) ) {
         return;
@@ -681,9 +687,9 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
             <?php endif; ?>
           <?php endforeach; ?>
           <br>
-          <?php echo __('Phone', 'woocommerce') . ': ' . get_post_meta($order->get_id(), '_shipping_phone', true); ?>
+          <?php echo __('Phone', 'woocommerce') . ': ' . $order->get_shipping_phone(); ?>
           <br>
-          <?php echo __('Email', 'woocommerce') . ': ' . get_post_meta($order->get_id(), '_shipping_email', true); ?>
+          <?php echo __('Email', 'woocommerce') . ': ' . $order->get_meta('_shipping_email', true); ?>
         </p>
       </div>
       <div class="edit_address pakettikauppa">
@@ -722,12 +728,38 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
       if ( 'shop_order' != $post_type ) {
         return $post_id;
       }
+      $this->save_admin_order_meta_to_order($post_id);
+    }
+
+    /**
+     * Save custom order meta in order edit page when use HPOS
+     */
+    public function save_admin_order_meta_hpos( $post_id ) {
+      if ( Wc_Hpos::get_admin_order_page_screen_id() != Wc_Hpos::get_current_screen_id() ) {
+        return $post_id;
+      }
+      
+      remove_action('woocommerce_update_order', array( $this, 'save_admin_order_meta_hpos' )); //Avoid infinity loop when use $order->save() in this function
+
+      $this->save_admin_order_meta_to_order($post_id);
+
+      add_action('woocommerce_update_order', array( $this, 'save_admin_order_meta_hpos' )); //Restore hook
+
+      return $post_id;
+    }
+
+    /**
+     * Custom meta data save function of Order
+     */
+    private function save_admin_order_meta_to_order( $order_id ) {
+      $order = wc_get_order($order_id);
       if ( isset($_POST[$this->core->params_prefix . 'shipping_phone']) ) {
-        update_post_meta($post_id, '_shipping_phone', wc_clean($_POST[$this->core->params_prefix . 'shipping_phone']));
+        $order->set_shipping_phone(wc_clean($_POST[$this->core->params_prefix . 'shipping_phone']));
       }
       if ( isset($_POST[$this->core->params_prefix . 'shipping_email']) ) {
-        update_post_meta($post_id, '_shipping_email', wc_clean($_POST[$this->core->params_prefix . 'shipping_email']));
+        $order->update_meta_data('_shipping_email', wc_clean($_POST[$this->core->params_prefix . 'shipping_email']));
       }
+      $order->save();
     }
 
     /**
@@ -760,6 +792,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
     private function tpl_shipping_label( $label, $post_id ) {
       ?>
       <?php if ( ! empty($label['tracking_code']) ) : ?>
+        <?php $order = wc_get_order($post_id); ?>
         <div class="pakettikauppa-shiplabel pakettikauppa-design-foldedcorner">
           <div class="corner">
             <div class="corner-triangle"></div>
@@ -769,12 +802,12 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
             <strong><?php echo esc_attr($label['tracking_code']); ?></strong><br />
             <span><?php echo esc_attr($this->shipment->service_title($label['service_id'])); ?></span><br />
             <br />
-            <?php $manifest_id = get_post_meta($post_id, $this->core->prefix . '_manifest', true); ?>
+            <?php $manifest_id = $order->get_meta($this->core->prefix . '_manifest', true); ?>
             <?php if ( $manifest_id ) : ?>
               <strong><?php echo __('Pickup order', 'woo-pakettikauppa'); ?>:</strong> <span>#<?php echo $manifest_id; ?></span><br />
               <?php
                 $manifest = get_post($manifest_id);
-                $pickup_order_status = get_post_status_object(get_post_status($manifest))->label;
+                $pickup_order_status = ($manifest) ? get_post_status_object(get_post_status($manifest))->label : __('Unknown status', 'woo-pakettikauppa');
               ?>
               <strong><?php echo __('Pickup order status', 'woo-pakettikauppa'); ?>:</strong> <span><?php echo $pickup_order_status; ?></span><br />
             <?php endif; ?>
@@ -924,7 +957,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
      * @param $post
      */
     public function meta_box( $post ) {
-      $order = wc_get_order($post->ID);
+      $order = Wc_Hpos::get_order_from_object($post);
 
       if ( $order === null ) {
         return;
@@ -936,7 +969,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
         return;
       }
 
-      $labels = $this->shipment->get_labels($post->ID);
+      $labels = $this->shipment->get_labels($order->get_id());
       $service_id = null;
 
       foreach ( $labels as $key => $label ) {
@@ -949,7 +982,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
         if ( empty($service_id) ) {
           $service_id = $labels[$key]['service_id'];
         }
-        $labels[$key]['document_url'] = admin_url('admin-post.php?post=' . $post->ID . '&action=show_pakettikauppa&tracking_code=' . $label['tracking_code']);
+        $labels[$key]['document_url'] = admin_url('admin-post.php?post=' . $order->get_id() . '&action=show_pakettikauppa&tracking_code=' . $label['tracking_code']);
       }
 
       $default_service_id = $this->shipment->get_service_id_from_order($order, false);
@@ -964,7 +997,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
         $default_additional_services[] = key($_additional_service);
       }
 
-      $return_shipments = get_post_meta($post->ID, '_' . $this->core->prefix . '_return_shipment');
+      $return_shipments = $order->get_meta('_' . $this->core->prefix . '_return_shipment');
 
       $all_shipment_services = $this->shipment->services();
 
@@ -1006,7 +1039,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
           </div>
         <?php endif; ?>
         <input type="hidden" name="pakettikauppa_nonce" value="<?php echo wp_create_nonce(str_replace('wc_', '', $this->core->prefix) . '-meta-box'); ?>" id="pakettikauppa_metabox_nonce" />
-        <input type="hidden" name="pakettikauppa_order_id" value="<?php echo esc_html($post->ID); ?>" id="pakettikauppa_metabox_order_id" />
+        <input type="hidden" name="pakettikauppa_order_id" value="<?php echo esc_html($order->get_id()); ?>" id="pakettikauppa_metabox_order_id" />
         <?php
         if ( empty($service_id) ) {
           $this->tpl_section_title(__('Send order', 'woo-pakettikauppa'));
@@ -1014,7 +1047,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
         if ( ! empty($labels) ) {
           $this->tpl_section_title(__('Shipping labels', 'woo-pakettikauppa'));
           foreach ( $labels as $label ) {
-            $this->tpl_shipping_label($label, $post->ID);
+            $this->tpl_shipping_label($label, $order->get_id());
           }
         }
         if ( (! empty($labels) || ! empty($return_shipments)) && ! empty($service_id) ) {
@@ -1137,7 +1170,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
                 <?php if ( $this->shipment->service_has_pickup_points($method_code) ) : ?>
                   <?php
                   $address_override_field_name = $this->core->params_prefix . 'merchant_override_custom_pickup_point_address';
-                  $custom_address = get_post_meta($order->get_id(), $address_override_field_name, true);
+                  $custom_address = $order->get_meta($address_override_field_name, true);
                   $custom_address = empty($custom_address) ? "$order_address, $order_postcode, $order_country" : $custom_address;
                   $pickup_points = $this->get_pickup_points_for_method($method_code, $order_postcode, $order_address, $order_country, $custom_address);
                   $select_first_option = '- ' . __('Select', 'woo-pakettikauppa') . ' -';
@@ -1393,12 +1426,14 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
       if ( ! empty($_REQUEST['request_id']) && $old_request_id == $_REQUEST['request_id'] ) {
         return;
       } else {
-        update_post_meta($order->get_id(), '_' . $this->core->params_prefix . 'request_id', $_REQUEST['request_id']);
+        $order->update_meta_data('_' . $this->core->params_prefix . 'request_id', $_REQUEST['request_id']);
       }
 
       if ( isset($_REQUEST['add_to_manifest']) ) {
         (new Manifest($this->core))->add_manifest_orders(null, str_replace('wc_', '', $this->core->prefix) . '_add_to_manifest', array( $order->get_id() ));
       }
+
+      $order->save();
 
       $command = sanitize_key(key($_POST['wc_pakettikauppa']));
 
@@ -1419,7 +1454,8 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
             if ( empty($pickup_point_id) && ! empty($_REQUEST['wc_pakettikauppa_pickup_point_id']) ) {
               $pickup_point_id = strtoupper(sanitize_key($_REQUEST['wc_pakettikauppa_pickup_point_id']));
 
-              update_post_meta($order->get_id(), '_' . $this->core->params_prefix . 'pickup_point_id', $pickup_point_id);
+              $order->update_meta_data('_' . $this->core->params_prefix . 'pickup_point_id', $pickup_point_id);
+              $order->save();
             }
           } else {
             $additional_services = array();
@@ -1504,71 +1540,108 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
      * @throws Exception
      */
     private function create_return_label( \WC_Order $order ) {
-      $shipping_label = $this->shipment->get_single_label($order->get_id());
-      if ( ! $shipping_label ) {
-        $this->add_error_notice(esc_attr__('It is not allowed to create a return label when shipping labels not exists', 'woo-pakettikauppa'));
-        return;
-      }
-
-      if ( isset($shipping_label['service_id']) && ! empty($shipping_label['service_id']) ) {
-        $service_id = $shipping_label['service_id'];
-      } else {
-        $service_id = $this->shipment->get_service_id_from_order($order, false);
-      }
-
-      $service_provider = $this->shipment->service_provider($service_id);
-
-      $additional_services = array(
-        array(
-          '9902' => array(),
-        ),
-      );
-      $return_service_id = null;
-      switch ( $service_provider ) {
-        case 'Posti':
-          $return_service_id = '2108';
-          break;
-        case 'DB Schenker':
-          $return_service_id = '80020';
-          break;
-        case 'Matkahuolto':
-          $return_service_id = '90280';
-          break;
-        default:
-          $order->add_order_note(__('Unable to create return label for this shipment type.', 'woo-pakettikauppa'));
+      try {
+        $shipping_label = $this->shipment->get_single_label($order->get_id());
+        if ( ! $shipping_label ) {
+          $this->add_error_notice(esc_attr__('It is not allowed to create a return label when shipping labels not exists', 'woo-pakettikauppa'));
           return;
-      }
+        }
 
-      $shipment = $this->shipment->create_shipment_from_order($order, $return_service_id, $additional_services);
+        if ( isset($shipping_label['service_id']) && ! empty($shipping_label['service_id']) ) {
+          $service_id = $shipping_label['service_id'];
+        } else {
+          $service_id = $this->shipment->get_service_id_from_order($order, false);
+        }
 
-      if ( $shipment !== null ) {
-        $tracking_code = null;
+        $service_provider = $this->shipment->service_provider($service_id);
 
-        if ( isset($shipment->{'response.trackingcode'}) ) {
-          $tracking_code = $shipment->{'response.trackingcode'}->__toString();
-          $document_url  = admin_url('admin-post.php?post=' . $order->get_id() . '&action=show_pakettikauppa&tracking_code=' . $tracking_code);
-          $tracking_url  = (string) $shipment->{'response.trackingcode'}['tracking_url'];
-          $label_code    = (string) $shipment->{'response.trackingcode'}['labelcode'];
+        $additional_services = array(
+          array(
+            '9902' => array(),
+          ),
+        );
+        $return_service_id = null;
+        switch ( $service_provider ) {
+          case 'Posti':
+            $return_service_id = '2108';
+            break;
+          case 'DB Schenker':
+            $return_service_id = '80020';
+            break;
+          case 'Matkahuolto':
+            $return_service_id = '90280';
+            break;
+          default:
+            $order->add_order_note(__('Unable to create return label for this shipment type.', 'woo-pakettikauppa'));
+            return;
+        }
 
-          if ( version_compare(get_bloginfo('version'), '5.3.0', '>=') ) {
-            $current_time = strtotime(wp_date('Y-m-d H:i:s'));
-          } else {
-            $current_time = current_time('timestamp');
-          }
+        $shipment = $this->shipment->create_shipment_from_order($order, $return_service_id, $additional_services);
 
-          add_post_meta(
-            $order->get_id(),
-            '_' . $this->core->prefix . '_return_shipment',
-            array(
+        if ( $shipment !== null ) {
+          $tracking_code = null;
+
+          if ( isset($shipment->{'response.trackingcode'}) ) {
+            $tracking_code = $shipment->{'response.trackingcode'}->__toString();
+            $document_url  = admin_url('admin-post.php?post=' . $order->get_id() . '&action=show_pakettikauppa&tracking_code=' . $tracking_code);
+            $tracking_url  = (string) $shipment->{'response.trackingcode'}['tracking_url'];
+            $label_code    = (string) $shipment->{'response.trackingcode'}['labelcode'];
+
+            if ( version_compare(get_bloginfo('version'), '5.3.0', '>=') ) {
+              $current_time = strtotime(wp_date('Y-m-d H:i:s'));
+            } else {
+              $current_time = current_time('timestamp');
+            }
+
+            $label_data = array(
               'service_id' => $return_service_id,
               'tracking_code' => $tracking_code,
               'document_url' => $document_url,
               'tracking_url' => $tracking_url,
               'label_code' => $label_code,
               'timestamp' => $current_time,
-            )
-          );
+            );
+
+            $return_labels = $order->get_meta('_' . $this->core->prefix . '_return_shipment');
+            if ( empty($return_labels) ) {
+              $order->add_meta_data('_' . $this->core->prefix . '_return_shipment', array($label_data));
+            } else {
+              if ( ! is_array($return_labels) ) {
+                $return_labels = array($return_labels);
+              }
+              $return_labels[] = $label_data;
+              $order->update_meta_data('_' . $this->core->prefix . '_return_shipment', $return_labels);
+            }
+            $order->save();
+
+            $order->add_order_note(
+              sprintf(
+                /* translators: 1: Shipping service title 2: Shipment tracking code */
+                __('Created %1$s return label<br>%2$s.', 'woo-pakettikauppa'),
+                $this->core->vendor_name,
+                $tracking_code
+              )
+            );
+          }
         }
+      } catch ( \Exception $e ) {
+        $this->add_error($e->getMessage());
+        add_action(
+          'admin_notices',
+          function() use ( $e ) {
+            /* translators: %s: Error message */
+            $this->add_error_notice(wp_sprintf(esc_attr__('An error occurred: %s', 'woo-pakettikauppa'), $e->getMessage()));
+          }
+        );
+
+        $order->add_order_note(
+          sprintf(
+            /* translators: %1$s: Vendor name, %2$s: Error message */
+            esc_attr__('Creating %1$s return label failed! Errors: %2$s', 'woo-pakettikauppa'),
+            $this->core->vendor_name,
+            $e->getMessage()
+          )
+        );
       }
     }
 
@@ -1577,8 +1650,8 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
      */
     private function delete_shipping_label( \WC_Order $order, $tracking_code ) {
       try {
-        $old_label = get_post_meta($order->get_id(), '_' . $this->core->prefix . '_tracking_code', true);
-        $labels = get_post_meta($order->get_id(), '_' . $this->core->prefix . '_labels', true);
+        $old_label = $order->get_meta('_' . $this->core->prefix . '_tracking_code', true);
+        $labels = $order->get_meta('_' . $this->core->prefix . '_labels', true);
         if ( $tracking_code == $old_label ) {
           $this->shipment->delete_old_structure_label($order->get_id());
         }
@@ -1587,7 +1660,8 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
             unset($labels[$key]);
           }
         }
-        update_post_meta($order->get_id(), '_' . $this->core->prefix . '_labels', $labels);
+        $order->update_meta_data('_' . $this->core->prefix . '_labels', $labels);
+        $order->save();
         /* translators: %1$s: Vendor name, %2$s: tracking code */
         $order->add_order_note(sprintf(esc_attr__('Deleted %1$s shipping label %2$s.', 'woo-pakettikauppa'), $this->core->vendor_name, $tracking_code));
       } catch ( \Exception $e ) {
@@ -1616,11 +1690,17 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
      */
     private function delete_return_label( \WC_Order $order, $tracking_code ) {
       try {
-        $return_shipments = get_post_meta($order->get_id(), '_' . $this->core->prefix . '_return_shipment');
+        $return_shipments = $order->get_meta('_' . $this->core->prefix . '_return_shipment');
 
-        foreach ( $return_shipments as $return_shipment ) {
+        foreach ( $return_shipments as $key => $return_shipment ) {
           if ( $return_shipment['tracking_code'] === $tracking_code ) {
-            delete_post_meta($order->get_id(), '_' . $this->core->prefix . '_return_shipment', $return_shipment);
+            unset($return_shipments[$key]);
+            if ( empty($return_shipments) ) {
+              $order->delete_meta_data('_' . $this->core->prefix . '_return_shipment');
+            } else {
+              $order->update_meta_data('_' . $this->core->prefix . '_return_shipment', $return_shipments);
+            }
+            $order->save();
             /* translators: %%s: tracking code */
             $order->add_order_note(sprintf(esc_attr__('Deleted %1$s return label %2$s.', 'woo-pakettikauppa'), $this->core->vendor_name, $tracking_code));
             return;
@@ -1961,7 +2041,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
       $order_address  = $order->get_shipping_address_1() . ' ' . $order->get_shipping_city();
       $order_country  = $order->get_shipping_country();
       $address_override_field_name = $this->core->params_prefix . 'merchant_override_custom_pickup_point_address';
-      $custom_address = get_post_meta($order->get_id(), $address_override_field_name, true);
+      $custom_address = $order->get_meta($address_override_field_name, true);
       $custom_address = empty($custom_address) ? "$order_address, $order_postcode, $order_country" : $custom_address;
 
       $service_id = '';

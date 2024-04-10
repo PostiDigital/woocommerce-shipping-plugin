@@ -205,18 +205,25 @@ if ( ! class_exists(__NAMESPACE__ . '\Frontend') ) {
       }
 
       if ( ! empty($pickup_point) ) {
-        update_post_meta($order_id, '_' . str_replace('wc_', '', $this->core->prefix) . '_pickup_point', sanitize_text_field($pickup_point));
+        $order = wc_get_order($order_id);
+        if ( ! $order ) {
+          $logger->error('The order could not be received');
+          return;
+        }
+        $order->update_meta_data('_' . str_replace('wc_', '', $this->core->prefix) . '_pickup_point', sanitize_text_field($pickup_point));
+        
         // Find string like '(#6681)'
         preg_match('/\(#[A-Z0-9]+\)/', $pickup_point, $matches);
         // Cut the number out from a string of the form '(#6681)'
         $pakettikauppa_pickup_point_id = (! empty($matches)) ? substr($matches[0], 2, -1) : '';
-        update_post_meta($order_id, '_' . str_replace('wc_', '', $this->core->prefix) . '_pickup_point_id', $pakettikauppa_pickup_point_id);
+        $order->update_meta_data('_' . str_replace('wc_', '', $this->core->prefix) . '_pickup_point_id', $pakettikauppa_pickup_point_id);
 
         preg_match('/\(\%[0-9]+\)/', $pickup_point, $matches);
         // Cut the number out from a string of the form '(#6681)'
         $pakettikauppa_pickup_point_provider_id = (! empty($matches)) ? substr($matches[0], 2, -1) : '';
+        $order->update_meta_data('_' . str_replace('wc_', '', $this->core->prefix) . '_pickup_point_provider_id', $pakettikauppa_pickup_point_provider_id);
 
-        update_post_meta($order_id, '_' . str_replace('wc_', '', $this->core->prefix) . '_pickup_point_provider_id', $pakettikauppa_pickup_point_provider_id);
+        $order->save();
       }
     }
 
