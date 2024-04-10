@@ -102,6 +102,11 @@ You can use plugin (f.ex. Polylang) to translate shipping method names.
 4. Setup wizard
 
 == Changelog ==
+= 3.9.4 =
+* New feature: allow ignoring product weights
+* New feature: HPOS support
+* Various small fixes
+
 = 3.9.3 =
 * Fix missing variable preventing list type of pickup points showing at checkout
 * Fix PHP 8.2 related fixes
