@@ -103,7 +103,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Core') ) {
       self::$instance = $this;
 
       $this->load_wc_hpos_class();
-      //add_action('before_woocommerce_init', array($this, 'woocommerce_compatibility'));
+      $this->load_wc_blocks_class();
 
       add_action(
         'plugins_loaded', //'wp_loaded',
@@ -135,12 +135,6 @@ if ( ! class_exists(__NAMESPACE__ . '\Core') ) {
       }
 
       return false;
-    }
-
-    public function woocommerce_compatibility() {
-      if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
-        \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', $this->root_file, true );
-      }
     }
 
     /**
@@ -298,7 +292,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Core') ) {
     }
 
     /**
-     * Override this method to load a custom Admin class
+     * Override this method to load a custom WC HPOS class
      */
     protected function load_wc_hpos_class() {
       require_once 'class-wc-hpos.php';
@@ -307,6 +301,18 @@ if ( ! class_exists(__NAMESPACE__ . '\Core') ) {
       $wc_hpos->load();
 
       return $wc_hpos;
+    }
+
+    /**
+     * Override this method to load a custom WC blocks class
+     */
+    protected function load_wc_blocks_class() {
+      require_once 'class-wc-blocks.php';
+
+      $wc_blocks = new Wc_Blocks($this);
+      $wc_blocks->load();
+
+      return $wc_blocks;
     }
 
     /**
