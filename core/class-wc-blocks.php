@@ -19,7 +19,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Wc_Blocks') ) {
     /**
      * @var Core
      */
-    public $core = null;
+    private $core = null;
 
     public function __construct( Core $plugin ) {
       $this->core = $plugin;
@@ -37,13 +37,28 @@ if ( ! class_exists(__NAMESPACE__ . '\Wc_Blocks') ) {
     }
 
     public function init() {
+      require_once 'class-wc-blocks-integration.php';
 
+      add_action('woocommerce_blocks_checkout_block_registration', function( $integration_registry ) {
+        $integration_registry->register( new Wc_Blocks_Integration($this->core) );
+      });
+      add_action('woocommerce_blocks_cart_block_registration', function( $integration_registry ) {
+        $integration_registry->register( new Wc_Blocks_Integration($this->core) );
+      });
     }
 
     public function register_block_categories( $categories ) {
       return array_merge($categories, array(
-          //array( 'slug'  => 'omnivalt', 'title' => __('Omniva Blocks', 'omnivalt') ), //TODO: Padaryti
+          array( 'slug'  => $this->core->prefix, 'title' => $this->core->vendor_fullname ),
       ));
+    }
+
+    public function pk_data_callback() {
+      return array();
+    }
+
+    public function pk_schema_callback() {
+      return array();
     }
   }
 }
