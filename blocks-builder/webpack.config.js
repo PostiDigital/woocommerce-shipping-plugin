@@ -12,9 +12,14 @@ module.exports = {
     ...defaultConfig,
     entry: {
         index: path.resolve(process.cwd(), 'src', 'index.js'),
+        'pickup-point-selection/index': path.resolve(process.cwd(), 'src', 'pickup-point-selection', 'index.js'),
+        'pickup-point-selection/checkout/index': path.resolve(process.cwd(), 'src', 'pickup-point-selection', 'checkout', 'index.js'),
+        'pickup-point-selection/checkout/front': path.resolve(process.cwd(), 'src', 'pickup-point-selection', 'checkout', 'front-index.js'),
+        'pickup-point-selection/cart/index': path.resolve(process.cwd(), 'src', 'pickup-point-selection', 'cart', 'index.js'),
+        'pickup-point-selection/cart/front': path.resolve(process.cwd(), 'src', 'pickup-point-selection', 'cart', 'front-index.js'),
     },
     output: {
-        path: path.resolve(__dirname, '../assets/blocks'),
+        path: path.resolve(process.cwd(), '../assets/blocks'),
     },
     module: {
         ...defaultConfig.module,
