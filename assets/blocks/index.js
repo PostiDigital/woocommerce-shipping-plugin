@@ -1,0 +1,1 @@
+(()=>{"use strict";(0,window.wp.plugins.registerPlugin)("wc-pakettikauppa",{render:()=>{},scope:"woocommerce-checkout"})})();
