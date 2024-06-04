@@ -11,6 +11,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Core') ) {
   abstract class Core {
     public $version = null;
 
+    public $root_file;
     public $basename;
     public $dir;
     public $dir_url;
@@ -63,6 +64,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Core') ) {
      */
     public function __construct( $config = array() ) {
       $this->version = $config['version'];
+      $this->root_file = $config['root'];
       $this->basename = plugin_basename($config['root']);
       $this->dir = plugin_dir_path($config['root']);
       $this->dir_url = plugin_dir_url($config['root']);
@@ -99,6 +101,9 @@ if ( ! class_exists(__NAMESPACE__ . '\Core') ) {
       $this->order_pickup_url = $config['order_pickup_callback_url'] ?? false;
 
       self::$instance = $this;
+
+      $this->load_wc_hpos_class();
+      $this->load_wc_blocks_class();
 
       add_action(
         'plugins_loaded', //'wp_loaded',
@@ -284,6 +289,30 @@ if ( ! class_exists(__NAMESPACE__ . '\Core') ) {
       $admin->load();
 
       return $admin;
+    }
+
+    /**
+     * Override this method to load a custom WC HPOS class
+     */
+    protected function load_wc_hpos_class() {
+      require_once 'class-wc-hpos.php';
+
+      $wc_hpos = new Wc_Hpos($this);
+      $wc_hpos->load();
+
+      return $wc_hpos;
+    }
+
+    /**
+     * Override this method to load a custom WC blocks class
+     */
+    protected function load_wc_blocks_class() {
+      require_once 'class-wc-blocks.php';
+
+      $wc_blocks = new Wc_Blocks($this);
+      $wc_blocks->load();
+
+      return $wc_blocks;
     }
 
     /**
