@@ -1,10 +1,15 @@
 {
-  "name": "seravo/woo-pakettikauppa",
+  "name": "posti/woocommerce-shipping-plugin",
   "type": "wordpress-plugin",
   "license": "GPL-3.0",
-  "description": "Integrates Pakettikauppa with WooCommerce and provides Prinetti, Matkahuolto, DB Schenker et al shipping options.",
-  "homepage": "http://seravo.com",
+  "description": "Integrates Posti shipping services with WooCommerce",
+  "homepage": "https://www.posti.fi",
   "authors": [
+    {
+      "name": "Joose Vettenranta",
+      "email": "joose.vettenranta@posti.com",
+      "homepage": "https://github.com/joosev"
+    }, 
     {
       "name": "Otto Kekäläinen",
       "email": "otto@seravo.com",

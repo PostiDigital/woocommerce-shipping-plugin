@@ -13,4 +13,6 @@ jobs:
       uses: 10up/action-wordpress-plugin-asset-update@stable
       env:
         SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
-        SVN_USERNAME: pakettikauppa
+        SVN_USERNAME: jooseposti
+        SLUG: posti-shipping
+
