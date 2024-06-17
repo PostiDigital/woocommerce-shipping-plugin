@@ -1,6 +1,6 @@
 import { __ } from '@wordpress/i18n';
 
-export const txt = wcSettings["pakettikauppa-blocks_data"].txt; //Temporary solution while not clear how use @wordpress/i18n
+export const txt = wcSettings["posti-blocks_data"].txt; //Temporary solution while not clear how use @wordpress/i18n
 
 export const txt_i18n = {
     block_options: __('Block options', 'woo-pakettikauppa'),
