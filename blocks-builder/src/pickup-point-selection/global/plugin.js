@@ -1,8 +1,8 @@
 export const getPluginStaticData = () => {
-    if ( ! wcSettings || ! wcSettings["pakettikauppa-blocks_data"] ) {
+    if ( ! wcSettings || ! wcSettings["posti-blocks_data"] ) {
         return [];
     }
-    return wcSettings["pakettikauppa-blocks_data"];
+    return wcSettings["posti-blocks_data"];
 };
 
 export const getCurrentMethod = ( methodInstanceId ) => {
