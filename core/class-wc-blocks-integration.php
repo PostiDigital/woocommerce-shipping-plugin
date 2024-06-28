@@ -100,6 +100,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Wc_Blocks_Integration') ) {
         'ajax_url' => admin_url('admin-ajax.php'),
         'methods' => $this->get_pakettikauppa_methods(),
         'allow_custom_address' => (isset($settings['show_pickup_point_override_query']) && $settings['show_pickup_point_override_query'] === 'yes'),
+        'list_type' => (isset($settings['pickup_point_list_type'])) ? $settings['pickup_point_list_type'] : 'menu',
         'txt' => array(
           'block_options' => __('Block options', 'woo-pakettikauppa'),
           'pickup_block_title' => __('Pickup point', 'woo-pakettikauppa'),

@@ -3,7 +3,7 @@
  **/
 import { useEffect, useState } from '@wordpress/element';
 import { useDispatch, useSelect } from '@wordpress/data';
-import { SelectControl, TextareaControl, Flex, FlexItem, BaseControl } from '@wordpress/components';
+import { SelectControl, RadioControl, TextareaControl, Flex, FlexItem, BaseControl } from '@wordpress/components';
 
 /**
  * This plugin external functions and variables
@@ -128,6 +128,7 @@ export const Block = ({ checkoutExtensionData, extension }) => {
             }
             setCurrentData({...currentData,
                 pickup_points_list: pickup_points_list,
+                pickup_points_list_type: getPluginStaticData().list_type,
                 pickup_point: '',
                 custom_address: '',
                 show_custom: getPluginStaticData().allow_custom_address
@@ -199,12 +200,13 @@ export const Block = ({ checkoutExtensionData, extension }) => {
 
     /* Build pickup point select field options */
     useEffect(() => {
-        let newPickupOptions = [
-            {
+        let newPickupOptions = [];
+        if (currentData.pickup_points_list_type === 'menu') {
+            newPickupOptions.push({
                 label: '- ' + txt.pickup_select_field_default + ' -',
                 value: ''
-            },
-        ];
+            });
+        }
         if ( currentData.pickup_points_list?.length ) {
             for ( let i = 0; i < currentData.pickup_points_list.length; i++ ) {
                 newPickupOptions.push({
@@ -278,14 +280,24 @@ export const Block = ({ checkoutExtensionData, extension }) => {
                 </BaseControl>
             ) : (
                 <>
-                    <SelectControl
-                        id="pakettikauppa_pickup_point"
-                        label={txt.pickup_block_title}
-                        help={txt.checkout_pickup_info}
-                        value={currentData.pickup_point}
-                        options={pickupOptions}
-                        onChange={(value) => setCurrentData({...currentData, pickup_point: value})}
-                    />
+                    {(currentData.pickup_points_list_type === 'list') ? (
+                        <RadioControl
+                            label={txt.pickup_block_title}
+                            help={txt.checkout_pickup_info}
+                            selected={currentData.pickup_point}
+                            options={pickupOptions}
+                            onChange={(value) => setCurrentData({...currentData, pickup_point: value})}
+                        />
+                    ) : (
+                        <SelectControl
+                            id="pakettikauppa_pickup_point"
+                            label={txt.pickup_block_title}
+                            help={txt.checkout_pickup_info}
+                            value={currentData.pickup_point}
+                            options={pickupOptions}
+                            onChange={(value) => setCurrentData({...currentData, pickup_point: value})}
+                        />
+                    )}
                     {(validationError?.hidden || currentData.pickup_point !== '') ? null : (
                         <div className="wc-block-components-validation-error">
                             <span>{validationError?.message}</span>
