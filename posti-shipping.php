@@ -11,9 +11,9 @@
  * License: GPL v3 or later
  *
  * Requires at least: 5.0
- * Tested up to: 6.3.1
+ * Tested up to: 6.5.5
  * WC requires at least: 3.4
- * WC tested up to: 8.0.3
+ * WC tested up to: 9.0.2
  * Requires PHP: 7.1
  *
  * Copyright: © 2017-2019 Seravo Oy, 2020-2023 Posti Oy

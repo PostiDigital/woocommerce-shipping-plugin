@@ -39,17 +39,19 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
       add_filter('plugin_action_links_' . $this->core->basename, array( $this, 'add_settings_link' ));
       add_filter('plugin_row_meta', array( $this, 'plugin_row_meta_wrapper' ), 10, 2);
       add_filter('bulk_actions-edit-shop_order', array( $this, 'register_multi_create_orders' ));
+      add_filter('bulk_actions-woocommerce_page_wc-orders', array( $this, 'register_multi_create_orders' )); //HPOS
       add_action('woocommerce_admin_order_actions_end', array( $this, 'register_quick_create_order' ), 10, 2); //to add print option at the end of each orders in orders page
       add_action('admin_notices', array( $this, 'show_admin_notices' ));
       add_action('admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ));
       add_action('add_meta_boxes', array( $this, 'register_meta_boxes' ));
       add_action('admin_post_show_pakettikauppa', array( $this, 'show' ), 10);
-      add_action('admin_post_quick_create_label', array( $this, 'create_multiple_shipments' ), 10, 2);
+      add_action('admin_post_' . $this->core->params_prefix . 'quick_create_label', array( $this, 'quick_create_label' ), 10, 3);
       add_action('woocommerce_email_order_meta', array( $this, 'attach_tracking_to_email' ), 10, 4);
       add_action('woocommerce_admin_order_data_after_shipping_address', array( $this, 'show_pickup_point_in_admin_order_meta' ), 10, 1);
       add_action('save_post', array( $this, 'save_admin_order_meta' ));
       add_action('woocommerce_update_order', array( $this, 'save_admin_order_meta_hpos' ));
-      add_action('handle_bulk_actions-edit-shop_order', array( $this, 'create_multiple_shipments' ), 10, 2); // admin_action_{action name}
+      add_action('handle_bulk_actions-edit-shop_order', array( $this, 'bulk_create_label' ), 10, 3); // admin_action_{action name}
+      add_action('handle_bulk_actions-woocommerce_page_wc-orders', array( $this, 'bulk_create_label' ), 10, 3); //HPOS
       add_action($this->core->params_prefix . 'create_shipments', array( $this, 'hook_create_shipments' ), 10, 2);
       add_action($this->core->params_prefix . 'fetch_shipping_labels', array( $this, 'hook_fetch_shipping_labels' ), 10, 2);
       add_action($this->core->params_prefix . 'fetch_tracking_code', array( $this, 'hook_fetch_tracking_code' ), 10, 2);
@@ -338,7 +340,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
         }
       }
 
-      $document_url = wp_nonce_url(admin_url('admin-post.php?post[]=' . $order->get_id() . '&action=quick_create_label'), 'bulk-posts');
+      $document_url = wp_nonce_url(admin_url('admin-post.php?post[]=' . $order->get_id() . '&action=' . $this->core->params_prefix . 'quick_create_label'), 'bulk-posts');
 
       $class = $this->core->params_prefix . 'create_shipping_label';
 
@@ -352,11 +354,11 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
     }
 
     /**
-     * This function exits on success, returns on error
-     *
+     * When the action button is activated in the order's "Actions" column on the orders list page
+     * 
      * @throws Exception
      */
-    public function create_multiple_shipments( $redirect_to ) {
+    public function quick_create_label() {
       if ( ! isset($_REQUEST['post']) ) {
         return;
       }
@@ -365,8 +367,16 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
         return;
       }
 
-      $action = null;
+      if ( ! isset($_REQUEST['action']) ) {
+        return;
+      }
 
+      if ( ! wp_verify_nonce(sanitize_key($_REQUEST['_wpnonce']), 'bulk-posts') ) {
+        return;
+      }
+
+      $action = null;
+      
       if ( isset($_REQUEST['action']) && $_REQUEST['action'] !== '-1' ) {
         $action = sanitize_key($_REQUEST['action']);
       } elseif ( isset($_REQUEST['action2']) && $_REQUEST['action2'] !== '-1' ) {
@@ -377,23 +387,69 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
         return;
       }
 
-      $order_ids = array();
+      if ( $action !== $this->core->params_prefix . 'quick_create_label' ) {
+        return;
+      }
 
-      // instead of array_map we use foreach because array_map is not allowed by sniff rules
-      foreach ( $_REQUEST['post'] as $order_id ) {
-          $order_ids[] = sanitize_text_field($order_id);
+      return $this->create_multiple_shipments('', $_REQUEST['post']);
+    }
+
+    /**
+     * When the orders list bulk action is activated
+     * 
+     * @param string $redirect_to - Redirect URL
+     * @param string $action - Bulk action name
+     * @param array $ids - IDs of the selected Orders
+     * 
+     * @throws Exception
+     */
+    public function bulk_create_label( $redirect_to, $action, $ids ) {
+      if ( empty($action) ) {
+        if ( isset($_REQUEST['action']) && $_REQUEST['action'] !== '-1' ) {
+          $action = sanitize_key($_REQUEST['action']);
+        } elseif ( isset($_REQUEST['action2']) && $_REQUEST['action2'] !== '-1' ) {
+          $action = sanitize_key($_REQUEST['action2']);
+        }
+      }
+
+      if ( $action === null ) {
+        return;
       }
 
       if ( $action === $this->core->params_prefix . 'create_custom_shipments' ) {
-        return add_query_arg('id', $order_ids, menu_page_url('bulk-create-custom-shipment'));
+        return add_query_arg('id', $ids, menu_page_url('bulk-create-custom-shipment'));
       }
 
-      if ( ! ($action === $this->core->params_prefix . 'create_multiple_shipping_labels' || $action === 'quick_create_label') ) {
+      if ( $action !== $this->core->params_prefix . 'create_multiple_shipping_labels' ) {
         return;
       }
 
-      if ( ! wp_verify_nonce(sanitize_key($_REQUEST['_wpnonce']), 'bulk-posts') ) {
+      return $this->create_multiple_shipments($redirect_to, $ids);
+    }
+
+    /**
+     * This function exits on success, returns on error
+     *
+     * @param string $redirect_to - Redirect URL
+     * @param array $ids - IDs of the selected Orders
+     * 
+     * @throws Exception
+     */
+    public function create_multiple_shipments( $redirect_to, $ids ) {
+      if ( ! is_array($ids) ) {
         return;
+      }
+
+      $order_ids = array();
+
+      // instead of array_map we use foreach because array_map is not allowed by sniff rules
+      foreach ( $ids as $order_id ) {
+          $order_ids[] = sanitize_text_field($order_id);
+      }
+
+      if ( empty($order_ids) ) {
+        $this->add_admin_notice(__('Please select at least one Order', 'woo-pakettikauppa'), 'error');
+        return $redirect_to;
       }
 
       $tracking_codes = $this->create_shipments($order_ids);
