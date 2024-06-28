@@ -10,7 +10,7 @@ import { SelectControl, TextareaControl, Flex, FlexItem, BaseControl } from '@wo
  **/
 import { txt } from '../global/text';
 import { getActiveShippingRates, getDestination } from '../global/wc';
-import { getCurrentMethod, isPluginMethod, getPickupPoints, getCustomPickupPoints } from '../global/plugin';
+import { getPluginStaticData, getCurrentMethod, isMethodHavePickups, getPickupPoints, getCustomPickupPoints } from '../global/plugin';
 import { useDebounce, isValidAddress } from '../global/utils';
 
 /**
@@ -129,7 +129,8 @@ export const Block = ({ checkoutExtensionData, extension }) => {
             setCurrentData({...currentData,
                 pickup_points_list: pickup_points_list,
                 pickup_point: '',
-                custom_address: ''
+                custom_address: '',
+                show_custom: getPluginStaticData().allow_custom_address
             });
         });
         resetUpdateList();
@@ -212,10 +213,12 @@ export const Block = ({ checkoutExtensionData, extension }) => {
                 });
             }
         }
-        newPickupOptions.push({
-            label: txt.pickup_select_other,
-            value: 'other'
-        });
+        if ( currentData.show_custom ) {
+            newPickupOptions.push({
+                label: txt.pickup_select_other,
+                value: 'other'
+            });
+        }
         setPickupOptions(newPickupOptions);
     }, [
         currentData.pickup_points_list
@@ -228,7 +231,7 @@ export const Block = ({ checkoutExtensionData, extension }) => {
             setContainerErrorClass('');
         }
 
-        if ( ! currentData.rate?.instance || ! isPluginMethod(currentData.rate.instance) ) {
+        if ( ! currentData.rate?.instance || ! isMethodHavePickups(currentData.rate.instance) ) {
             return;
         }
 
@@ -295,7 +298,7 @@ export const Block = ({ checkoutExtensionData, extension }) => {
                 <p className={`pakettikauppa-custom-text`}>{txt.custom_pickup_address.replaceAll('%s', '"' + currentData.custom_address + '"')}</p>
             )}
 
-            {(currentData.pickup_point !== 'other' && currentData.pickup_points_list?.length) ? null : (
+            {(! currentData.show_custom || (currentData.pickup_point !== 'other' && currentData.pickup_points_list?.length)) ? null : (
                 <>
                     <TextareaControl
                         label={txt.custom_pickup_title}
