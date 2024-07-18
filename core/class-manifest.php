@@ -469,6 +469,9 @@ if ( ! class_exists(__NAMESPACE__ . '\Manifest') ) {
             }
             $transient_name = $this->core->prefix . '_access_token';
             $token = get_transient($transient_name);
+            if ( is_object($token) && property_exists($token, 'access_token') ) {
+                $token = $token->access_token;
+            }
             if ( ! $token ) {
                 throw new \Exception(__('Token not found. Please check credentials', 'woo-pakettikauppa'));
             }
