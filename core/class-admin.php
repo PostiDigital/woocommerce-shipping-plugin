@@ -1626,28 +1626,35 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
           $service_id = $this->shipment->get_service_id_from_order($order, false);
         }
 
-        $service_provider = $this->shipment->service_provider($service_id);
-
         $additional_services = array(
           array(
             '9902' => array(),
           ),
         );
-        $return_service_id = null;
-        switch ( $service_provider ) {
-          case 'Posti':
-            $return_service_id = '2108';
-            break;
-          case 'DB Schenker':
-            $return_service_id = '80020';
-            break;
-          case 'Matkahuolto':
-            $return_service_id = '90280';
-            break;
-          default:
-            $order->add_order_note(__('Unable to create return label for this shipment type.', 'woo-pakettikauppa'));
-            return;
+
+        $return_services_map = array(
+          //'Product code' => 'Return product code'
+          '2101' => '2102',
+          '2102' => '2102',
+          '2103' => '2108',
+          '2104' => '2108',
+          '2124' => '2102',
+          '2142' => '2144',
+          '2143' => '2144',
+          '2144' => '2144',
+          '2145' => '2144',
+          '2331' => '2338',
+          '2351' => '2358',
+          '2352' => '2358',
+          '2354' => '2359',
+          '2461' => '2108',
+          '2711' => '2718',
+        );
+        if ( ! isset($return_services_map[$service_id]) ) {
+          $order->add_order_note(__('Unable to create return label for this shipment type.', 'woo-pakettikauppa'));
+          return;
         }
+        $return_service_id = $return_services_map[$service_id];
 
         $shipment = $this->shipment->create_shipment_from_order($order, $return_service_id, $additional_services);
 
