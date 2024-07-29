@@ -40,7 +40,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
     }
 
     public function get_core() {
-      return \Wc_Pakettikauppa::get_instance();
+      return \Woo_Posti_Shipping::get_instance();
     }
 
     public function load() {
@@ -428,14 +428,16 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
 
     protected function get_form_field_mode() {
       return array(
-        'title'   => $this->get_core()->text->mode(),
-        'type'    => 'select',
-        'default' => 'test',
-        'options' => array(
-          'test'       => $this->get_core()->text->testing_environment(),
-          'production' => $this->get_core()->text->production_environment(),
-        ),
+        'type'    => 'hidden',
+        'default' => 'production',
       );
+    }
+
+    public function generate_hidden_html( $key, $args )
+    {
+      $field_key = $this->get_field_key($key);
+
+      return '<input type="hidden" name="' . esc_html($field_key) . '" value="' . esc_attr($args['default']) . '" />';
     }
 
     private function my_global_form_fields() {

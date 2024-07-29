@@ -615,7 +615,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
         $row_meta = array(
           'service' => sprintf(
             '<a href="%1$s" aria-label="%2$s">%3$s</a>',
-            esc_url('https://www.pakettikauppa.fi'),
+            esc_url('https://www.posti.fi'),
             esc_attr__('Visit Website', 'woo-pakettikauppa'),
             /* translators: %s: Vendor name */
             sprintf(esc_html__('Show site %s', 'woo-pakettikauppa'), $this->core->vendor_name)

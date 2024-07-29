@@ -142,10 +142,6 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
 
     public function get_pickup_point_methods() {
       $methods = array(
-        '2103'  => 'Posti',
-        '90080' => 'Matkahuolto',
-        '80010' => 'DB Schenker',
-        '2711'  => 'Posti International',
       );
 
       return $methods;

@@ -546,5 +546,9 @@ if ( ! class_exists(__NAMESPACE__ . '\Text') ) {
     public function additional_info_param_products_sku() {
       return __('SKU codes of the goods in the shipment', 'woo-pakettikauppa');
     }
+
+    public function activated_core_plugin_error() {
+      return __('WooCommerce Posti can\'t be activated at the same time with WooCommerce Pakettikauppa. Deactivate WooCommerce Pakettikauppa!', 'woo-posti_shipping');
+    }
   }
 }
