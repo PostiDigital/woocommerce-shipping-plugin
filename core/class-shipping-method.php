@@ -544,6 +544,15 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
           'class'   => 'mode_react',
         ),
 
+        'translate_products_in_labels'      => array(
+          'title'   => $this->get_core()->text->translate_products_in_labels_title(),
+          'type'    => 'checkbox',
+          'default' => 'no',
+          'description' => $this->get_core()->text->translate_products_in_labels_desc(),
+          'desc_tip'    => true,
+          'class'   => 'mode_react',
+        ),
+
         'create_shipments_automatically'     => array(
           'title'   => $this->get_core()->text->create_shipments_automatically(),
           'type'    => 'select',
@@ -585,6 +594,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
           'type'    => 'text',
           'default' => '',
           'description' => $this->get_core()->text->post_shipping_label_to_url_desc(),
+          'desc_tip'    => true,
           'class'   => 'mode_react',
         ),
 
