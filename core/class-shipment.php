@@ -1050,6 +1050,8 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
           $country_of_origin = $product->get_meta($this->core->params_prefix . 'country_of_origin', true);
           $quantity = ($selected_product !== false) ? $selected_product['qty'] : $item->get_quantity();
 
+          $translated_product = Product::get_translated_product($product, $order);
+
           $products_info[] = array(
             'name' => $product->get_name(),
             'sku' => $product->get_sku(),
@@ -1060,7 +1062,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
           $content_line->currency          = 'EUR';
           $content_line->country_of_origin = $country_of_origin;
           $content_line->tariff_code       = $tariff_code;
-          $content_line->description       = $product->get_name();
+          $content_line->description       = $translated_product->get_name();
           $content_line->quantity          = $quantity;
 
           if ( ! empty($product->get_weight()) ) {
