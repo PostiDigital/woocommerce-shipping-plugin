@@ -1050,7 +1050,10 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
           $country_of_origin = $product->get_meta($this->core->params_prefix . 'country_of_origin', true);
           $quantity = ($selected_product !== false) ? $selected_product['qty'] : $item->get_quantity();
 
-          $translated_product = Product::get_translated_product($product, $order);
+          $translated_product = $product;
+          if ( isset($this->settings['translate_products_in_labels']) && $this->settings['translate_products_in_labels'] == 'yes' ) {
+            $translated_product = Product::get_translated_product($product, $order);
+          }
 
           $products_info[] = array(
             'name' => $product->get_name(),

@@ -329,7 +329,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Text') ) {
     }
 
     public function translate_products_in_labels_title() {
-      return __('Translate products names', 'woo-pakettikauppa');
+      return __('Translate products names in labels', 'woo-pakettikauppa');
     }
 
     public function translate_products_in_labels_desc() {
