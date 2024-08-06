@@ -1626,12 +1626,6 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
           $service_id = $this->shipment->get_service_id_from_order($order, false);
         }
 
-        $additional_services = array(
-          array(
-            '9902' => array(),
-          ),
-        );
-
         $return_services_map = array(
           //'Product code' => 'Return product code'
           '2101' => '2102',
@@ -1655,6 +1649,11 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
           return;
         }
         $return_service_id = $return_services_map[$service_id];
+
+        $additional_services = array();
+        if ( $return_service_id === '2108' ) {
+          $additional_services[] = array('9902' => array());
+        }
 
         $shipment = $this->shipment->create_shipment_from_order($order, $return_service_id, $additional_services);
 
