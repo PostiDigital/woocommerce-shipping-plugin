@@ -248,6 +248,36 @@ if ( ! class_exists(__NAMESPACE__ . '\Product') ) {
     }
 
     /**
+     * Get another language product if the translations plugin is used
+     * 
+     * @param WC_Product|WC_Product_Variation|integer $product - Product object or product ID
+     * @param string|WC_Order $lang - The language in which the product is to be obtained. If the value is WC_Order object, then the product will be received according to the language of the Order.
+     * @return WC_Product|WC_Product_Variation - The product object of the corresponding language. If the corresponding language product cannot be obtained, the original product is returned.
+     */
+    public static function get_translated_product( $product, $lang_or_order ) {
+      if ( ! is_a($product, 'WC_Product') && ! is_a($product, 'WC_Product_Variation') ) {
+        $product = wc_get_product($product);
+      }
+      $translated_product = null;
+
+      // Plugin: WPML
+      if ( function_exists('icl_object_id') ) {
+        $lang = (is_a($lang_or_order, 'WC_Order')) ? $lang_or_order->get_meta('wpml_language', true) : $lang_or_order;
+        if ( ! $lang ) {
+          return $product;
+        }
+        $translated_product_id = icl_object_id($product->get_id(), 'product', false, $lang);
+        $translated_product = wc_get_product($translated_product_id);
+      }
+
+      // Return translated product or original product
+      if ( is_object($translated_product) && ( is_a($translated_product, 'WC_Product') || is_a($translated_product, 'WC_Product_Variation') ) ) {
+        return $translated_product;
+      }
+      return $product;
+    }
+
+    /**
      * Check if tab is creating or trying use something from existing
      *
      * @param string $tab_id - Tab ID from get_tabs() function

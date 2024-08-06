@@ -328,6 +328,14 @@ if ( ! class_exists(__NAMESPACE__ . '\Text') ) {
       return __('No order status change', 'woo-pakettikauppa');
     }
 
+    public function translate_products_in_labels_title() {
+      return __('Translate products names in labels', 'woo-pakettikauppa');
+    }
+
+    public function translate_products_in_labels_desc() {
+      return __("Use the client's language for product names displayed on labels", 'woo-pakettikauppa');
+    }
+
     public function create_shipments_automatically() {
       return __('Create shipping labels automatically', 'woo-pakettikauppa');
     }
