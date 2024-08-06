@@ -196,7 +196,6 @@ jQuery(function( $ ) {
     }
 
     jQuery.post(ajaxurl, data, function(response) {
-      console.log('Posti', response);
       $(select_field).empty();
       var selected_value = $(select_field).data("selected");
       if (response == "error-zip") {
