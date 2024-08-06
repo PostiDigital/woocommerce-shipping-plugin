@@ -1195,7 +1195,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
               </select>
               <?php else : ?>
                 <?php
-                $settings_url = '/wp-admin/admin.php?page=wc-settings&tab=shipping&section=pakettikauppa_shipping_method';
+                $settings_url = '/wp-admin/admin.php?page=wc-settings&tab=shipping&section=' . $this->core->shippingmethod;
                 /* translators: %s: Settings page url */
                 $message = sprintf(__('Service not working. Please check <a href="%s">settings</a>.', 'woo-pakettikauppa'), $settings_url);
                 ?>
@@ -2046,7 +2046,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
           </select>
           <?php else : ?>
             <?php
-            $settings_url = '/wp-admin/admin.php?page=wc-settings&tab=shipping&section=pakettikauppa_shipping_method';
+            $settings_url = '/wp-admin/admin.php?page=wc-settings&tab=shipping&section=' . $this->core->shippingmethod;
             /* translators: %s: Settings page url */
             $message = sprintf(__('Service not working. Please check <a href="%s">settings</a>.', 'woo-pakettikauppa'), $settings_url);
             ?>
