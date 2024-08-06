@@ -137,6 +137,10 @@ table .pakettikauppa-notice p {
   color: #a00;
 }
 
+.pakettikauppa-msg-notice {
+  color: #ff8300;
+}
+
 .pakettikauppa-metabox-footer {
   margin: 0;
   padding-top: 10px;

@@ -182,6 +182,7 @@ jQuery(function( $ ) {
     var pickup_point_type = $("#"+values.container_id).find('input[name="wc_pakettikauppa_search_filter"]:checked').val();
 
     $("#"+values.container_id).find(".error-pickup-search").hide();
+    $("#"+values.container_id).find(".notice-pickup-search").hide();
 
     $(select_field).empty();
     $(select_field).append($('<option>', { value: "__NULL__", text : "..." }));
@@ -195,11 +196,17 @@ jQuery(function( $ ) {
     }
 
     jQuery.post(ajaxurl, data, function(response) {
+      console.log('Posti', response);
       $(select_field).empty();
       var selected_value = $(select_field).data("selected");
       if (response == "error-zip") {
         $("#"+values.container_id).find(".error-pickup-search").show();
         console.log("Search error: Postcode is required.");
+        var option = $('<option>', { text : "---" });
+        $(select_field).append(option);
+        pakettikauppa_change_selected_pickup_point(select_field);
+      } else if (response == "[]") {
+        $("#"+values.container_id).find(".notice-pickup-search").show();
         var option = $('<option>', { text : "---" });
         $(select_field).append(option);
         pakettikauppa_change_selected_pickup_point(select_field);
