@@ -1195,7 +1195,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
               </select>
               <?php else : ?>
                 <?php
-                $settings_url = '/wp-admin/admin.php?page=wc-settings&tab=shipping&section=pakettikauppa_shipping_method';
+                $settings_url = '/wp-admin/admin.php?page=wc-settings&tab=shipping&section=' . $this->core->shippingmethod;
                 /* translators: %s: Settings page url */
                 $message = sprintf(__('Service not working. Please check <a href="%s">settings</a>.', 'woo-pakettikauppa'), $settings_url);
                 ?>
@@ -1286,6 +1286,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
                        <?php } ?>
                       <button type="button" value="search" class="button button-small btn-search" onclick="pakettikauppa_pickup_points_by_custom_address(btn_values_<?php echo $method_code; ?>);"><?php echo __('Search', 'woo-pakettikauppa'); ?></button>
                       <span class="pakettikauppa-msg-error error-pickup-search" style="display:none;"><?php echo __('No pickup points were found', 'woo-pakettikauppa'); ?></span>
+                      <span class="pakettikauppa-msg-notice notice-pickup-search" style="display:none;"><?php echo __('Pickup point selection cleared', 'woo-pakettikauppa'); ?></span>
                     </div>
                     <div class="pakettikauppa-pickup-select-block">
                       <h4><?php echo __('Select pickup point', 'woo-pakettikauppa'); ?></h4>
@@ -1358,7 +1359,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
     public function get_pickup_point_by_custom_address() {
       $method_code = $_POST['method'];
       $custom_address = $_POST['address'];
-      $type = $_POST['type'];
+      $type = (isset($_POST['type'])) ? $_POST['type'] : null;
       $pickup_points = $this->get_pickup_points_for_method($method_code, null, null, null, $custom_address, $type);
       if ( $pickup_points == 'error-zip' ) {
         echo $pickup_points;
@@ -2045,7 +2046,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
           </select>
           <?php else : ?>
             <?php
-            $settings_url = '/wp-admin/admin.php?page=wc-settings&tab=shipping&section=pakettikauppa_shipping_method';
+            $settings_url = '/wp-admin/admin.php?page=wc-settings&tab=shipping&section=' . $this->core->shippingmethod;
             /* translators: %s: Settings page url */
             $message = sprintf(__('Service not working. Please check <a href="%s">settings</a>.', 'woo-pakettikauppa'), $settings_url);
             ?>
