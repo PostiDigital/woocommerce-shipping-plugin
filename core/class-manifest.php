@@ -229,7 +229,8 @@ if ( ! class_exists(__NAMESPACE__ . '\Manifest') ) {
             $success = array();
             $allowed_orders = array();
             foreach ( $order_ids as $order_id ) {
-                $labels = get_post_meta($order_id, '_' . $this->core->prefix . '_labels', true);
+                $order = wc_get_order($order_id);
+                $labels = $order->get_meta('_' . $this->core->prefix . '_labels', true);
                 if ( ! empty($labels) ) {
                     $allowed_orders[] = $order_id;
                     /* translators: %s: order_number */
@@ -253,7 +254,9 @@ if ( ! class_exists(__NAMESPACE__ . '\Manifest') ) {
         }
 
         private function set_order_manifest( $order_id, $manifest_id ) {
-            update_post_meta($order_id, $this->core->prefix . '_manifest', $manifest_id);
+            $order = wc_get_order($order_id);
+            $order->update_meta_data($this->core->prefix . '_manifest', $manifest_id);
+            $order->save();
         }
 
         public function set_pk_manifest_columns( $columns ) {
@@ -333,8 +336,9 @@ if ( ! class_exists(__NAMESPACE__ . '\Manifest') ) {
         public function generate_orders_links( $current_orders ) {
             $html = '';
             foreach ( $current_orders as $order_id ) {
+                $order = wc_get_order($order_id);
                 $html .= '<a href="' . admin_url('post.php?post=' . absint($order_id) . '&action=edit') . '" >#' . $order_id . '&nbsp;';
-                $labels = get_post_meta($order_id, '_' . $this->core->prefix . '_labels', true);
+                $labels = $order->get_meta('_' . $this->core->prefix . '_labels', true);
                 if ( ! empty($labels) ) {
                     foreach ( $labels as $label ) {
                         $html .= $label['tracking_code'] . ' ' ?? '';
@@ -411,7 +415,8 @@ if ( ! class_exists(__NAMESPACE__ . '\Manifest') ) {
 
             $shipments = $xml->addChild('Shipments');
             foreach ( $order_ids as $order_id ) {
-                $data = get_post_meta($order_id, '_' . $this->core->prefix . '_labels', true);
+                $order = wc_get_order($order_id);
+                $data = $order->get_meta('_' . $this->core->prefix . '_labels', true);
                 if ( empty($data) ) {
                     continue;
                 }
@@ -464,6 +469,9 @@ if ( ! class_exists(__NAMESPACE__ . '\Manifest') ) {
             }
             $transient_name = $this->core->prefix . '_access_token';
             $token = get_transient($transient_name);
+            if ( is_object($token) && property_exists($token, 'access_token') ) {
+                $token = $token->access_token;
+            }
             if ( ! $token ) {
                 throw new \Exception(__('Token not found. Please check credentials', 'woo-pakettikauppa'));
             }
@@ -542,7 +550,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Manifest') ) {
               return;
             }
 
-            $manifest_id = get_post_meta($post->ID, $this->core->prefix . '_manifest', true);
+            $manifest_id = $order->get_meta($this->core->prefix . '_manifest', true);
             if ( ! $manifest_id ) {
                 echo '<h4>' . esc_attr__('No manifest assigned', 'woo-pakettikauppa') . '</h4>';
                 return;
@@ -565,7 +573,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Manifest') ) {
             foreach ( $current_orders as $order_id ) {
                 $_order = wc_get_order($order_id);
                 if ( $_order !== null ) {
-                    $data = get_post_meta($order_id, '_' . $this->core->prefix . '_labels', true);
+                    $data = $_order->get_meta('_' . $this->core->prefix . '_labels', true);
                     ?>
                     <li>
                         <a href = "<?php echo $_order->get_edit_order_url(); ?>" target = "_blank">#<?php echo $_order->get_id(); ?></a>

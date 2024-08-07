@@ -16,7 +16,7 @@ wp plugin install --activate https://github.com/PostiDigital/woocommerce-shippin
 composer require posti/woocommerce-shipping-plugin
 ```
 
-The plugin requires WooCommerce >=3.4 to be installed, with shipping zones configured and this plugin activated and settings set.
+The plugin requires WooCommerce >=4.4 to be installed, with shipping zones configured and this plugin activated and settings set.
 
 Naturally the store owner also needs to have a contract with Posti.
 

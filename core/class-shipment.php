@@ -142,10 +142,6 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
 
     public function get_pickup_point_methods() {
       $methods = array(
-        '2103'  => 'Posti',
-        '90080' => 'Matkahuolto',
-        '80010' => 'DB Schenker',
-        '2711'  => 'Posti International',
       );
 
       return $methods;
@@ -423,7 +419,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
       $dl_link       = sprintf('<a href="%1$s" target="_blank">%2$s</a>', $document_url, esc_attr__('Print document', 'woo-pakettikauppa'));
       $tracking_link = sprintf('<a href="%1$s" target="_blank">%2$s</a>', $tracking_url, __('Track', 'woo-pakettikauppa'));
 
-      $service_id = get_post_meta($order->get_id(), '_' . $this->core->prefix . '_service_id', true);
+      $service_id = $order->get_meta('_' . $this->core->prefix . '_service_id', true);
 
       $order->add_order_note(
         sprintf(
@@ -467,18 +463,19 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
      * @return array Previously used a single shipping label data converted in to new structure
      */
     public function get_old_structure_label( $post_id ) {
-      $tracking_code = get_post_meta($post_id, '_' . $this->core->prefix . '_tracking_code', true);
+      $order = wc_get_order($post_id);
+      $tracking_code = $order->get_meta('_' . $this->core->prefix . '_tracking_code', true);
 
       if ( empty($tracking_code) ) {
         return false;
       }
 
-      $label_code = get_post_meta($post_id, '_' . $this->core->prefix . '_label_code', true);
-      $tracking_url = get_post_meta($post_id, '_' . $this->core->prefix . '_tracking_url', true);
-      $service_id = get_post_meta($post_id, '_' . $this->core->prefix . '_custom_service_id', true);
-      $pickup_id = get_post_meta($post_id, '_' . str_replace('wc_', '', $this->core->prefix) . '_pickup_point_id', true);
-      $pickup_name = get_post_meta($post_id, '_' . str_replace('wc_', '', $this->core->prefix) . '_pickup_point', true);
-      $ship_status = get_post_meta($post_id, '_' . $this->core->prefix . '_shipment_status', true);
+      $label_code = $order->get_meta('_' . $this->core->prefix . '_label_code', true);
+      $tracking_url = $order->get_meta('_' . $this->core->prefix . '_tracking_url', true);
+      $service_id = $order->get_meta('_' . $this->core->prefix . '_custom_service_id', true);
+      $pickup_id = $order->get_meta('_' . str_replace('wc_', '', $this->core->prefix) . '_pickup_point_id', true);
+      $pickup_name = $order->get_meta('_' . str_replace('wc_', '', $this->core->prefix) . '_pickup_point', true);
+      $ship_status = $order->get_meta('_' . $this->core->prefix . '_shipment_status', true);
 
       $order = new \WC_Order($post_id);
       $additional_services = $this->get_additional_services_from_order($order);
@@ -528,13 +525,15 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
      * @param int $post_id The post/order id
      */
     public function delete_old_structure_label( $post_id ) {
-      $old_label = get_post_meta($post_id, '_' . $this->core->prefix . '_tracking_code', true);
+      $order = wc_get_order($post_id);
+      $old_label = $order->get_meta('_' . $this->core->prefix . '_tracking_code', true);
       if ( ! empty($old_label) ) {
-        delete_post_meta($post_id, '_' . $this->core->prefix . '_tracking_code');
-        delete_post_meta($post_id, '_' . $this->core->prefix . '_tracking_url');
-        delete_post_meta($post_id, '_' . $this->core->prefix . '_label_code');
-        delete_post_meta($post_id, '_' . $this->core->prefix . '_creating_shipment');
-        delete_post_meta($post_id, '_' . $this->core->prefix . '_custom_service_id');
+        $order->delete_meta_data('_' . $this->core->prefix . '_tracking_code');
+        $order->delete_meta_data('_' . $this->core->prefix . '_tracking_url');
+        $order->delete_meta_data('_' . $this->core->prefix . '_label_code');
+        $order->delete_meta_data('_' . $this->core->prefix . '_creating_shipment');
+        $order->delete_meta_data('_' . $this->core->prefix . '_custom_service_id');
+        $order->save();
       }
     }
 
@@ -548,7 +547,8 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
      */
     public function get_labels( $post_id ) {
       $old_label = $this->get_old_structure_label($post_id);
-      $labels = get_post_meta($post_id, '_' . $this->core->prefix . '_labels', true);
+      $order = wc_get_order($post_id);
+      $labels = $order->get_meta('_' . $this->core->prefix . '_labels', true);
 
       if ( empty($labels) ) {
         $labels = array();
@@ -609,6 +609,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
       );
 
       if ( ! empty($label_values['tracking_code']) ) {
+        $order = wc_get_order($post_id);
         $all_labels = $this->get_labels($post_id);
         $insert = true;
         foreach ( $all_labels as $key => $label ) {
@@ -628,7 +629,8 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
         if ( $insert ) {
           array_push($all_labels, $label_values);
         }
-        update_post_meta($post_id, '_' . $this->core->prefix . '_labels', $all_labels);
+        $order->update_meta_data('_' . $this->core->prefix . '_labels', $all_labels);
+        $order->save();
         $this->delete_old_structure_label($post_id);
       }
     }
@@ -685,7 +687,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
         return null;
       }
 
-      $service_id = get_post_meta($order->get_id(), '_' . $this->core->prefix . '_service_id', true);
+      $service_id = $order->get_meta('_' . $this->core->prefix . '_service_id', true);
 
       if ( empty($service_id) ) {
         $shipping_methods = $order->get_shipping_methods();
@@ -708,7 +710,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
       }
 
       if ( empty($service_id) ) {
-        $service_id = get_post_meta($order->get_id(), '_' . str_replace('wc_', '', $this->core->prefix) . '_pickup_point_provider_id', true);
+        $service_id = $order->get_meta('_' . str_replace('wc_', '', $this->core->prefix) . '_pickup_point_provider_id', true);
       }
 
       if ( empty($service_id) ) {
@@ -746,7 +748,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
 
       if ( $service_id === '__PICKUPPOINTS__' ) {
           // This might be a bug or a version update problem
-          $pickup_point = get_post_meta($order->get_id(), '_' . str_replace('wc_', '', $this->core->prefix) . '_pickup_point', true);
+          $pickup_point = $order->get_meta('_' . str_replace('wc_', '', $this->core->prefix) . '_pickup_point', true);
 
           $provider = explode(':', $pickup_point, 2);
 
@@ -922,9 +924,8 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
 
       $shipment->setShippingMethod($service_id);
 
-      $id = $order->get_id();
-      $shipping_phone = get_post_meta($id, '_shipping_phone', true);
-      $shipping_email = get_post_meta($id, '_shipping_email', true);
+      $shipping_phone = $order->get_shipping_phone();
+      $shipping_email = $order->get_meta('_shipping_email', true);
 
       $sender = new Sender();
       $sender->setName1($this->settings['sender_name']);
@@ -978,8 +979,20 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
         $shipment->addAdditionalService($additional_service);
       }
 
+      $total_selected_products = 0;
+      foreach ( $selected_products as $prod ) {
+        if ( ! isset($prod['qty']) ) {
+          continue;
+        }
+        $total_selected_products += (int) $prod['qty'];
+      }
+
       $order_total_weight = self::order_weight($order, $selected_products);
       $order_total_volume = self::order_volume($order, $selected_products);
+
+      if ( ! empty($extra_params['ignore_product_weight']) && $total_selected_products > 0 ) {
+        $order_total_weight = $total_selected_products;
+      }
 
       for ( $i = 0; $i < $parcel_total_count; $i++ ) {
         $parcel = new Parcel();
@@ -1033,6 +1046,11 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
           $country_of_origin = $product->get_meta($this->core->params_prefix . 'country_of_origin', true);
           $quantity = ($selected_product !== false) ? $selected_product['qty'] : $item->get_quantity();
 
+          $translated_product = $product;
+          if ( isset($this->settings['translate_products_in_labels']) && $this->settings['translate_products_in_labels'] == 'yes' ) {
+            $translated_product = Product::get_translated_product($product, $order);
+          }
+
           $products_info[] = array(
             'name' => $product->get_name(),
             'sku' => $product->get_sku(),
@@ -1043,11 +1061,14 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
           $content_line->currency          = 'EUR';
           $content_line->country_of_origin = $country_of_origin;
           $content_line->tariff_code       = $tariff_code;
-          $content_line->description       = $product->get_name();
+          $content_line->description       = $translated_product->get_name();
           $content_line->quantity          = $quantity;
 
           if ( ! empty($product->get_weight()) ) {
             $content_line->netweight = wc_get_weight($product->get_weight() * $quantity, 'g');
+          }
+          if ( ! empty($extra_params['ignore_product_weight']) ) {
+            $content_line->netweight = wc_get_weight(1 * $quantity, 'g', 'kg');
           }
 
           $content_line->value = round($item_data['total'] + $item_data['total_tax'], 2);

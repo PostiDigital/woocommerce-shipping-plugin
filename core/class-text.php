@@ -308,6 +308,10 @@ if ( ! class_exists(__NAMESPACE__ . '\Text') ) {
       );
     }
 
+    public function ignore_product_weight() {
+      return __('Ignore product weight information', 'woo-pakettikauppa');
+    }
+
     public function add_tracking_link_to_email() {
       return __('Add tracking link to the order completed email', 'woo-pakettikauppa');
     }
@@ -322,6 +326,14 @@ if ( ! class_exists(__NAMESPACE__ . '\Text') ) {
 
     public function no_order_status_change() {
       return __('No order status change', 'woo-pakettikauppa');
+    }
+
+    public function translate_products_in_labels_title() {
+      return __('Translate products names in labels', 'woo-pakettikauppa');
+    }
+
+    public function translate_products_in_labels_desc() {
+      return __("Use the client's language for product names displayed on labels", 'woo-pakettikauppa');
     }
 
     public function create_shipments_automatically() {
@@ -541,6 +553,10 @@ if ( ! class_exists(__NAMESPACE__ . '\Text') ) {
 
     public function additional_info_param_products_sku() {
       return __('SKU codes of the goods in the shipment', 'woo-pakettikauppa');
+    }
+
+    public function activated_core_plugin_error() {
+      return __('WooCommerce Posti can\'t be activated at the same time with WooCommerce Pakettikauppa. Deactivate WooCommerce Pakettikauppa!', 'woo-posti_shipping');
     }
   }
 }

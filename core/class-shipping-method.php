@@ -40,7 +40,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
     }
 
     public function get_core() {
-      return \Wc_Pakettikauppa::get_instance();
+      return \Woo_Posti_Shipping::get_instance();
     }
 
     public function load() {
@@ -428,14 +428,16 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
 
     protected function get_form_field_mode() {
       return array(
-        'title'   => $this->get_core()->text->mode(),
-        'type'    => 'select',
-        'default' => 'test',
-        'options' => array(
-          'test'       => $this->get_core()->text->testing_environment(),
-          'production' => $this->get_core()->text->production_environment(),
-        ),
+        'type'    => 'hidden',
+        'default' => 'production',
       );
+    }
+
+    public function generate_hidden_html( $key, $args )
+    {
+      $field_key = $this->get_field_key($key);
+
+      return '<input type="hidden" name="' . esc_html($field_key) . '" value="' . esc_attr($args['default']) . '" />';
     }
 
     private function my_global_form_fields() {
@@ -525,6 +527,13 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
           'class'   => 'mode_react',
         ),
 
+        'ignore_product_weight'      => array(
+          'title'   => $this->get_core()->text->ignore_product_weight(),
+          'type'    => 'checkbox',
+          'default' => 'no',
+          'class'   => 'mode_react',
+        ),
+
         'change_order_status_to'      => array(
           'title'   => $this->get_core()->text->change_order_status_to(),
           'type'    => 'select',
@@ -534,6 +543,15 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
             'completed'  => __('Completed', 'woocommerce'),
             'processing' => __('Processing', 'woocommerce'),
           ),
+          'class'   => 'mode_react',
+        ),
+
+        'translate_products_in_labels'      => array(
+          'title'   => $this->get_core()->text->translate_products_in_labels_title(),
+          'type'    => 'checkbox',
+          'default' => 'no',
+          'description' => $this->get_core()->text->translate_products_in_labels_desc(),
+          'desc_tip'    => true,
           'class'   => 'mode_react',
         ),
 
@@ -578,6 +596,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
           'type'    => 'text',
           'default' => '',
           'description' => $this->get_core()->text->post_shipping_label_to_url_desc(),
+          'desc_tip'    => true,
           'class'   => 'mode_react',
         ),
 

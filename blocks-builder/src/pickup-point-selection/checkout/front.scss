@@ -1,0 +1,14 @@
+.wc-block-components-form .pakettikauppa-block.pakettikauppa-shipping-pickup-point select {
+    border: 2px solid transparent;
+}
+
+.wc-block-components-form .pakettikauppa-block.pakettikauppa-shipping-pickup-point.error select {
+    border-color: #cc1818;
+    background-color: #f7cfcf;
+}
+
+.wc-block-components-form .pakettikauppa-block .pakettikauppa-custom-text {
+    display: block;
+    margin-top: 5px;
+    font-size: .9em;
+}

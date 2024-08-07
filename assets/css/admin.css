@@ -137,6 +137,10 @@ table .pakettikauppa-notice p {
   color: #a00;
 }
 
+.pakettikauppa-msg-notice {
+  color: #ff8300;
+}
+
 .pakettikauppa-metabox-footer {
   margin: 0;
   padding-top: 10px;
@@ -292,6 +296,10 @@ table .pakettikauppa-notice p {
 }
 .prod_select_dropdown .show {
   display: block
+}
+
+.pakettikauppa-metabox-additional-params {
+  margin-bottom: 10px;
 }
 
 #order_data .order_data_column .edit_address.pakettikauppa {
