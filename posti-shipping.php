@@ -7,7 +7,7 @@
  * Author: Posti
  * Author URI: https://www.posti.fi/
  * Text Domain: woo-posti_shipping
- * Domain Path: /languages/
+ * Domain Path: /core/languages/
  * License: GPL v3 or later
  *
  * Requires at least: 5.0
