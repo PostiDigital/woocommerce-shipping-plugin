@@ -51,6 +51,9 @@ Yes! If you encounter any issues related to this plugin, please report at https:
 4. Settings screen in admin
 
 == Changelog ==
+= 3.10.1 =
+* Quick fix for Legacy order storage backwards compatibility
+
 = 3.10.0 =
 * New feature: WooCommerce block editor support
 * Return product mappings fixed
