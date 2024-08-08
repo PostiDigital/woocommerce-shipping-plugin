@@ -57,7 +57,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Wc_Hpos') ) {
     }
 
     public static function get_order_from_object( $post_or_order_object ) {
-      return ($post_or_order_object instanceof WP_Post) ? wc_get_order($post_or_order_object->ID) : $post_or_order_object;
+      return ($post_or_order_object instanceof \WP_Post) ? wc_get_order($post_or_order_object->ID) : $post_or_order_object;
     }
   }
 }
