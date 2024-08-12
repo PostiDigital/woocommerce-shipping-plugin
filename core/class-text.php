@@ -558,5 +558,13 @@ if ( ! class_exists(__NAMESPACE__ . '\Text') ) {
     public function activated_core_plugin_error() {
       return __('WooCommerce Posti can\'t be activated at the same time with WooCommerce Pakettikauppa. Deactivate WooCommerce Pakettikauppa!', 'woo-posti_shipping');
     }
+
+    public function created_shipment() {
+      return __('Created shipment', 'woo-pakettikauppa');
+    }
+
+    public function created_return_label() {
+      return __('Created return label', 'woo-pakettikauppa');
+    }
   }
 }

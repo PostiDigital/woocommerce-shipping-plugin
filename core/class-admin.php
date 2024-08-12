@@ -1695,12 +1695,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
             $order->save();
 
             $order->add_order_note(
-              sprintf(
-                /* translators: 1: Shipping service title 2: Shipment tracking code */
-                __('Created %1$s return label<br>%2$s.', 'woo-pakettikauppa'),
-                $this->core->vendor_name,
-                $tracking_code
-              )
+                '<b>' . $this->core->vendor_name . ':</b> ' . $this->core->text->created_return_label() . '.<br/>' . $tracking_code
             );
           }
         }
