@@ -9,7 +9,7 @@ msgstr ""
 "Language: fi\n"
 "Language-Team: Finnish\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"PO-Revision-Date: 2024-08-06 10:28+0000\n"
+"PO-Revision-Date: 2024-08-13 14:22+0000\n"
 "X-Generator: Loco https://localise.biz/\n"
 "Last-Translator: \n"
 "MIME-Version: 1.0\n"
@@ -126,8 +126,8 @@ msgid "An error occurred. Please try again later."
 msgstr "Toimenpide epäonnistui! Kokeile uudelleen."
 
 #. %s: Error message
-#: core/class-admin.php:577 core/class-admin.php:1714 core/class-admin.php:1754
-#: core/class-admin.php:1796 core/class-admin.php:1830
+#: core/class-admin.php:577 core/class-admin.php:1708 core/class-admin.php:1748
+#: core/class-admin.php:1790 core/class-admin.php:1824
 #: core/class-shipment.php:326
 #, php-format
 msgid "An error occurred: %s"
@@ -205,7 +205,7 @@ msgstr ""
 "Ei saada yhteyttä palvelimeen - tarkista API-tunnukset, palvelimen vikaloki "
 "ja palomuuriasetukset."
 
-#: core/class-admin.php:1862
+#: core/class-admin.php:1856
 msgid "Cannot find shipment with given shipment number."
 msgstr "Lähetystä ei löytynyt annetulla seurantanumerolla."
 
@@ -280,7 +280,7 @@ msgid "Country of origin"
 msgstr "Tavaran alkuperämaa"
 
 #: core/class-manifest.php:71 core/class-admin.php:1352
-#: core/class-admin.php:1989
+#: core/class-admin.php:1983
 msgid "Create"
 msgstr "Luo pakettikortti"
 
@@ -312,21 +312,16 @@ msgstr "Luo ja hae pakettikortti"
 msgid "Create shipping labels automatically"
 msgstr "Luo pakettikortit automaattisesti"
 
-#. 1: Shipping service title 2: Shipment tracking code
-#: core/class-admin.php:1701
-#, php-format
-msgid "Created %1$s return label<br>%2$s."
+#: core/class-text.php:567
+msgid "Created return label"
 msgstr ""
 
-#. 1: Shipping service title 2: Shipment tracking code 3: Shipping label URL 4: Shipment tracking URL
-#: core/class-shipment.php:427
-#, php-format
-#| msgid "Created Pakettikauppa %1$s shipment.<br>%2$s<br>%1$s - %3$s<br>%4$s"
-msgid "Created %1$s shipment.<br>%2$s<br>%1$s - %3$s<br>%4$s"
-msgstr "Luotiin Pakettikauppa %1$s-lähetys.<br>%2$s<br>%1$s - %3$s<br>%4$s"
+#: core/class-text.php:563
+msgid "Created shipment"
+msgstr "Luotiin lähetys"
 
 #. %1$s: Vendor name, %2$s: Error message
-#: core/class-admin.php:1721
+#: core/class-admin.php:1715
 #, php-format
 msgid "Creating %1$s return label failed! Errors: %2$s"
 msgstr ""
@@ -343,7 +338,7 @@ msgstr "Curl laajennus"
 msgid "Curl not installed"
 msgstr "Curlia ei ole asennettu"
 
-#: core/class-admin.php:1965
+#: core/class-admin.php:1959
 msgid "Current shipping method"
 msgstr ""
 
@@ -376,25 +371,25 @@ msgid "Delete"
 msgstr "Poista"
 
 #. %%s: tracking code
-#: core/class-admin.php:1786
+#: core/class-admin.php:1780
 #, php-format
 msgid "Deleted %1$s return label %2$s."
 msgstr "Poistettiin %1$s palautuskortti %2$s."
 
 #. %1$s: Vendor name, %2$s: tracking code
-#: core/class-admin.php:1747
+#: core/class-admin.php:1741
 #, php-format
 msgid "Deleted %1$s shipping label %2$s."
 msgstr "Poistettiin %1$s pakettikortti %2$s."
 
 #. %1$s: Vendor name, %2$s: Error message
-#: core/class-admin.php:1803
+#: core/class-admin.php:1797
 #, php-format
 msgid "Deleting %1$s return label failed! Errors: %2$s"
 msgstr "Palautuskortin %1$s  poistaminen epäonnistui! Virheviesti: %2$s"
 
 #. %1$s: Vendor name, %2$s: Error message
-#: core/class-admin.php:1761
+#: core/class-admin.php:1755
 #, php-format
 msgid "Deleting %1$s shipment failed! Errors: %2$s"
 msgstr "Pakettikortin %1$s poistaminen epäonnistui! Virheviesti: %2$s"
@@ -423,11 +418,11 @@ msgstr "Sähköpostiosoite"
 msgid "Empty postcode. Please check your address information."
 msgstr "Ei postinumeroa. Ole hyvä ja tarkista osoitetietosi."
 
-#: core/class-admin.php:1856 core/class-shipping-method.php:116
+#: core/class-admin.php:1850 core/class-shipping-method.php:116
 msgid "Error"
 msgstr "Virhe"
 
-#: core/class-shipment.php:871
+#: core/class-shipment.php:864
 msgid "error"
 msgstr "virhe"
 
@@ -462,7 +457,7 @@ msgstr "Lähetyksen luominen epäonnistui"
 msgid "Failed to create shipment. Errors: %s"
 msgstr "Lähetyksen luominen epäonnistui. Errors: %s"
 
-#: core/class-admin.php:1855
+#: core/class-admin.php:1849
 msgid "Failed to get shipment label."
 msgstr "Pakettikortin hakeminen epäonnistui"
 
@@ -603,7 +598,7 @@ msgstr "Lähetystä ei ole toimitettu – luovutusyritys on tehty"
 msgid "Label code"
 msgstr "Asiointikoodi"
 
-#: core/class-shipment.php:444
+#: core/class-shipment.php:437
 msgid "Label posted to URL successfully."
 msgstr "Pakettikortti lähetetty URLiin onnistuneesti."
 
@@ -665,7 +660,7 @@ msgstr "Tila"
 msgid "Names of the goods in the shipment"
 msgstr "Lähetyksessä olevat tuotteet"
 
-#: core/class-admin.php:1966
+#: core/class-admin.php:1960
 msgid "New shipping method"
 msgstr ""
 
@@ -693,7 +688,7 @@ msgstr "Noutopisteitä ei löytynyt"
 msgid "No pickup points were found. Check the address."
 msgstr "Noutopisteitä ei löytynyt. Tarkista osoite."
 
-#: core/class-text.php:51 core/class-admin.php:1185 core/class-admin.php:2037
+#: core/class-text.php:51 core/class-admin.php:1185 core/class-admin.php:2031
 msgid "No shipping"
 msgstr "Ei toimitusta"
 
@@ -749,7 +744,7 @@ msgid_plural "Open <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: core/class-admin.php:1964
+#: core/class-admin.php:1958
 msgid "Order"
 msgstr ""
 
@@ -801,7 +796,7 @@ msgstr "Lähetys on lähdössä ulkomaille"
 msgid "Outdoor lockers"
 msgstr "Ulkoautomaatit"
 
-#: core/class-admin.php:1959
+#: core/class-admin.php:1953
 msgid "Pakettikaupa create custom shipments"
 msgstr ""
 
@@ -842,7 +837,7 @@ msgid "Pickup Orders"
 msgstr ""
 
 #. 1: Name 2: Shipment tracking code
-#: core/class-admin.php:875 core/class-admin.php:2089
+#: core/class-admin.php:875 core/class-admin.php:2083
 #: core/class-wc-blocks-integration.php:106
 #: templates/pakettikauppa/checkout-pickup.php:14
 #: templates/pakettikauppa/checkout-pickup.php:15
@@ -878,7 +873,7 @@ msgstr ""
 msgid "Place pickup order"
 msgstr ""
 
-#: core/class-admin.php:1037 core/class-admin.php:2017
+#: core/class-admin.php:1037 core/class-admin.php:2011
 #| msgid ""
 #| "Please add shipping info to the order to manage Pakettikauppa shipments."
 msgid "Please add shipping info to the order to manage shipments."
@@ -949,7 +944,7 @@ msgstr "Posti Shipping diagnoosi"
 msgid "Posti shipping service for WooCommerce."
 msgstr ""
 
-#: core/class-shipment.php:440
+#: core/class-shipment.php:433
 msgid "Posting label to URL failed!"
 msgstr "Pakettikortin lähettäminen URLiin epäonnistui!"
 
@@ -1039,7 +1034,7 @@ msgstr ""
 msgid "Select one shipping method"
 msgstr "Valitse yksi toimitustapa"
 
-#: core/class-admin.php:1292 core/class-admin.php:2146
+#: core/class-admin.php:1292 core/class-admin.php:2140
 msgid "Select pickup point"
 msgstr "Valitse noutopiste"
 
@@ -1090,7 +1085,7 @@ msgid "Sender postal code"
 msgstr "Lähettäjän postinumero"
 
 #. %s: Settings page url
-#: core/class-admin.php:1200 core/class-admin.php:2052
+#: core/class-admin.php:1200 core/class-admin.php:2046
 #, php-format
 msgid "Service not working. Please check <a href=\"%s\">settings</a>."
 msgstr "Palvelu ei toimi. Tarkistathan asetukset."
@@ -1112,7 +1107,7 @@ msgid "Shipment ready"
 msgstr ""
 
 #. @codingStandardsIgnoreLine
-#: core/class-admin.php:1843
+#: core/class-admin.php:1837
 msgid "Shipment tracking code is not defined."
 msgstr "Lähetystä ei löytynyt annetulla seurantanumerolla."
 
@@ -1295,7 +1290,7 @@ msgid "Tracking"
 msgstr "Lähetysseuranta"
 
 #. %s: Error message
-#: core/class-shipment.php:1122
+#: core/class-shipment.php:1115
 #, php-format
 msgid "Tracking code creation failed: %s"
 msgstr "Seurantakoodin luonti epäonnistui: %s"
@@ -1304,7 +1299,7 @@ msgstr "Seurantakoodin luonti epäonnistui: %s"
 msgid "Translate products names in labels"
 msgstr "Käytä tuotenimien käännöksiä pakettikorteilla"
 
-#: core/class-admin.php:1655
+#: core/class-admin.php:1649
 msgid "Unable to create return label for this shipment type."
 msgstr "Palautuslähetystä ei voitu luoda automaattisesti tälle lähetystavalle."
 
@@ -1312,7 +1307,7 @@ msgstr "Palautuslähetystä ei voitu luoda automaattisesti tälle lähetystavall
 msgid "Unknown"
 msgstr "Tuntematon"
 
-#: core/class-shipment.php:870
+#: core/class-shipment.php:863
 msgid "Unknown error"
 msgstr "Tuntematon virhe"
 
