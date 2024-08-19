@@ -422,14 +422,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
       $service_id = $order->get_meta('_' . $this->core->prefix . '_service_id', true);
 
       $order->add_order_note(
-        sprintf(
-          /* translators: 1: Shipping service title 2: Shipment tracking code 3: Shipping label URL 4: Shipment tracking URL */
-          __('Created %1$s shipment.<br>%2$s<br>%1$s - %3$s<br>%4$s', 'woo-pakettikauppa'),
-          $this->core->vendor_name . ' ' . $this->service_title($service_id),
-          $tracking_code,
-          $dl_link,
-          $tracking_link
-        )
+        '<b>' . $this->core->vendor_name . ':</b> ' . $this->core->text->created_shipment() . '.<br/>' . $tracking_code . '<br/>' . $dl_link . ' - ' . $tracking_link
       );
 
       $settings = $this->get_settings();
