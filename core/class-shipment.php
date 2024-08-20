@@ -1637,6 +1637,17 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
     }
 
     /**
+     * Check if service is one from services, for which by default do not load the selection of pickup point, but allow receiving pickup points when using custom search
+     * 
+     * @param $service_id
+     * 
+     * @return bool
+     */
+    public function is_optional_pickup_point_service( $service_id ) {
+      return (in_array($service_id, array('2101', '2102', '2711')));
+    }
+
+    /**
      * Returns global settings
      * @return array
      */

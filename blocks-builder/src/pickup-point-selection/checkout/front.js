@@ -10,7 +10,7 @@ import { SelectControl, RadioControl, TextareaControl, Flex, FlexItem, BaseContr
  **/
 import { txt } from '../global/text';
 import { getActiveShippingRates, getDestination } from '../global/wc';
-import { getPluginStaticData, getCurrentMethod, isMethodHavePickups, getPickupPoints, getCustomPickupPoints } from '../global/plugin';
+import { getPluginStaticData, getCurrentMethod, isMethodHavePickups, isMethodPickupRequired, getPickupPoints, getCustomPickupPoints } from '../global/plugin';
 import { useDebounce, isValidAddress } from '../global/utils';
 
 /**
@@ -202,8 +202,12 @@ export const Block = ({ checkoutExtensionData, extension }) => {
     useEffect(() => {
         let newPickupOptions = [];
         if (currentData.pickup_points_list_type === 'menu') {
+            let label_text = '- ' + txt.pickup_select_field_default + ' -';
+            if ( ! isMethodPickupRequired(currentData.rate.instance) ) {
+                label_text = '- ' + txt.pickup_select_field_optional + ' -';
+            }
             newPickupOptions.push({
-                label: '- ' + txt.pickup_select_field_default + ' -',
+                label: label_text,
                 value: ''
             });
         }
@@ -233,7 +237,7 @@ export const Block = ({ checkoutExtensionData, extension }) => {
             setContainerErrorClass('');
         }
 
-        if ( ! currentData.rate?.instance || ! isMethodHavePickups(currentData.rate.instance) ) {
+        if ( ! currentData.rate?.instance || ! isMethodHavePickups(currentData.rate.instance) || ! isMethodPickupRequired(currentData.rate.instance) ) {
             return;
         }
 
