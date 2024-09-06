@@ -417,7 +417,9 @@ if ( ! class_exists(__NAMESPACE__ . '\Frontend') ) {
           if ( isset($settings['pickup_point_list_type']) && $settings['pickup_point_list_type'] === 'list' ) {
             $list_type = 'radio';
 
-            array_splice($options_array, 0, 1);
+            if ( ! $this->shipment->is_optional_pickup_point_service(implode(',', $shipping_method_providers)) ) {
+              array_splice($options_array, 0, 1);
+            }
           }
 
           $flatten = function ( $point ) {
