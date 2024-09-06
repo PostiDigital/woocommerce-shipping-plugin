@@ -201,11 +201,14 @@ export const Block = ({ checkoutExtensionData, extension }) => {
     /* Build pickup point select field options */
     useEffect(() => {
         let newPickupOptions = [];
+        let label_text = '';
         if (currentData.pickup_points_list_type === 'menu') {
-            let label_text = '- ' + txt.pickup_select_field_default + ' -';
-            if ( ! isMethodPickupRequired(currentData.rate.instance) ) {
-                label_text = '- ' + txt.pickup_select_field_optional + ' -';
-            }
+            label_text = '- ' + txt.pickup_select_field_default + ' -';
+        }
+        if ( ! isMethodPickupRequired(currentData.rate.instance) ) {
+            label_text = '- ' + txt.pickup_select_field_optional + ' -';
+        }
+        if ( label_text !== '' ) {
             newPickupOptions.push({
                 label: label_text,
                 value: ''
