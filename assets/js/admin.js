@@ -178,7 +178,7 @@ jQuery(function( $ ) {
 
   window.pakettikauppa_meta_box_check_service = function (obj) {
     var selectedService = $(obj).val();
-    if ( selectedService == '__NULL__' ) {
+    if ( selectedService == '__NULL__' && $($(obj).closest('#woo-pakettikauppa')).find('#wc_pakettikauppa_shipping_method').is(':hidden') ) {
       $($(obj).closest('#woo-pakettikauppa')).find('.pakettikauppa-general').hide();
       $($(obj).closest('#woo-pakettikauppa')).find('.pakettikauppa-metabox-footer').hide();
     } else {
