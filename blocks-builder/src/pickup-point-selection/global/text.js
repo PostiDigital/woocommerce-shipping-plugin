@@ -6,6 +6,7 @@ export const txt_i18n = {
     block_options: __('Block options', 'woo-pakettikauppa'),
     pickup_block_title: __('Pickup point', 'woo-pakettikauppa'),
     pickup_select_field_default: __('Select a pickup point', 'woo-pakettikauppa'),
+    pickup_select_field_optional: __('No pickup point: Send to the street address', 'woo-pakettikauppa'),
     pickup_select_other: __('Other', 'woo-pakettikauppa'),
     pickup_error: __('Please choose a pickup point', 'woo-pakettikauppa'),
     pickup_not_found: __('No pickup points were found. Check the address.', 'woo-pakettikauppa'),
