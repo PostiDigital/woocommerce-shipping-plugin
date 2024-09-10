@@ -1685,7 +1685,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
     public function can_create_shipment_automatically( \WC_Order $order ) {
       $settings = $this->get_settings();
 
-      if ( $order->meta_exists('_' . $this->core->prefix . '_disable_shipment_create') ) {
+      if ( ! $this->is_allowed_create_shipment($order) ) {
         return false;
       }
 
@@ -1717,6 +1717,20 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
         $order->update_meta_data($meta_key, true);
         $order->save();
       }
+    }
+
+    /**
+     * Check if it is allowed to create a shipment for the order
+     * 
+     * @param WC_Order $order WC Order
+     * 
+     * @return bool
+     */
+    public function is_allowed_create_shipment( \WC_Order $order ) {
+      if ( $order->meta_exists('_' . $this->core->prefix . '_disable_shipment_create') ) {
+        return false;
+      }
+      return true;
     }
   }
 }
