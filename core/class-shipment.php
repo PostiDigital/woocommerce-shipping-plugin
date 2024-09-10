@@ -1698,6 +1698,13 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
       return false;
     }
 
+    /**
+     * Mark in the order if is possible to register shipments for him.
+     * It is advisable to use as a temporary blocking, in cases where want to avoid double registration of the shipment during the procedure. At the end of the procedure, use this function again to remove the blocking, so that the order is not permanently blocked from the shipment registration.
+     * 
+     * @param WC_Order $order WC Order
+     * @param bool $allow Allow to register shipments: true - remove blocking, false - add blocking.
+     */
     public function allow_create_shipment( \WC_Order $order, $allow ) {
       $meta_key = '_' . $this->core->prefix . '_disable_shipment_create';
 
