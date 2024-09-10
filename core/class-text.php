@@ -551,6 +551,10 @@ if ( ! class_exists(__NAMESPACE__ . '\Text') ) {
       return __('Names of the goods in the shipment', 'woo-pakettikauppa');
     }
 
+    public function additional_info_param_products_names_with_qty() {
+      return __('Names and quantities of the goods in the shipment', 'woo-pakettikauppa');
+    }
+
     public function additional_info_param_products_sku() {
       return __('SKU codes of the goods in the shipment', 'woo-pakettikauppa');
     }

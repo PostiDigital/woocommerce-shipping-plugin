@@ -1124,9 +1124,10 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
         }
 
         $keys = array(
-          'order_number' => '{ORDER_NUMBER}',
           'products' => array(),
+          'order_number' => '{ORDER_NUMBER}',
           'products_names' => '{PRODUCTS_NAMES}',
+          'products_names_with_qty' => '{PRODUCTS_NAME_WITH_QUANTITY}',
           'products_sku' => '{PRODUCTS_SKU}',
         );
         foreach ( $keys as $key_id => $key ) {
@@ -1144,27 +1145,34 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
             $additional_info = $label_additional_info;
             $additional_info = str_replace('\n', "\n", $additional_info);
 
-            $additional_info = str_ireplace('{ORDER_NUMBER}', $values['order_number'], $additional_info);
+            $additional_info = str_ireplace($keys['order_number'], $values['order_number'], $additional_info);
 
             $products_names_text = '';
+            $products_names_with_qty_text = '';
             $products_sku_text = '';
             if ( is_array($values['products']) && ! empty($values['products']) ) {
                 foreach ( $values['products'] as $prod ) {
                     if ( ! empty($products_names_text) ) {
                         $products_names_text .= ', ';
                     }
+                    if ( ! empty($products_names_with_qty_text) ) {
+                        $products_names_with_qty_text .= ', ';
+                    }
                     if ( ! empty($products_sku_text) ) {
                         $products_sku_text .= ', ';
                     }
                     $products_names_text .= $prod['name'];
+                    $products_names_with_qty_text .= $prod['name'] . ' (' . $prod['qty'] . ')';
                     $products_sku_text .= (! empty($prod['sku'])) ? $prod['sku'] : '-';
                 }
             } else {
                 $products_names_text = $values['products_names'];
+                $products_names_text = $values['products_names_with_qty'];
                 $products_sku_text = $values['products_sku'];
             }
-            $additional_info = str_ireplace('{PRODUCTS_NAMES}', $products_names_text, $additional_info);
-            $additional_info = str_ireplace('{PRODUCTS_SKU}', $products_sku_text, $additional_info);
+            $additional_info = str_ireplace($keys['products_names'], $products_names_text, $additional_info);
+            $additional_info = str_ireplace($keys['products_names_with_qty'], $products_names_with_qty_text, $additional_info);
+            $additional_info = str_ireplace($keys['products_sku'], $products_sku_text, $additional_info);
         }
 
         return $additional_info;
@@ -1647,7 +1655,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
       return (in_array($service_id, array('2101', '2102', '2711')));
     }
 
-    /**
+    /**    
      * Returns global settings
      * @return array
      */
