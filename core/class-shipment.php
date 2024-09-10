@@ -440,6 +440,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
 
       if ( ! empty($settings['change_order_status_to']) ) {
         if ( $order->get_status() !== $settings['change_order_status_to'] ) {
+          $this->allow_create_shipment($order, false);
           $order->update_status($settings['change_order_status_to']);
         }
       }
@@ -1684,6 +1685,10 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
     public function can_create_shipment_automatically( \WC_Order $order ) {
       $settings = $this->get_settings();
 
+      if ( $order->meta_exists('_' . $this->core->prefix . '_disable_shipment_create') ) {
+        return false;
+      }
+
       if ( ! empty($settings['create_shipments_automatically']) ) {
         if ( $order->get_status() === $settings['create_shipments_automatically'] ) {
           return true;
@@ -1691,6 +1696,20 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
       }
 
       return false;
+    }
+
+    public function allow_create_shipment( \WC_Order $order, $allow ) {
+      $meta_key = '_' . $this->core->prefix . '_disable_shipment_create';
+
+      if ( $allow ) {
+        if ( $order->meta_exists($meta_key) ) {
+          $order->delete_meta_data($meta_key);
+          $order->save();
+        }
+      } else {
+        $order->update_meta_data($meta_key, true);
+        $order->save();
+      }
     }
   }
 }
