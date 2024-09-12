@@ -1250,6 +1250,9 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
                   $address_override_field_name = $this->core->params_prefix . 'merchant_override_custom_pickup_point_address';
                   $custom_address = $order->get_meta($address_override_field_name, true);
                   $custom_address = empty($custom_address) ? "$order_address, $order_postcode, $order_country" : $custom_address;
+                  if ( $this->shipment->is_optional_pickup_point_service($method_code) ) {
+                    $custom_address = '';
+                  }
                   $pickup_points = $this->get_pickup_points_for_method($method_code, $order_postcode, $order_address, $order_country, $custom_address);
                   $select_first_option = '- ' . __('Select', 'woo-pakettikauppa') . ' -';
                   $settings = $this->shipment->get_settings();

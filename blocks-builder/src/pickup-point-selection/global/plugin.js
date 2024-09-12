@@ -41,6 +41,18 @@ export const isMethodHavePickups = ( methodInstanceId ) => {
     return false;
 }
 
+export const isMethodPickupRequired = ( methodInstanceId ) => {
+    let pluginData = getPluginStaticData();
+    if ( 'methods' in pluginData ) {
+        for ( let i = 0; i < pluginData.methods.length; i++ ) {
+            if ( pluginData.methods[i].instance_id == methodInstanceId && pluginData.methods[i].pickup_required ) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export const getPickupPoints = ( service, destination, type = null ) => {
     let pluginData = getPluginStaticData();
     if ( ! ('ajax_url' in pluginData) ) {

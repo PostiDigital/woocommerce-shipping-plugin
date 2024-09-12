@@ -333,7 +333,15 @@ if ( ! class_exists(__NAMESPACE__ . '\Frontend') ) {
 
       $shipping_method_providers = $this->shipping_needs_pickup_points();
 
-      echo '<input type="hidden" name="' . $this->core->prefix . '_validate_pickup_points" value="' . ($shipping_method_providers === false ? 'false' : 'true') . '" />';
+      $validation_required = ($shipping_method_providers !== false);
+      if ( is_array($shipping_method_providers) ) {
+        foreach ( $shipping_method_providers as $provider ) {
+          if ( $this->shipment->is_optional_pickup_point_service($provider) ) {
+            $validation_required = false;
+          }
+        }
+      }
+      echo '<input type="hidden" name="' . $this->core->prefix . '_validate_pickup_points" value="' . ($validation_required ? 'true' : 'false') . '" />';
 
       if ( $shipping_method_providers === false ) {
         return;
@@ -417,7 +425,9 @@ if ( ! class_exists(__NAMESPACE__ . '\Frontend') ) {
           if ( isset($settings['pickup_point_list_type']) && $settings['pickup_point_list_type'] === 'list' ) {
             $list_type = 'radio';
 
-            array_splice($options_array, 0, 1);
+            if ( ! $this->shipment->is_optional_pickup_point_service(implode(',', $shipping_method_providers)) ) {
+              array_splice($options_array, 0, 1);
+            }
           }
 
           $flatten = function ( $point ) {
@@ -527,11 +537,13 @@ if ( ! class_exists(__NAMESPACE__ . '\Frontend') ) {
         $pickup_point_data = $this->shipment->get_pickup_points($shipping_postcode, $shipping_address, $shipping_country, $shipping_method_provider);
       }
 
-      return $this->process_pickup_points_to_option_array($pickup_point_data);
+      $default_option_text = ($this->shipment->is_optional_pickup_point_service($shipping_method_provider)) ? __('No pickup point: Send to the street address', 'woo-pakettikauppa') : '';
+      return $this->process_pickup_points_to_option_array($pickup_point_data, $default_option_text);
     }
 
-    private function process_pickup_points_to_option_array( $pickup_points ) {
-      $options_array = array( '' => array( 'text' => '- ' . __('Select a pickup point', 'woo-pakettikauppa') . ' -' ) );
+    private function process_pickup_points_to_option_array( $pickup_points, $default_option_text = '' ) {
+      $first_option_text = (empty($default_option_text)) ? __('Select a pickup point', 'woo-pakettikauppa') : $default_option_text;
+      $options_array = array( '' => array( 'text' => '- ' . $first_option_text . ' -' ) );
 
       if ( ! empty($pickup_points) ) {
         $show_provider = false;
