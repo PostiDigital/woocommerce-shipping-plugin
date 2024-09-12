@@ -57,6 +57,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
       add_action($this->core->params_prefix . 'fetch_tracking_code', array( $this, 'hook_fetch_tracking_code' ), 10, 2);
       add_action('wp_ajax_pakettikauppa_meta_box', array( $this, 'ajax_meta_box' ));
       add_action('woocommerce_order_status_changed', array( $this, 'create_shipment_for_order_automatically' ));
+      add_action('woocommerce_order_status_changed', array( $this, 'restore_order_params_after_status_change' ), 9999);
       add_action('wp_ajax_get_pickup_point_by_custom_address', array( $this, 'get_pickup_point_by_custom_address' ));
       add_action('wp_ajax_update_estimated_shipping_price', array( $this, 'update_estimated_shipping_price' ));
       add_action('wp_ajax_check_api', array( $this, 'ajax_check_credentials' ));
@@ -197,8 +198,15 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
       $order = new \WC_Order($order_id);
 
       if ( $this->shipment->can_create_shipment_automatically($order) ) {
+        $this->shipment->allow_create_shipment($order, false);
         $this->shipment->create_shipment($order);
       }
+    }
+
+    public function restore_order_params_after_status_change( $order_id ) {
+      $order = new \WC_Order($order_id);
+
+      $this->shipment->allow_create_shipment($order, true);
     }
 
     public function ajax_meta_box() {

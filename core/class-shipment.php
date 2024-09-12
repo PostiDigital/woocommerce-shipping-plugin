@@ -440,6 +440,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
 
       if ( ! empty($settings['change_order_status_to']) ) {
         if ( $order->get_status() !== $settings['change_order_status_to'] ) {
+          $this->allow_create_shipment($order, false);
           $order->update_status($settings['change_order_status_to']);
         }
       }
@@ -1703,6 +1704,10 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
     public function can_create_shipment_automatically( \WC_Order $order ) {
       $settings = $this->get_settings();
 
+      if ( ! $this->is_allowed_create_shipment($order) ) {
+        return false;
+      }
+
       if ( ! empty($settings['create_shipments_automatically']) ) {
         if ( $order->get_status() === $settings['create_shipments_automatically'] ) {
           return true;
@@ -1710,6 +1715,41 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
       }
 
       return false;
+    }
+
+    /**
+     * Mark in the order if is possible to register shipments for him.
+     * It is advisable to use as a temporary blocking, in cases where want to avoid double registration of the shipment during the procedure. At the end of the procedure, use this function again to remove the blocking, so that the order is not permanently blocked from the shipment registration.
+     * 
+     * @param WC_Order $order WC Order
+     * @param bool $allow Allow to register shipments: true - remove blocking, false - add blocking.
+     */
+    public function allow_create_shipment( \WC_Order $order, $allow ) {
+      $meta_key = '_' . $this->core->prefix . '_disable_shipment_create';
+
+      if ( $allow ) {
+        if ( $order->meta_exists($meta_key) ) {
+          $order->delete_meta_data($meta_key);
+          $order->save();
+        }
+      } else {
+        $order->update_meta_data($meta_key, true);
+        $order->save();
+      }
+    }
+
+    /**
+     * Check if it is allowed to create a shipment for the order
+     * 
+     * @param WC_Order $order WC Order
+     * 
+     * @return bool
+     */
+    public function is_allowed_create_shipment( \WC_Order $order ) {
+      if ( $order->meta_exists('_' . $this->core->prefix . '_disable_shipment_create') ) {
+        return false;
+      }
+      return true;
     }
   }
 }
