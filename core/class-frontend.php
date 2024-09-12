@@ -40,7 +40,6 @@ if ( ! class_exists(__NAMESPACE__ . '\Frontend') ) {
       add_action('woocommerce_order_details_after_order_table', array( $this, 'display_order_data' ));
       add_action('woocommerce_checkout_update_order_meta', array( $this, 'update_order_meta_pickup_point_field' ));
       add_action('woocommerce_checkout_process', array( $this, 'validate_checkout' ));
-      add_action('woocommerce_order_status_changed', array( $this, 'create_shipment_for_order_automatically' ));
       add_action('woocommerce_order_status_changed', array( $this, 'restore_order_params_after_status_change' ), 9999);
 
       add_action('wp_ajax_pakettikauppa_save_pickup_point_info_to_session', array( $this, 'save_pickup_point_info_to_session' ), 10);
@@ -52,6 +51,11 @@ if ( ! class_exists(__NAMESPACE__ . '\Frontend') ) {
       add_filter('woocommerce_checkout_fields', array( $this, 'add_checkout_fields' ));
 
       $this->shipment = $this->core->shipment;
+
+      $settings = $this->shipment->get_settings();
+      if ( ! empty($settings['create_shipments_automatically']) && $settings['create_shipments_automatically'] !== 'no' ) {
+        add_action('woocommerce_order_status_' . $settings['create_shipments_automatically'], array( $this, 'create_shipment_for_order_automatically' ));
+      }
     }
 
     public function add_checkout_fields( $fields ) {
