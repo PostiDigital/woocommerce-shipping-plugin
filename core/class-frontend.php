@@ -41,6 +41,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Frontend') ) {
       add_action('woocommerce_checkout_update_order_meta', array( $this, 'update_order_meta_pickup_point_field' ));
       add_action('woocommerce_checkout_process', array( $this, 'validate_checkout' ));
       add_action('woocommerce_order_status_changed', array( $this, 'create_shipment_for_order_automatically' ));
+      add_action('woocommerce_order_status_changed', array( $this, 'restore_order_params_after_status_change' ), 9999);
 
       add_action('wp_ajax_pakettikauppa_save_pickup_point_info_to_session', array( $this, 'save_pickup_point_info_to_session' ), 10);
       add_action('wp_ajax_nopriv_pakettikauppa_save_pickup_point_info_to_session', array( $this, 'save_pickup_point_info_to_session' ), 10);
@@ -138,8 +139,15 @@ if ( ! class_exists(__NAMESPACE__ . '\Frontend') ) {
       $order = new \WC_Order($order_id);
 
       if ( $this->shipment->can_create_shipment_automatically($order) ) {
+        $this->shipment->allow_create_shipment($order, false);
         $this->shipment->create_shipment($order);
       }
+    }
+
+    public function restore_order_params_after_status_change( $order_id ) {
+      $order = new \WC_Order($order_id);
+
+      $this->shipment->allow_create_shipment($order, true);
     }
 
     /**
