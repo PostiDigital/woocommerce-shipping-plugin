@@ -1082,6 +1082,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
       if ( ! empty($additional_text) ) {
         $additional_info = array(
           'order_number' => $order->get_order_number(),
+          'order_note' => $order->get_customer_note(),
           'products' => $products_info,
         );
         $info->setAdditionalInfoText($this->prepare_additional_info_text($additional_info, $additional_text));
@@ -1127,6 +1128,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
         $keys = array(
           'products' => array(),
           'order_number' => '{ORDER_NUMBER}',
+          'order_note' => '{ORDER_NOTE}',
           'products_names' => '{PRODUCTS_NAMES}',
           'products_names_with_qty' => '{PRODUCTS_NAME_WITH_QUANTITY}',
           'products_sku' => '{PRODUCTS_SKU}',
@@ -1147,6 +1149,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
             $additional_info = str_replace('\n', "\n", $additional_info);
 
             $additional_info = str_ireplace($keys['order_number'], $values['order_number'], $additional_info);
+            $additional_info = str_ireplace($keys['order_note'], $values['order_note'], $additional_info);
 
             $products_names_text = '';
             $products_names_with_qty_text = '';
