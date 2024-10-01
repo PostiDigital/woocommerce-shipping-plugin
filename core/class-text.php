@@ -547,6 +547,10 @@ if ( ! class_exists(__NAMESPACE__ . '\Text') ) {
       return __('Order number', 'woo-pakettikauppa');
     }
 
+    public function additional_info_param_order_note() {
+      return __('The note is specified in the order', 'woo-pakettikauppa');
+    }
+
     public function additional_info_param_products_names() {
       return __('Names of the goods in the shipment', 'woo-pakettikauppa');
     }

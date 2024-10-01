@@ -736,6 +736,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
           'description' => '',
           'available_params' => array(
             'ORDER_NUMBER' => $this->get_core()->text->additional_info_param_order_number(),
+            'ORDER_NOTE' => $this->get_core()->text->additional_info_param_order_note(),
             'PRODUCTS_NAMES' => $this->get_core()->text->additional_info_param_products_names(),
             'PRODUCTS_NAME_WITH_QUANTITY' => $this->get_core()->text->additional_info_param_products_names_with_qty(),
             'PRODUCTS_SKU' => $this->get_core()->text->additional_info_param_products_sku(),
