@@ -105,6 +105,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Wc_Blocks_Integration') ) {
           'block_options' => __('Block options', 'woo-pakettikauppa'),
           'pickup_block_title' => __('Pickup point', 'woo-pakettikauppa'),
           'pickup_select_field_default' => __('Select a pickup point', 'woo-pakettikauppa'),
+          'pickup_select_field_optional' => __('No pickup point: Send to the street address', 'woo-pakettikauppa'),
           'pickup_select_other' => __('Other', 'woo-pakettikauppa'),
           'pickup_error' => __('Please choose a pickup point', 'woo-pakettikauppa'),
           'pickup_not_found' => __('No pickup points were found. Check the address.', 'woo-pakettikauppa'),
@@ -212,7 +213,8 @@ if ( ! class_exists(__NAMESPACE__ . '\Wc_Blocks_Integration') ) {
         $methods[] = array(
           'instance_id' => $method_instance_id,
           'service' => $method_params['service'],
-          'have_pickups' => $have_pickup_points
+          'have_pickups' => $have_pickup_points,
+          'pickup_required' => ($have_pickup_points && ! $this->shipment->is_optional_pickup_point_service($method_params['service'])),
         );
         $found_methods[] = $method_instance_id;
       }

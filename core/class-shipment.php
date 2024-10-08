@@ -422,14 +422,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
       $service_id = $order->get_meta('_' . $this->core->prefix . '_service_id', true);
 
       $order->add_order_note(
-        sprintf(
-          /* translators: 1: Shipping service title 2: Shipment tracking code 3: Shipping label URL 4: Shipment tracking URL */
-          __('Created %1$s shipment.<br>%2$s<br>%1$s - %3$s<br>%4$s', 'woo-pakettikauppa'),
-          $this->core->vendor_name . ' ' . $this->service_title($service_id),
-          $tracking_code,
-          $dl_link,
-          $tracking_link
-        )
+        '<b>' . $this->core->vendor_name . ':</b> ' . $this->core->text->created_shipment() . '.<br/>' . $tracking_code . '<br/>' . $dl_link . ' - ' . $tracking_link
       );
 
       $settings = $this->get_settings();
@@ -447,6 +440,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
 
       if ( ! empty($settings['change_order_status_to']) ) {
         if ( $order->get_status() !== $settings['change_order_status_to'] ) {
+          $this->allow_create_shipment($order, false);
           $order->update_status($settings['change_order_status_to']);
         }
       }
@@ -1088,6 +1082,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
       if ( ! empty($additional_text) ) {
         $additional_info = array(
           'order_number' => $order->get_order_number(),
+          'order_note' => $order->get_customer_note(),
           'products' => $products_info,
         );
         $info->setAdditionalInfoText($this->prepare_additional_info_text($additional_info, $additional_text));
@@ -1131,9 +1126,11 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
         }
 
         $keys = array(
-          'order_number' => '{ORDER_NUMBER}',
           'products' => array(),
+          'order_number' => '{ORDER_NUMBER}',
+          'order_note' => '{ORDER_NOTE}',
           'products_names' => '{PRODUCTS_NAMES}',
+          'products_names_with_qty' => '{PRODUCTS_NAME_WITH_QUANTITY}',
           'products_sku' => '{PRODUCTS_SKU}',
         );
         foreach ( $keys as $key_id => $key ) {
@@ -1151,27 +1148,35 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
             $additional_info = $label_additional_info;
             $additional_info = str_replace('\n', "\n", $additional_info);
 
-            $additional_info = str_ireplace('{ORDER_NUMBER}', $values['order_number'], $additional_info);
+            $additional_info = str_ireplace($keys['order_number'], $values['order_number'], $additional_info);
+            $additional_info = str_ireplace($keys['order_note'], $values['order_note'], $additional_info);
 
             $products_names_text = '';
+            $products_names_with_qty_text = '';
             $products_sku_text = '';
             if ( is_array($values['products']) && ! empty($values['products']) ) {
                 foreach ( $values['products'] as $prod ) {
                     if ( ! empty($products_names_text) ) {
                         $products_names_text .= ', ';
                     }
+                    if ( ! empty($products_names_with_qty_text) ) {
+                        $products_names_with_qty_text .= ', ';
+                    }
                     if ( ! empty($products_sku_text) ) {
                         $products_sku_text .= ', ';
                     }
                     $products_names_text .= $prod['name'];
+                    $products_names_with_qty_text .= $prod['name'] . ' (' . $prod['qty'] . ')';
                     $products_sku_text .= (! empty($prod['sku'])) ? $prod['sku'] : '-';
                 }
             } else {
                 $products_names_text = $values['products_names'];
+                $products_names_text = $values['products_names_with_qty'];
                 $products_sku_text = $values['products_sku'];
             }
-            $additional_info = str_ireplace('{PRODUCTS_NAMES}', $products_names_text, $additional_info);
-            $additional_info = str_ireplace('{PRODUCTS_SKU}', $products_sku_text, $additional_info);
+            $additional_info = str_ireplace($keys['products_names'], $products_names_text, $additional_info);
+            $additional_info = str_ireplace($keys['products_names_with_qty'], $products_names_with_qty_text, $additional_info);
+            $additional_info = str_ireplace($keys['products_sku'], $products_sku_text, $additional_info);
         }
 
         return $additional_info;
@@ -1644,6 +1649,17 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
     }
 
     /**
+     * Check if service is one from services, for which by default do not load the selection of pickup point, but allow receiving pickup points when using custom search
+     * 
+     * @param $service_id
+     * 
+     * @return bool
+     */
+    public function is_optional_pickup_point_service( $service_id ) {
+      return (in_array($service_id, array('2101', '2102', '2711')));
+    }
+
+    /**    
      * Returns global settings
      * @return array
      */
@@ -1691,6 +1707,10 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
     public function can_create_shipment_automatically( \WC_Order $order ) {
       $settings = $this->get_settings();
 
+      if ( ! $this->is_allowed_create_shipment($order) ) {
+        return false;
+      }
+
       if ( ! empty($settings['create_shipments_automatically']) ) {
         if ( $order->get_status() === $settings['create_shipments_automatically'] ) {
           return true;
@@ -1698,6 +1718,41 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
       }
 
       return false;
+    }
+
+    /**
+     * Mark in the order if is possible to register shipments for him.
+     * It is advisable to use as a temporary blocking, in cases where want to avoid double registration of the shipment during the procedure. At the end of the procedure, use this function again to remove the blocking, so that the order is not permanently blocked from the shipment registration.
+     * 
+     * @param WC_Order $order WC Order
+     * @param bool $allow Allow to register shipments: true - remove blocking, false - add blocking.
+     */
+    public function allow_create_shipment( \WC_Order $order, $allow ) {
+      $meta_key = '_' . $this->core->prefix . '_disable_shipment_create';
+
+      if ( $allow ) {
+        if ( $order->meta_exists($meta_key) ) {
+          $order->delete_meta_data($meta_key);
+          $order->save();
+        }
+      } else {
+        $order->update_meta_data($meta_key, true);
+        $order->save();
+      }
+    }
+
+    /**
+     * Check if it is allowed to create a shipment for the order
+     * 
+     * @param WC_Order $order WC Order
+     * 
+     * @return bool
+     */
+    public function is_allowed_create_shipment( \WC_Order $order ) {
+      if ( $order->meta_exists('_' . $this->core->prefix . '_disable_shipment_create') ) {
+        return false;
+      }
+      return true;
     }
   }
 }

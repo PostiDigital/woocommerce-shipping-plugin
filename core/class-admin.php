@@ -40,6 +40,8 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
       add_filter('plugin_row_meta', array( $this, 'plugin_row_meta_wrapper' ), 10, 2);
       add_filter('bulk_actions-edit-shop_order', array( $this, 'register_multi_create_orders' ));
       add_filter('bulk_actions-woocommerce_page_wc-orders', array( $this, 'register_multi_create_orders' )); //HPOS
+      add_filter('manage_edit-shop_order_columns', array( $this, 'add_column_to_orders_table' ), 20);
+      add_filter('manage_woocommerce_page_wc-orders_columns', array( $this, 'add_column_to_orders_table' ), 20); //HPOS
       add_action('woocommerce_admin_order_actions_end', array( $this, 'register_quick_create_order' ), 10, 2); //to add print option at the end of each orders in orders page
       add_action('admin_notices', array( $this, 'show_admin_notices' ));
       add_action('admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ));
@@ -52,11 +54,14 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
       add_action('woocommerce_update_order', array( $this, 'save_admin_order_meta_hpos' ));
       add_action('handle_bulk_actions-edit-shop_order', array( $this, 'bulk_create_label' ), 10, 3); // admin_action_{action name}
       add_action('handle_bulk_actions-woocommerce_page_wc-orders', array( $this, 'bulk_create_label' ), 10, 3); //HPOS
+      add_action('manage_shop_order_posts_custom_column', array( $this, 'add_column_data_to_orders_table' ), 10, 2);
+      add_action('manage_woocommerce_page_wc-orders_custom_column', array( $this, 'add_column_data_to_orders_table_hpos' ), 10, 2); //HPOS
       add_action($this->core->params_prefix . 'create_shipments', array( $this, 'hook_create_shipments' ), 10, 2);
       add_action($this->core->params_prefix . 'fetch_shipping_labels', array( $this, 'hook_fetch_shipping_labels' ), 10, 2);
       add_action($this->core->params_prefix . 'fetch_tracking_code', array( $this, 'hook_fetch_tracking_code' ), 10, 2);
       add_action('wp_ajax_pakettikauppa_meta_box', array( $this, 'ajax_meta_box' ));
       add_action('woocommerce_order_status_changed', array( $this, 'create_shipment_for_order_automatically' ));
+      add_action('woocommerce_order_status_changed', array( $this, 'restore_order_params_after_status_change' ), 9999);
       add_action('wp_ajax_get_pickup_point_by_custom_address', array( $this, 'get_pickup_point_by_custom_address' ));
       add_action('wp_ajax_update_estimated_shipping_price', array( $this, 'update_estimated_shipping_price' ));
       add_action('wp_ajax_check_api', array( $this, 'ajax_check_credentials' ));
@@ -197,10 +202,16 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
       $order = new \WC_Order($order_id);
 
       if ( $this->shipment->can_create_shipment_automatically($order) ) {
-        $this->shipment->create_shipment($order);
+        $this->shipment->allow_create_shipment($order, false);
+		$this->shipment->create_shipment($order);
       }
     }
 
+    public function restore_order_params_after_status_change( $order_id ) {
+      $order = new \WC_Order($order_id);
+      $this->shipment->allow_create_shipment($order, true);
+    }
+	
     public function ajax_meta_box() {
       check_ajax_referer(str_replace('wc_', '', $this->core->prefix) . '-meta-box', 'security');
 
@@ -242,6 +253,57 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
       }
       $this->get_current_shipment(wc_get_order((int) $_POST['post_id']));
       wp_die();
+    }
+
+    public function add_column_to_orders_table( $columns ) {
+      $new_columns = array();
+
+      foreach ( $columns as $column_name => $column_info ) {
+        $new_columns[ $column_name ] = $column_info;
+        if ( $column_name == 'shipping_address' ) {
+          $new_columns[str_replace('wc_', '', $this->core->prefix) . '_tracking_link'] = __('Shipment Tracking', 'woo-pakettikauppa');
+        }
+      }
+
+      return $new_columns;
+    }
+
+    public function add_column_data_to_orders_table( $column, $post_id ) {
+      $order = wc_get_order($post_id);
+
+      $this->add_column_data_to_orders_table_hpos($column, $order);
+    }
+
+    public function add_column_data_to_orders_table_hpos( $column, $order ) {
+      if ( ! is_a($order, 'WC_Order') ) {
+        return;
+      }
+
+      if ( $column == str_replace('wc_', '', $this->core->prefix) . '_tracking_link' ) {
+        $labels = $this->shipment->get_labels($order->get_id());
+        if ( empty($labels) ) {
+          echo '-';
+          return;
+        }
+        $labels_links = array();
+        foreach ( $labels as $label ) {
+          if ( ! empty($label['tracking_code']) ) {
+            $labels_links[$label['tracking_code']] = $label['tracking_url'];
+          }
+        }
+        $labels_links_html = '';
+        foreach ( $labels_links as $label_code => $label_url ) {
+          if ( ! empty($labels_links_html) ) {
+            $labels_links_html .= ', ';
+          }
+          if ( empty($label_url) ) {
+            $labels_links_html .= $label_code;
+            continue;
+          }
+          $labels_links_html .= sprintf('<a href="%1$s" target="_blank">%2$s</a>', $label_url, $label_code);
+        }
+        echo $labels_links_html;
+      }
     }
 
     /**
@@ -809,6 +871,9 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
      */
     private function save_admin_order_meta_to_order( $order_id ) {
       $order = wc_get_order($order_id);
+      if ( ! $order ) {
+        return;
+      }
       if ( isset($_POST[$this->core->params_prefix . 'shipping_phone']) ) {
         $order->set_shipping_phone(wc_clean($_POST[$this->core->params_prefix . 'shipping_phone']));
       }
@@ -1242,6 +1307,9 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
                   $address_override_field_name = $this->core->params_prefix . 'merchant_override_custom_pickup_point_address';
                   $custom_address = $order->get_meta($address_override_field_name, true);
                   $custom_address = empty($custom_address) ? "$order_address, $order_postcode, $order_country" : $custom_address;
+                  if ( $this->shipment->is_optional_pickup_point_service($method_code) ) {
+                    $custom_address = '';
+                  }
                   $pickup_points = $this->get_pickup_points_for_method($method_code, $order_postcode, $order_address, $order_country, $custom_address);
                   $select_first_option = '- ' . __('Select', 'woo-pakettikauppa') . ' -';
                   $settings = $this->shipment->get_settings();
@@ -1695,12 +1763,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
             $order->save();
 
             $order->add_order_note(
-              sprintf(
-                /* translators: 1: Shipping service title 2: Shipment tracking code */
-                __('Created %1$s return label<br>%2$s.', 'woo-pakettikauppa'),
-                $this->core->vendor_name,
-                $tracking_code
-              )
+                '<b>' . $this->core->vendor_name . ':</b> ' . $this->core->text->created_return_label() . '.<br/>' . $tracking_code
             );
           }
         }
