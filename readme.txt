@@ -51,6 +51,14 @@ Yes! If you encounter any issues related to this plugin, please report at https:
 4. Settings screen in admin
 
 == Changelog ==
+= 3.10.2 =
+* New feature: adding product quantities to address label
+* New feature: order notes can be added to address label
+* New feature: new order list column to show shipment tracking link
+* Pickup points optional for Express-parcel
+* Bug fix for duplicate shipments
+* Bug fix for bulk order status update
+
 = 3.10.1 =
 * Quick fix for Legacy order storage backwards compatibility
 
