@@ -871,6 +871,9 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
      */
     private function save_admin_order_meta_to_order( $order_id ) {
       $order = wc_get_order($order_id);
+      if ( ! $order ) {
+        return;
+      }
       if ( isset($_POST[$this->core->params_prefix . 'shipping_phone']) ) {
         $order->set_shipping_phone(wc_clean($_POST[$this->core->params_prefix . 'shipping_phone']));
       }
