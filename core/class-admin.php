@@ -60,7 +60,6 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
       add_action($this->core->params_prefix . 'fetch_shipping_labels', array( $this, 'hook_fetch_shipping_labels' ), 10, 2);
       add_action($this->core->params_prefix . 'fetch_tracking_code', array( $this, 'hook_fetch_tracking_code' ), 10, 2);
       add_action('wp_ajax_pakettikauppa_meta_box', array( $this, 'ajax_meta_box' ));
-      add_action('woocommerce_order_status_changed', array( $this, 'create_shipment_for_order_automatically' ));
       add_action('woocommerce_order_status_changed', array( $this, 'restore_order_params_after_status_change' ), 9999);
       add_action('wp_ajax_get_pickup_point_by_custom_address', array( $this, 'get_pickup_point_by_custom_address' ));
       add_action('wp_ajax_update_estimated_shipping_price', array( $this, 'update_estimated_shipping_price' ));
@@ -70,6 +69,11 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
       add_action('wp_ajax_pakettikauppa_get_pickup_points', array( $this, 'ajax_get_pickup_points' ));
 
       $this->shipment = $this->core->shipment;
+
+      $settings = $this->shipment->get_settings();
+      if ( ! empty($settings['create_shipments_automatically']) && $settings['create_shipments_automatically'] !== 'no' ) {
+        add_action('woocommerce_order_status_' . $settings['create_shipments_automatically'], array( $this, 'create_shipment_for_order_automatically' ));
+      }
     }
 
     public function add_submenu() {
