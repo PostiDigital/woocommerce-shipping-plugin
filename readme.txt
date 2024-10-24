@@ -51,6 +51,9 @@ Yes! If you encounter any issues related to this plugin, please report at https:
 4. Settings screen in admin
 
 == Changelog ==
+= 3.10.3 =
+* Fix for possible Full Path Disclosure (FPD) vulnerability
+
 = 3.10.2 =
 * New feature: adding product quantities to address label
 * New feature: order notes can be added to address label
