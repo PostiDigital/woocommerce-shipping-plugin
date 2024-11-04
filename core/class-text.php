@@ -574,5 +574,13 @@ if ( ! class_exists(__NAMESPACE__ . '\Text') ) {
     public function created_return_label() {
       return __('Created return label', 'woo-pakettikauppa');
     }
+
+    public function express_freight_default_pallet_type() {
+      return __('Express-freight default pallet type', 'woo-pakettikauppa');
+    }
+
+    public function pallet_type() {
+      return __('Pallet type', 'woo-pakettikauppa');
+    }
   }
 }

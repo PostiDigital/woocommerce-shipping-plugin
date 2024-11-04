@@ -725,6 +725,9 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
     public function admin_enqueue_scripts() {
       wp_enqueue_style($this->core->prefix . '_admin', $this->core->dir_url . 'assets/css/admin.css', array(), $this->core->version);
       wp_enqueue_script($this->core->prefix . '_admin_js', $this->core->dir_url . 'assets/js/admin.js', array( 'jquery' ), $this->core->version, true);
+      wp_localize_script($this->core->prefix . '_admin_js', 'pakettikauppa_params', array(
+        'express_freight_services' => Shipment::get_express_freight_services(),
+      ));
     }
 
     /**
@@ -1381,6 +1384,16 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
                 <?php endif; ?>
               <?php endforeach; ?>
               <?php $settings = $this->shipment->get_settings(); ?>
+              <div class="pakettikauppa_express_freight_pallet_type_block">
+                <h4><?php echo $this->core->text->pallet_type(); ?></h4>
+                <select name="wc_pakettikauppa_express_freight_pallet_type" id="pakettikauppa_express_freight_pallet_type" class="pakettikauppa_metabox_values">
+                  <?php $default_pallet_type = (isset($settings['express_freight_pallet_type'])) ? $settings['express_freight_pallet_type'] : 'CC'; ?>
+                  <?php foreach ( Shipment::get_express_freight_pallet_types() as $pallet_key => $pallet_title ) : ?>
+                    <?php $selected = ($default_pallet_type == $pallet_key) ? 'selected' : ''; ?>
+                    <option value="<?php echo esc_attr($pallet_key); ?>" <?php echo esc_attr($selected); ?>><?php echo esc_html($pallet_title); ?></option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
               <div>
                 <h4><?php echo $this->core->text->additional_info_param_title(); ?></h4>
                 <textarea class="pakettikauppa-additional-info" rows="2"><?php echo $settings['label_additional_info'] ?? ''; ?></textarea>
@@ -1592,6 +1605,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
           $pickup_point_id = $order->get_meta('_' . $this->core->params_prefix . 'pickup_point_id');
           $selected_products = (! empty($_REQUEST['for_products'])) ? $_REQUEST['for_products'] : array();
           $additional_order_params = (! empty($_REQUEST['additional_params'])) ? $_REQUEST['additional_params'] : array();
+          $pallet_type = (! empty($_REQUEST['pallet_type'])) ? $_REQUEST['pallet_type'] : '';
 
           if ( empty($_REQUEST['custom_method']) ) {
             $additional_services = null;
@@ -1651,6 +1665,9 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
           $extra_params = array();
           if ( isset($_REQUEST['additional_text']) ) {
             $extra_params['additional_text'] = sanitize_textarea_field($_REQUEST['additional_text']);
+          }
+          if ( isset($_REQUEST['package_type']) ) {
+            $extra_params['package_type'] = strtoupper(sanitize_key($_REQUEST['package_type']));
           }
           $extra_params['ignore_product_weight'] = (isset($additional_order_params['ignore_weight']) && filter_var($additional_order_params['ignore_weight'], FILTER_VALIDATE_BOOLEAN));
 
