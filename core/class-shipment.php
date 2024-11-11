@@ -988,10 +988,20 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
         $order_total_weight = $total_selected_products;
       }
 
+      $package_type = (! empty($extra_params['package_type'])) ? $extra_params['package_type'] : false;
+      if ( empty($package_type) ) {    
+        if ( in_array($service_id, self::get_express_freight_services()) ) {    
+          $package_type = (isset($this->settings['express_freight_pallet_type'])) ? $this->settings['express_freight_pallet_type'] : 'CC';
+        } else {
+          $package_type = 'PC';
+        }
+      }
+
       for ( $i = 0; $i < $parcel_total_count; $i++ ) {
         $parcel = new Parcel();
         $parcel->setWeight(round($order_total_weight / $parcel_total_count, 2));
         $parcel->setVolume(round($order_total_volume / $parcel_total_count, 4));
+        $parcel->setPackageType($package_type);
 
         if ( ! empty($this->settings['info_code']) ) {
           $parcel->setInfocode($this->settings['info_code']);
@@ -999,7 +1009,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
 
         $shipment->addParcel($parcel);
       }
-
+      
       $items = $order->get_items();
 
       $wcpf = new \WC_Product_Factory();
@@ -1753,6 +1763,22 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
         return false;
       }
       return true;
+    }
+
+    public static function get_express_freight_services() {
+      return array('2142', '2143', '2144', '2145');
+    }
+
+    public static function get_express_freight_pallet_types() {
+      return array(
+        'CC' => _x('Colli', 'Pallet type', 'woo-pakettikauppa'),
+        'HP' => _x('Half pallet', 'Pallet type', 'woo-pakettikauppa'),
+        'EUR' => _x('EUR-pallet', 'Pallet type', 'woo-pakettikauppa'),
+        'FIN' => _x('FIN-pallet', 'Pallet type', 'woo-pakettikauppa'),
+        'CW' => _x('Rollcage', 'Pallet type', 'woo-pakettikauppa'),
+        'FPL' => _x('Furniture pallet', 'Pallet type', 'woo-pakettikauppa'),
+        'KK' => _x('Loose colli', 'Pallet type', 'woo-pakettikauppa'),
+      );
     }
   }
 }

@@ -534,6 +534,14 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
           'class'   => 'mode_react',
         ),
 
+        'express_freight_pallet_type'      => array(
+          'title'   => $this->get_core()->text->express_freight_default_pallet_type(),
+          'type'    => 'select',
+          'default' => 'CC',
+          'options' => Shipment::get_express_freight_pallet_types(),
+          'class'   => 'mode_react',
+        ),
+
         'change_order_status_to'      => array(
           'title'   => $this->get_core()->text->change_order_status_to(),
           'type'    => 'select',
