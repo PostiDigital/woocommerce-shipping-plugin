@@ -36,7 +36,7 @@ export const Block = ({ checkoutExtensionData, extension }) => {
         show_custom: false,
     });
     const [ pickupOptions, setPickupOptions ] = useState([]);
-    const validationErrorId = pluginParams.name + '_pickup_point';
+    const validationErrorId = pluginParams.pickup_point_error_id;
     const [ customAddress, setCustomAddress ] = useState('');
     const debouncedCustomAddress = useDebounce(customAddress, 2000);
     const [ customAddressError, setCustomAddressError ] = useState('');

@@ -1,6 +1,6 @@
 export const pluginParams = {
     name: "Posti",
-    pickup_point_error_id: 'posti_pickup_point'
+    pickup_point_error_id: 'posti_pickup_point_error'
 };
 
 export const getPluginStaticData = () => {
