@@ -1,3 +1,8 @@
+export const pluginParams = {
+    name: "Posti",
+    pickup_point_error_id: 'posti_pickup_point'
+};
+
 export const getPluginStaticData = () => {
     if ( ! wcSettings || ! wcSettings["posti-blocks_data"] ) {
         return [];
