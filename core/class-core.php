@@ -230,6 +230,11 @@ if ( ! class_exists(__NAMESPACE__ . '\Core') ) {
         false,
         dirname($this->basename) . '/core/languages/'
       );
+      load_plugin_textdomain(
+        'woo-posti_shipping',
+        false,
+        dirname($this->basename) . '/core/languages/'
+      );
     }
 
     public function load_shipping_method() {
