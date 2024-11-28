@@ -252,7 +252,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Text') ) {
     }
 
     public function api_secret_desc() {
-      return __('API secret provided by Posti', 'woo-pakettikauppa')
+      return __('API secret provided by Posti', 'woo-pakettikauppa');
     }
 
     public function pickup_points_title() {
