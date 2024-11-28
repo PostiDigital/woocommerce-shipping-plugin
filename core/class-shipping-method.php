@@ -466,7 +466,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
 
         'secret_key'                 => array(
           'title'    => $this->get_core()->text->api_secret_title(),
-          'desc'     => $this->get_core()->text->api_secret_desc($this->get_core()->vendor_name),
+          'desc'     => $this->get_core()->text->api_secret_desc(),
           'type'     => 'password',
           'default'  => '',
           'desc_tip' => true,
