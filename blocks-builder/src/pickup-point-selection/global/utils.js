@@ -1,5 +1,9 @@
 import { useEffect, useState } from '@wordpress/element';
 
+export const compareObjects = ( obj1, obj2 ) => {
+   return JSON.stringify(obj1) === JSON.stringify(obj2);
+}
+
 export const buildToken = ( length ) => {
     let token = '';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
