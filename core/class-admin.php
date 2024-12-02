@@ -159,10 +159,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
 
         <div class="pakettikauppa-notice__content">
           <p>
-            <?php
-            /* translators: %s: Vendor full name */
-            printf(esc_html__('Thank you for installing %s! To get started smoothly, please open our setup wizard.', 'woo-pakettikauppa'), $this->core->vendor_fullname);
-            ?>
+            <?php echo $this->core->text->setup_notice(); ?>
 
             <br />
             <br />
@@ -185,10 +182,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
 
         <div class="pakettikauppa-notice__content">
           <p>
-            <?php
-            /* translators: %s: Vendor full name */
-            printf(esc_html__('Thank you for installing %s! To get started smoothly, please open our setup wizard.', 'woo-pakettikauppa'), $this->core->vendor_fullname);
-            ?>
+            <?php echo $this->core->text->setup_notice(); ?>
 
             <br />
             <br />
@@ -1266,12 +1260,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
                 <?php endforeach; ?>
               </select>
               <?php else : ?>
-                <?php
-                $settings_url = '/wp-admin/admin.php?page=wc-settings&tab=shipping&section=' . $this->core->shippingmethod;
-                /* translators: %s: Settings page url */
-                $message = sprintf(__('Service not working. Please check <a href="%s">settings</a>.', 'woo-pakettikauppa'), $settings_url);
-                ?>
-                <span class="pakettikauppa-msg-error"><?php echo $message; ?></span>
+                <span class="pakettikauppa-msg-error"><?php echo $this->core->text->service_not_working(); ?></span>
               <?php endif; ?>
 
               <?php foreach ( $all_additional_services as $method_code => $_additional_services ) : ?>
@@ -2129,12 +2118,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
             <?php endforeach; ?>
           </select>
           <?php else : ?>
-            <?php
-            $settings_url = '/wp-admin/admin.php?page=wc-settings&tab=shipping&section=' . $this->core->shippingmethod;
-            /* translators: %s: Settings page url */
-            $message = sprintf(__('Service not working. Please check <a href="%s">settings</a>.', 'woo-pakettikauppa'), $settings_url);
-            ?>
-            <span class="pakettikauppa-msg-error"><?php echo $message; ?></span>
+            <span class="pakettikauppa-msg-error"><?php echo $this->core->text->service_not_working(); ?></span>
           <?php endif; ?>
 
         </fieldset>
