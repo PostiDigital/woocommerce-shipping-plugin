@@ -306,7 +306,7 @@ export const Block = ({ checkoutExtensionData, extension }) => {
             setContainerErrorClass('');
         }
 
-        if ( ! currentData.rate?.instance || ! isMethodHavePickups(currentData.rate.instance) || ! isMethodPickupRequired(currentData.rate.instance) ) {
+        if ( ! currentData.rate?.instance || ! isMethodHavePickups(currentData.rate.instance) ) {
             return;
         }
 
@@ -316,7 +316,7 @@ export const Block = ({ checkoutExtensionData, extension }) => {
             currentData.pickup_points.selected
         );
 
-        if ( currentData.pickup_points.selected === '' ) {
+        if ( isMethodPickupRequired(currentData.rate.instance) && currentData.pickup_points.selected === '' ) {
             setValidationErrors({
                 [validationErrorId]: {
                     message: txt.pickup_error,
