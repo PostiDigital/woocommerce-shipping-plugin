@@ -83,11 +83,21 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
       $field_pref = 'woocommerce_' . $shipping_method . '_';
       $configs = $this->get_core()->api_config;
       if ( isset($_POST[$field_pref . 'mode']) ) {
-        $settings['mode'] = $_POST[$field_pref . 'mode'];
-        $settings['account_number'] = $_POST[$field_pref . 'account_number'];
-        $settings['secret_key'] = $_POST[$field_pref . 'secret_key'];
+        $settings['mode'] = wc_clean($_POST[$field_pref . 'mode']);
+        $settings['account_number'] = sanitize_text_field($_POST[$field_pref . 'account_number']);
+        $settings['secret_key'] = sanitize_text_field($_POST[$field_pref . 'secret_key']);
       }
       $mode = $settings['mode'];
+
+      wp_localize_script( // Passing values to JS instead of directly inserting into JS code
+        $this->get_core()->prefix . '_admin_js',
+        'postiNoticesData',
+        array(
+          'apiAccount' => $settings['account_number'],
+          'apiSecret'  => $settings['secret_key'],
+          'nonce' => wp_create_nonce($this->get_core()->prefix . '_nonce')
+        )
+      );
 
       ob_start();
       ?>
@@ -101,8 +111,9 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
             url: ajaxurl,
             data: {
               action: 'check_api',
-              api_account: "<?php echo $settings['account_number']; ?>",
-              api_secret: "<?php echo $settings['secret_key']; ?>"
+              api_account: postiNoticesData.apiAccount,
+              api_secret: postiNoticesData.apiSecret,
+              _wpnonce: postiNoticesData.nonce
             },
             dataType: 'json'
           }).done(function( status ) {

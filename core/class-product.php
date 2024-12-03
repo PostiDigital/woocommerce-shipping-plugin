@@ -142,13 +142,13 @@ if ( ! class_exists(__NAMESPACE__ . '\Product') ) {
                 $value = isset($_POST[$field['id']]) ? 'yes' : 'no';
                 break;
               case 'text':
-                $value = isset($_POST[$field['id']]) ? $_POST[$field['id']] : '';
+                $value = isset($_POST[$field['id']]) ? sanitize_text_field($_POST[$field['id']]) : '';
                 break;
               case 'number':
                 $value = isset($_POST[$field['id']]) ? abs((float) $_POST[$field['id']]) : '';
                 break;
               case 'select':
-                $value = isset($_POST[$field['id']]) ? $_POST[$field['id']] : '';
+                $value = isset($_POST[$field['id']]) ? sanitize_text_field($_POST[$field['id']]) : '';
                 break;
               default:
                 $value = '';
