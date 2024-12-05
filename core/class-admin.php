@@ -1536,7 +1536,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
         wp_die();
       }
       $account_number = sanitize_text_field($_POST['api_account']);
-      $secret_key = sanitize_text_field($_POST['api_secret']);
+      $secret_key = trim($_POST['api_secret']);
       $api_check = $this->shipment->check_api_credentials($account_number, $secret_key);
       echo json_encode($api_check);
       wp_die();

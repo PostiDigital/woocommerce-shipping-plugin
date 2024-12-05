@@ -85,7 +85,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
       if ( isset($_POST[$field_pref . 'mode']) ) {
         $settings['mode'] = wc_clean($_POST[$field_pref . 'mode']);
         $settings['account_number'] = sanitize_text_field($_POST[$field_pref . 'account_number']);
-        $settings['secret_key'] = sanitize_text_field($_POST[$field_pref . 'secret_key']);
+        $settings['secret_key'] = trim($_POST[$field_pref . 'secret_key']);
       }
       $mode = $settings['mode'];
 
