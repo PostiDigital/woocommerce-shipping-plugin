@@ -87,6 +87,13 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
 
     public function enqueue_admin_js() {
       wp_enqueue_script($this->core->prefix . '_admin_custom_shipment_js', $this->core->dir_url . 'assets/js/admin_custom_shipment.js', array( 'jquery' ), $this->core->version, true);
+      wp_localize_script(
+        $this->core->prefix . '_admin_custom_shipment_js',
+        'postiCustomShipmentData',
+        array(
+          'nonce' => wp_create_nonce($this->core->prefix . '_custom_shipment_nonce')
+        )
+      );
     }
 
     public function create_custom_shipment_table() {
@@ -2069,6 +2076,10 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
     }
 
     public function ajax_get_pickup_points() {
+      if ( ! wp_verify_nonce(sanitize_key($_POST['_wpnonce']), $this->core->prefix . '_custom_shipment_nonce') ) {
+        return '';
+        wp_die();
+      }
       if ( ! isset($_POST['id']) ) {
         return '';
         wp_die();
@@ -2127,7 +2138,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
 
         </fieldset>
 
-        <input type="hidden" name="pakettikauppa_microtime" value="<?php echo round(microtime(true) * 1000); ?>"/>
+        <input type="hidden" id="pakettikauppa_microtime" name="pakettikauppa_microtime" value="<?php echo round(microtime(true) * 1000); ?>"/>
         <input type="hidden" name="pakettikauppa_order_id[]" value="<?php echo $order->get_id(); ?>"/>
 
       </td>
