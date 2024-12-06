@@ -20,7 +20,8 @@ jQuery(document).ready( function($) {
                 time_from: table.find(".manifest-time-from" ).val(),
                 time_to: table.find(".manifest-time-to" ).val(),
                 additional_info: table.find(".manifest-additional-info" ).val(),
-                id: $(this).attr('data-id')
+                id: $(this).attr('data-id'),
+                _wpnonce: postiManifestData.nonce
               };
             jQuery.post(ajaxurl, data, function(response) {
                 if (response.error !== undefined) {

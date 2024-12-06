@@ -54,6 +54,13 @@ if ( ! class_exists(__NAMESPACE__ . '\Manifest') ) {
                 wp_enqueue_script($this->core->prefix . '_datetimepicker_js', $this->core->dir_url . 'assets/js/jquery.datetimepicker.full.min.js', array( 'jquery' ), $this->core->version, true);
                 wp_enqueue_style($this->core->prefix . '_datetimepicker', $this->core->dir_url . 'assets/css/jquery.datetimepicker.min.css', array(), $this->core->version);
                 wp_enqueue_script($this->core->prefix . '_manifest_js', $this->core->dir_url . 'assets/js/manifest.js', array( 'jquery' ), $this->core->version, true);
+                wp_localize_script(
+                    $this->core->prefix . '_manifest_js',
+                    'postiManifestData',
+                    array(
+                        'nonce' => wp_create_nonce($this->core->prefix . '_manifest_nonce')
+                    )
+                );
                 wp_enqueue_style($this->core->prefix . '_manifest', $this->core->dir_url . 'assets/css/manifest.css', array(), $this->core->version);
             }
         }
@@ -351,6 +358,10 @@ if ( ! class_exists(__NAMESPACE__ . '\Manifest') ) {
 
         public function pk_manifest_call_courier() {
             try {
+                if ( ! wp_verify_nonce(sanitize_key($_POST['_wpnonce']), $this->core->prefix . '_manifest_nonce') ) {
+                    echo json_encode(array('error' => 'Unauthorized request'));
+                    wp_die();
+                }
                 $date = sanitize_text_field($_POST['date']);
                 $time_from = sanitize_text_field($_POST['time_from']);
                 $time_to = sanitize_text_field($_POST['time_to']);
