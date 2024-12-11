@@ -1,7 +1,7 @@
 {
   "apiVersion": 2,
   "name": "pakettikauppa/pickup-point-selection-checkout",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "title": "Posti pickup point selection",
   "category": "woocommerce",
   "description": "Allow to add components for Pakettikauppa shipping method on Checkout page",

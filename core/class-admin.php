@@ -87,6 +87,13 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
 
     public function enqueue_admin_js() {
       wp_enqueue_script($this->core->prefix . '_admin_custom_shipment_js', $this->core->dir_url . 'assets/js/admin_custom_shipment.js', array( 'jquery' ), $this->core->version, true);
+      wp_localize_script(
+        $this->core->prefix . '_admin_custom_shipment_js',
+        'postiCustomShipmentData',
+        array(
+          'nonce' => wp_create_nonce($this->core->prefix . '_custom_shipment_nonce')
+        )
+      );
     }
 
     public function create_custom_shipment_table() {
@@ -159,10 +166,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
 
         <div class="pakettikauppa-notice__content">
           <p>
-            <?php
-            /* translators: %s: Vendor full name */
-            printf(esc_html__('Thank you for installing %s! To get started smoothly, please open our setup wizard.', 'woo-pakettikauppa'), $this->core->vendor_fullname);
-            ?>
+            <?php echo $this->core->text->setup_notice(); ?>
 
             <br />
             <br />
@@ -185,10 +189,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
 
         <div class="pakettikauppa-notice__content">
           <p>
-            <?php
-            /* translators: %s: Vendor full name */
-            printf(esc_html__('Thank you for installing %s! To get started smoothly, please open our setup wizard.', 'woo-pakettikauppa'), $this->core->vendor_fullname);
-            ?>
+            <?php echo $this->core->text->setup_notice(); ?>
 
             <br />
             <br />
@@ -725,6 +726,9 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
     public function admin_enqueue_scripts() {
       wp_enqueue_style($this->core->prefix . '_admin', $this->core->dir_url . 'assets/css/admin.css', array(), $this->core->version);
       wp_enqueue_script($this->core->prefix . '_admin_js', $this->core->dir_url . 'assets/js/admin.js', array( 'jquery' ), $this->core->version, true);
+      wp_localize_script($this->core->prefix . '_admin_js', 'pakettikauppa_params', array(
+        'express_freight_services' => Shipment::get_express_freight_services(),
+      ));
     }
 
     /**
@@ -1263,12 +1267,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
                 <?php endforeach; ?>
               </select>
               <?php else : ?>
-                <?php
-                $settings_url = '/wp-admin/admin.php?page=wc-settings&tab=shipping&section=' . $this->core->shippingmethod;
-                /* translators: %s: Settings page url */
-                $message = sprintf(__('Service not working. Please check <a href="%s">settings</a>.', 'woo-pakettikauppa'), $settings_url);
-                ?>
-                <span class="pakettikauppa-msg-error"><?php echo $message; ?></span>
+                <span class="pakettikauppa-msg-error"><?php echo $this->core->text->service_not_working(); ?></span>
               <?php endif; ?>
 
               <?php foreach ( $all_additional_services as $method_code => $_additional_services ) : ?>
@@ -1381,6 +1380,16 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
                 <?php endif; ?>
               <?php endforeach; ?>
               <?php $settings = $this->shipment->get_settings(); ?>
+              <div class="pakettikauppa_express_freight_pallet_type_block">
+                <h4><?php echo $this->core->text->pallet_type(); ?></h4>
+                <select name="wc_pakettikauppa_express_freight_pallet_type" id="pakettikauppa_express_freight_pallet_type" class="pakettikauppa_metabox_values">
+                  <?php $default_pallet_type = (isset($settings['express_freight_pallet_type'])) ? $settings['express_freight_pallet_type'] : 'CC'; ?>
+                  <?php foreach ( Shipment::get_express_freight_pallet_types() as $pallet_key => $pallet_title ) : ?>
+                    <?php $selected = ($default_pallet_type == $pallet_key) ? 'selected' : ''; ?>
+                    <option value="<?php echo esc_attr($pallet_key); ?>" <?php echo esc_attr($selected); ?>><?php echo esc_html($pallet_title); ?></option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
               <div>
                 <h4><?php echo $this->core->text->additional_info_param_title(); ?></h4>
                 <textarea class="pakettikauppa-additional-info" rows="2"><?php echo $settings['label_additional_info'] ?? ''; ?></textarea>
@@ -1429,9 +1438,9 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
     }
 
     public function get_pickup_point_by_custom_address() {
-      $method_code = $_POST['method'];
-      $custom_address = $_POST['address'];
-      $type = (isset($_POST['type'])) ? $_POST['type'] : null;
+      $method_code = sanitize_text_field($_POST['method']);
+      $custom_address = sanitize_text_field($_POST['address']);
+      $type = (isset($_POST['type'])) ? sanitize_text_field($_POST['type']) : null;
       $pickup_points = $this->get_pickup_points_for_method($method_code, null, null, null, $custom_address, $type);
       if ( $pickup_points == 'error-zip' ) {
         echo $pickup_points;
@@ -1457,8 +1466,8 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
     }
 
     public function update_estimated_shipping_price() {
-      $method_code = $_POST['method'];
-      $order_id = $_POST['order_id'];
+      $method_code = sanitize_text_field($_POST['method']);
+      $order_id = wc_clean($_POST['order_id']);
 
       if ( empty($order_id) ) {
         wp_die();
@@ -1476,7 +1485,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
 
       $selected_point = '';
       if ( ! empty($_POST['point']) ) {
-        preg_match('~\(#(.*?)\)~', $_POST['point'], $selected_point_id);
+        preg_match('~\(#(.*?)\)~', sanitize_text_field($_POST['point']), $selected_point_id);
         if ( ! empty(intval($selected_point_id[1])) ) {
           $selected_point = intval($selected_point_id[1]);
         }
@@ -1529,8 +1538,12 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
     }
 
     public function ajax_check_credentials() {
-      $account_number = $_POST['api_account'];
-      $secret_key = $_POST['api_secret'];
+      if ( ! wp_verify_nonce(sanitize_key($_POST['_wpnonce']), $this->core->prefix . '_nonce') ) {
+        echo json_encode(array('msg' => 'Unauthorized request'));
+        wp_die();
+      }
+      $account_number = sanitize_text_field($_POST['api_account']);
+      $secret_key = trim($_POST['api_secret']);
       $api_check = $this->shipment->check_api_credentials($account_number, $secret_key);
       echo json_encode($api_check);
       wp_die();
@@ -1592,6 +1605,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
           $pickup_point_id = $order->get_meta('_' . $this->core->params_prefix . 'pickup_point_id');
           $selected_products = (! empty($_REQUEST['for_products'])) ? $_REQUEST['for_products'] : array();
           $additional_order_params = (! empty($_REQUEST['additional_params'])) ? $_REQUEST['additional_params'] : array();
+          $pallet_type = (! empty($_REQUEST['pallet_type'])) ? $_REQUEST['pallet_type'] : '';
 
           if ( empty($_REQUEST['custom_method']) ) {
             $additional_services = null;
@@ -1651,6 +1665,9 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
           $extra_params = array();
           if ( isset($_REQUEST['additional_text']) ) {
             $extra_params['additional_text'] = sanitize_textarea_field($_REQUEST['additional_text']);
+          }
+          if ( isset($_REQUEST['package_type']) ) {
+            $extra_params['package_type'] = strtoupper(sanitize_key($_REQUEST['package_type']));
           }
           $extra_params['ignore_product_weight'] = (isset($additional_order_params['ignore_weight']) && filter_var($additional_order_params['ignore_weight'], FILTER_VALIDATE_BOOLEAN));
 
@@ -2059,12 +2076,16 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
     }
 
     public function ajax_get_pickup_points() {
+      if ( ! wp_verify_nonce(sanitize_key($_POST['_wpnonce']), $this->core->prefix . '_custom_shipment_nonce') ) {
+        return '';
+        wp_die();
+      }
       if ( ! isset($_POST['id']) ) {
         return '';
         wp_die();
       }
 
-      $id = $_POST['id'];
+      $id = sanitize_text_field($_POST['id']);
       $this->get_pickup_points_html($id);
       wp_die();
     }
@@ -2112,17 +2133,12 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
             <?php endforeach; ?>
           </select>
           <?php else : ?>
-            <?php
-            $settings_url = '/wp-admin/admin.php?page=wc-settings&tab=shipping&section=' . $this->core->shippingmethod;
-            /* translators: %s: Settings page url */
-            $message = sprintf(__('Service not working. Please check <a href="%s">settings</a>.', 'woo-pakettikauppa'), $settings_url);
-            ?>
-            <span class="pakettikauppa-msg-error"><?php echo $message; ?></span>
+            <span class="pakettikauppa-msg-error"><?php echo $this->core->text->service_not_working(); ?></span>
           <?php endif; ?>
 
         </fieldset>
 
-        <input type="hidden" name="pakettikauppa_microtime" value="<?php echo round(microtime(true) * 1000); ?>"/>
+        <input type="hidden" id="pakettikauppa_microtime" name="pakettikauppa_microtime" value="<?php echo round(microtime(true) * 1000); ?>"/>
         <input type="hidden" name="pakettikauppa_order_id[]" value="<?php echo $order->get_id(); ?>"/>
 
       </td>

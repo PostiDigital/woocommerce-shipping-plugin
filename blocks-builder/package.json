@@ -1,6 +1,6 @@
 {
     "name": "wc-pakettikauppa",
-    "version": "1.0.1",
+    "version": "1.0.3",
     "description": "Extending the functionality of the Pakettikauppa plugin to work with Woocommerce blocks",
     "main": "index.js",
     "scripts": {

@@ -1,3 +1,8 @@
+export const pluginParams = {
+    name: "Posti",
+    pickup_point_error_id: 'posti_pickup_point_error'
+};
+
 export const getPluginStaticData = () => {
     if ( ! wcSettings || ! wcSettings["posti-blocks_data"] ) {
         return [];
@@ -59,7 +64,7 @@ export const getPickupPoints = ( service, destination, type = null ) => {
         console.error('Failed to get ajax URL');
         return [];
     }
-    return fetch(`${pluginData.ajax_url}?action=pakettikauppa_get_pickup_points`, {
+    return fetch(`${pluginData.ajax_url}?action=pakettikauppa_blocks_get_pickup_points`, {
         method: 'POST',
         credentials: 'same-origin',
         headers: {
@@ -67,7 +72,8 @@ export const getPickupPoints = ( service, destination, type = null ) => {
         },
         body: JSON.stringify({
             service: service,
-            destination: destination
+            destination: destination,
+            _wpnonce: pluginData.nonce
         })
     })
     .then(response => response.json())
@@ -83,7 +89,7 @@ export const getCustomPickupPoints = ( service, address, type = null ) => {
         console.error('Failed to get ajax URL');
         return [];
     }
-    return fetch(`${pluginData.ajax_url}?action=pakettikauppa_get_custom_pickup_points`, {
+    return fetch(`${pluginData.ajax_url}?action=pakettikauppa_blocks_get_custom_pickup_points`, {
         method: 'POST',
         credentials: 'same-origin',
         headers: {
@@ -91,7 +97,8 @@ export const getCustomPickupPoints = ( service, address, type = null ) => {
         },
         body: JSON.stringify({
             service: service,
-            address: address
+            address: address,
+            _wpnonce: pluginData.nonce
         })
     })
     .then(response => response.json())

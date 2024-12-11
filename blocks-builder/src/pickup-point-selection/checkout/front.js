@@ -1,7 +1,7 @@
 /**
  * System external functions
  **/
-import { useEffect, useState } from '@wordpress/element';
+import { useEffect, useState, useCallback } from '@wordpress/element';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { SelectControl, RadioControl, TextareaControl, Flex, FlexItem, BaseControl } from '@wordpress/components';
 
@@ -10,8 +10,8 @@ import { SelectControl, RadioControl, TextareaControl, Flex, FlexItem, BaseContr
  **/
 import { txt } from '../global/text';
 import { getActiveShippingRates, getDestination } from '../global/wc';
-import { getPluginStaticData, getCurrentMethod, isMethodHavePickups, isMethodPickupRequired, getPickupPoints, getCustomPickupPoints } from '../global/plugin';
-import { useDebounce, isValidAddress } from '../global/utils';
+import { pluginParams, getPluginStaticData, getCurrentMethod, isMethodHavePickups, isMethodPickupRequired, getPickupPoints, getCustomPickupPoints } from '../global/plugin';
+import { useDebounce, isValidAddress, compareObjects } from '../global/utils';
 
 /**
  * Exporting functions of this file
@@ -21,16 +21,24 @@ export const Block = ({ checkoutExtensionData, extension }) => {
     const { setExtensionData } = checkoutExtensionData;
     const [ activeRates, setActiveRates ] = useState([]);
     const [ currentData, setCurrentData ] = useState({
-        rate: {}
-    });
-    const [ updateList, setUpdateList ] = useState({
-        main: false,
-        custom: false
+        data_loaded: false,
+        rate: null,
+        destination: null,
+        method: null,
+        update_list: 'main',
+        pickup_points: {
+            list: [],
+            type: "",
+            selected: ""
+        },
+        custom_address: "",
+        show_block: false,
+        show_custom: false,
     });
     const [ pickupOptions, setPickupOptions ] = useState([]);
-    const validationErrorId = 'pakettikauppa_pickup_point';
+    const validationErrorId = pluginParams.pickup_point_error_id;
     const [ customAddress, setCustomAddress ] = useState('');
-    const debouncedAddress = useDebounce(customAddress, 2000);
+    const debouncedCustomAddress = useDebounce(customAddress, 2000);
     const [ customAddressError, setCustomAddressError ] = useState('');
     const [ containerErrorClass, setContainerErrorClass ] = useState('');
     
@@ -42,15 +50,36 @@ export const Block = ({ checkoutExtensionData, extension }) => {
         const store = select('wc/store/validation');
         return store.getValidationError(validationErrorId);
     });
-    const shippingRates = useSelect((select) => {
+    const { shippingRates, shippingAddress } = useSelect((select) => {
         const store = select('wc/store/cart');
-        return store.getCartData().shippingRates;
+        return {
+            shippingRates: store.getCartData().shippingRates,
+            shippingAddress: store.getCartData().shippingAddress,
+        };
     });
+    const debouncedShippingAddress = useDebounce(shippingAddress, 1500);
 
     /* Declare the internal functions of this function */
-    function resetUpdateList() {
-        setUpdateList({main: false, custom: false});
+    function showWarning( ...msgs ) {
+        console.log('[' + pluginParams.name + ' warning]', ...msgs);
     }
+
+    /* Check if all required data has been loaded */
+    const isRequiredDataLoaded = useCallback(() => {
+        return currentData.method && currentData.destination;
+    }, [
+        currentData.method, currentData.destination
+    ]);
+
+    useEffect(() => {
+        if (isRequiredDataLoaded()) {
+            setCurrentData({...currentData,
+                data_loaded: true
+            });
+        }
+    }, [
+        isRequiredDataLoaded
+    ]);
 
     /* Detect if shipping rates was changed */
     useEffect(() => {
@@ -61,22 +90,42 @@ export const Block = ({ checkoutExtensionData, extension }) => {
         shippingRates
     ]);
 
-    /* Get selected shipping rate and customer shipping address */
+    /* Detect if shipping address was changed */
     useEffect(() => {
-        if ( activeRates.length ) {
-            for ( let i = 0; i < activeRates.length; i++ ) {
-                if ( activeRates[i].selected ) {
-                    setCurrentData({...currentData,
-                        rate: {
-                            id: activeRates[i].rate_id,
-                            method: activeRates[i].method_id,
-                            instance: activeRates[i].instance_id
-                        },
-                        destination: getDestination(shippingRates)
-                    });
-                    setUpdateList({...updateList, main: true});
-                    break;
-                }
+        if ( ! shippingAddress.country ) {
+            return;
+        }
+        let temp_dest = {
+            country: shippingAddress.country,
+            address: shippingAddress?.address_1 || '',
+            city: shippingAddress?.city || '',
+            postcode: shippingAddress?.postcode || '',
+        };
+        if ( ! compareObjects(currentData.destination, temp_dest) ) {
+            setCurrentData({...currentData,
+                destination: temp_dest,
+                data_loaded: false
+            });
+        }
+    }, [
+        debouncedShippingAddress
+    ]);
+
+    /* Get selected rate ID */
+    useEffect(() => {
+        if ( ! activeRates.length ) {
+            return;
+        }
+        for ( let i = 0; i < activeRates.length; i++ ) {
+            if ( activeRates[i].selected && (! currentData.rate || currentData.rate.id != activeRates[i].rate_id) ) {
+                setCurrentData({...currentData,
+                    rate: {
+                        id: activeRates[i].rate_id,
+                        method: activeRates[i].method_id,
+                        instance: activeRates[i].instance_id
+                    },
+                    data_loaded: false
+                });
             }
         }
     }, [
@@ -85,9 +134,13 @@ export const Block = ({ checkoutExtensionData, extension }) => {
 
     /* Get Pakettikauppa method (service) information assigned to the selected shipping rate in the plugin settings */
     useEffect(() => {
+        if ( ! currentData.rate ) {
+            return;
+        }
+
         let showBlock = false;
         let currentMethod = getCurrentMethod(currentData.rate.instance);
-        if ( JSON.stringify(currentMethod) === JSON.stringify(currentData.method) ) {
+        if ( compareObjects(currentMethod, currentData.method) ) {
             return;
         }
         if ( currentData.rate.id !== '' && currentMethod !== null && currentData.rate.instance ) {
@@ -97,92 +150,100 @@ export const Block = ({ checkoutExtensionData, extension }) => {
         }
         setCurrentData({...currentData,
             method: currentMethod,
-            show_block: showBlock
+            show_block: showBlock,
+            update_list: 'main'
         });
-        setUpdateList({...updateList, main: true});
     }, [
         currentData.rate
     ]);
 
     /* Get pickup points list by customer shipping address */
     useEffect(() => {
-        if ( ! updateList.main || currentData.method === null ) {
+        if ( ! currentData.data_loaded || currentData.update_list != 'main' ) {
             return;
         }
-        if ( currentData.destination === null || ! currentData.method?.service ) {
-            console.warn('[Pakettikauppa]', 'Failed to update pickup points:', 'Method data or destination is empty');
+        if ( ! currentData.method?.service ) {
+            showWarning('Failed to update pickup points:', 'Method data is empty');
             return;
         }
-        setCustomAddress('');
+        //setCustomAddress('');
         getPickupPoints(currentData.method.service, currentData.destination).then(response => {
             let pickup_points_list = [];
             if ( ! response.success ) {
-                console.warn('[Pakettikauppa]', 'Failed to get pickup points:', response.data);
+                showWarning('Failed to get pickup points:', response.data);
             } else if ( response.data ) {
                 pickup_points_list = response.data;
             } else {
-                console.warn('[Pakettikauppa]', 'Failed to get pickup points:', 'Data parameter not received');
+                showWarning('Failed to get pickup points:', 'Data parameter not received');
             }
-            if ( JSON.stringify(pickup_points_list) === JSON.stringify(currentData.pickup_points_list) ) {
+            if ( compareObjects(pickup_points_list, currentData.pickup_points.list) ) {
                 return;
             }
             setCurrentData({...currentData,
-                pickup_points_list: pickup_points_list,
-                pickup_points_list_type: getPluginStaticData().list_type,
-                pickup_point: '',
-                custom_address: '',
+                pickup_points: {
+                    ...currentData.pickup_points,
+                    list: pickup_points_list,
+                    type: getPluginStaticData().list_type,
+                },
                 show_custom: getPluginStaticData().allow_custom_address
             });
         });
-        resetUpdateList();
     }, [
-        updateList
+        currentData.update_list,
+        currentData.data_loaded
     ]);
 
     /* Get pickup points list by value of custom pickup address field */
     useEffect(() => {
-        if ( ! updateList.custom ) {
+        if ( ! currentData.data_loaded || currentData.update_list != 'custom' || ! currentData.custom_address ) {
             return;
         }
-        if ( currentData.method === null ) {
-            console.warn('[Pakettikauppa]', 'Failed to update pickup points by custom address:', 'Method data is empty');
+        if ( ! currentData.method?.service ) {
+            showWarning('Failed to update pickup points by custom address:', 'Method data is empty');
             return;
         }
-        getCustomPickupPoints(currentData.method.service, customAddress).then(response => {
+        getCustomPickupPoints(currentData.method.service, currentData.custom_address).then(response => {
             let pickup_points_list = [];
             if ( ! response.success ) {
-                console.warn('[Pakettikauppa]', 'Failed to get pickup points:', response.data);
+                showWarning('Failed to get pickup points by custom address:', response.data);
             } else if ( response.data ) {
                 pickup_points_list = response.data;
             } else {
-                console.warn('[Pakettikauppa]', 'Failed to get pickup points:', 'Data parameter not received');
+                showWarning('Failed to get pickup points by custom address:', 'Data parameter not received');
             }
             setCurrentData({...currentData,
-                pickup_points_list: pickup_points_list,
-                pickup_point: '',
-                custom_address: customAddress
+                pickup_points: {
+                    ...currentData.pickup_points,
+                    list: pickup_points_list,
+                }
             });
         });
-        resetUpdateList();
     }, [
-        updateList
+        currentData.data_loaded,
+        currentData.update_list
     ]);
 
     /* Execute pickup points list update when custom pickup address field value is no more changing */
     useEffect(() => {
-        if ( currentData.method === null ) {
+        if ( ! currentData.method ) {
             return;
         }
         if ( ! customAddress.length ) {
-            setUpdateList({...updateList, main: true});
+            setCurrentData({...currentData,
+                update_list: 'main',
+                custom_address: ''
+            });
             return;
         }
         if ( customAddress.length < 3 || ! isValidAddress(customAddress) ) {
             return;
         }
-        setUpdateList({...updateList, custom: true});
+        setCurrentData({...currentData,
+            update_list: 'custom',
+            custom_address: customAddress,
+        });
     }, [
-        debouncedAddress
+        debouncedCustomAddress
     ]);
 
     /* Display an error message if an invalid value is entered in the custom pickup address field */
@@ -200,9 +261,13 @@ export const Block = ({ checkoutExtensionData, extension }) => {
 
     /* Build pickup point select field options */
     useEffect(() => {
+        if ( ! currentData.data_loaded ) {
+            return;
+        }
+
         let newPickupOptions = [];
         let label_text = '';
-        if (currentData.pickup_points_list_type === 'menu') {
+        if (currentData.pickup_points.type === 'menu') {
             label_text = '- ' + txt.pickup_select_field_default + ' -';
         }
         if ( ! isMethodPickupRequired(currentData.rate.instance) ) {
@@ -214,11 +279,12 @@ export const Block = ({ checkoutExtensionData, extension }) => {
                 value: ''
             });
         }
-        if ( currentData.pickup_points_list?.length ) {
-            for ( let i = 0; i < currentData.pickup_points_list.length; i++ ) {
+        if ( currentData.pickup_points.list?.length ) {
+            for ( let i = 0; i < currentData.pickup_points.list.length; i++ ) {
+                let pickup_point = currentData.pickup_points.list[i];
                 newPickupOptions.push({
-                    label: currentData.pickup_points_list[i].name + ' (' + currentData.pickup_points_list[i].street_address + ')',
-                    value: currentData.pickup_points_list[i].provider + ': ' + currentData.pickup_points_list[i].name + ' (#' + currentData.pickup_points_list[i].pickup_point_id + ')'
+                    label: pickup_point.name + ' (' + pickup_point.street_address + ')',
+                    value: pickup_point.provider + ': ' + pickup_point.name + ' (#' + pickup_point.pickup_point_id + ')'
                 });
             }
         }
@@ -230,7 +296,7 @@ export const Block = ({ checkoutExtensionData, extension }) => {
         }
         setPickupOptions(newPickupOptions);
     }, [
-        currentData.pickup_points_list
+        currentData.pickup_points?.list
     ]);
 
     /* Save selected pickup point and show error message if not selected */
@@ -240,17 +306,17 @@ export const Block = ({ checkoutExtensionData, extension }) => {
             setContainerErrorClass('');
         }
 
-        if ( ! currentData.rate?.instance || ! isMethodHavePickups(currentData.rate.instance) || ! isMethodPickupRequired(currentData.rate.instance) ) {
+        if ( ! currentData.rate?.instance || ! isMethodHavePickups(currentData.rate.instance) ) {
             return;
         }
 
         setExtensionData(
             'wc-pakettikauppa',
             'pakettikauppa_pickup_point',
-            currentData.pickup_point
+            currentData.pickup_points.selected
         );
 
-        if ( currentData.pickup_point === '' ) {
+        if ( isMethodPickupRequired(currentData.rate.instance) && currentData.pickup_points.selected === '' ) {
             setValidationErrors({
                 [validationErrorId]: {
                     message: txt.pickup_error,
@@ -262,13 +328,13 @@ export const Block = ({ checkoutExtensionData, extension }) => {
     }, [
         setExtensionData,
         currentData.rate?.id,
-        currentData.pickup_point
+        currentData.pickup_points?.selected
     ]);
 
     /* Debug data */
     useEffect(() => {
-        if (false) {
-            console.log('[Debug Pakettikauppa]', currentData);
+        if (false) { //Change to true to enable debug
+            console.log('[' + pluginParams.name + ' debug]', currentData);
         }
     }, [
         currentData
@@ -281,43 +347,53 @@ export const Block = ({ checkoutExtensionData, extension }) => {
 
     return (
         <div className={`pakettikauppa-block pakettikauppa-shipping-pickup-point ${containerErrorClass}`}>
-            {(! currentData.pickup_points_list?.length) ? (
+            {(! currentData.pickup_points.list?.length) ? (
                 <BaseControl label={txt.pickup_block_title}>
                     <p>{txt.pickup_not_found}</p>
                 </BaseControl>
             ) : (
                 <>
-                    {(currentData.pickup_points_list_type === 'list') ? (
+                    {(currentData.pickup_points.type === 'list') ? (
                         <RadioControl
                             label={txt.pickup_block_title}
                             help={txt.checkout_pickup_info}
-                            selected={currentData.pickup_point}
+                            selected={currentData.pickup_points.selected}
                             options={pickupOptions}
-                            onChange={(value) => setCurrentData({...currentData, pickup_point: value})}
+                            onChange={(value) => setCurrentData({...currentData,
+                                pickup_points: {
+                                    ...currentData.pickup_points,
+                                    selected: value
+                                }
+                            })}
                         />
                     ) : (
                         <SelectControl
                             id="pakettikauppa_pickup_point"
                             label={txt.pickup_block_title}
                             help={txt.checkout_pickup_info}
-                            value={currentData.pickup_point}
+                            value={currentData.pickup_points.selected}
                             options={pickupOptions}
-                            onChange={(value) => setCurrentData({...currentData, pickup_point: value})}
+                            onChange={(value) => setCurrentData({...currentData,
+                                pickup_points: {
+                                    ...currentData.pickup_points,
+                                    selected: value
+                                }
+                            })}
                         />
                     )}
-                    {(validationError?.hidden || currentData.pickup_point !== '') ? null : (
-                        <div className="wc-block-components-validation-error">
-                            <span>{validationError?.message}</span>
-                        </div>
-                    )}
                 </>
+            )}
+            {(validationError?.hidden || currentData.pickup_points.selected !== '') ? null : (
+                <div className="wc-block-components-validation-error">
+                    <span>{validationError?.message}</span>
+                </div>
             )}
 
             {(! currentData.custom_address) ? null : (
                 <p className={`pakettikauppa-custom-text`}>{txt.custom_pickup_address.replaceAll('%s', '"' + currentData.custom_address + '"')}</p>
             )}
 
-            {(! currentData.show_custom || (currentData.pickup_point !== 'other' && currentData.pickup_points_list?.length)) ? null : (
+            {(! currentData.show_custom || (currentData.pickup_points.selected !== 'other' && currentData.pickup_points.list?.length)) ? null : (
                 <>
                     <TextareaControl
                         label={txt.custom_pickup_title}

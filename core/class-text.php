@@ -63,19 +63,8 @@ if ( ! class_exists(__NAMESPACE__ . '\Text') ) {
       return __('Can not connect to server - please check API credentials, servers error log and firewall settings.', 'woo-pakettikauppa');
     }
 
-    public function legacy_shipping_method_desc( $vendor_name = null ) {
-      if ( ! $vendor_name ) {
-        $vendor_name = \esc_html($this->core->vendor_name);
-      }
-
-      return sprintf(
-        /* translators: Vendor name, not translatable */
-        __(
-          'Only use this shipping method if no other shipping methods are available and suitable. Using this shipping method is not required to be able to use %s plugin.',
-          'woo-pakettikauppa'
-        ),
-        $vendor_name
-      );
+    public function legacy_shipping_method_desc() {
+      return __('Only use this shipping method if no other shipping methods are available and suitable. Using this shipping method is not required to be able to use Posti Shipping plugin.', 'woo-pakettikauppa');
     }
 
     public function shipping_methods() {
@@ -145,8 +134,11 @@ if ( ! class_exists(__NAMESPACE__ . '\Text') ) {
     }
 
     public function setup_intro() {
-      /* translators: %s: Vendor full name */
-      return sprintf(esc_html__('Thank you for installing %s! This wizard will guide you through the setup process to get you started.', 'woo-pakettikauppa'), $this->core->vendor_fullname);
+      return esc_html__('Thank you for installing Posti Shipping! This wizard will guide you through the setup process to get you started.', 'woo-pakettikauppa');
+    }
+
+    public function setup_notice() {
+      return esc_html__('Thank you for installing Posti Shipping! To get started smoothly, please open our setup wizard.', 'woo-pakettikauppa');
     }
 
     public function setup_credential_info( $vendor_name = null, $vendor_url = null ) {
@@ -259,15 +251,8 @@ if ( ! class_exists(__NAMESPACE__ . '\Text') ) {
       return __('API secret', 'woo-pakettikauppa');
     }
 
-    public function api_secret_desc( $vendor_name ) {
-      return sprintf(
-        /*
-         * translators:
-         * %1$s: Vendor name, not translatable
-         */
-        __('API secret provided by %1$s', 'woo-pakettikauppa'),
-        \esc_html($vendor_name)
-      );
+    public function api_secret_desc() {
+      return __('API secret provided by Posti', 'woo-pakettikauppa');
     }
 
     public function pickup_points_title() {
@@ -573,6 +558,18 @@ if ( ! class_exists(__NAMESPACE__ . '\Text') ) {
 
     public function created_return_label() {
       return __('Created return label', 'woo-pakettikauppa');
+    }
+
+    public function express_freight_default_pallet_type() {
+      return __('Express-freight default pallet type', 'woo-pakettikauppa');
+    }
+
+    public function pallet_type() {
+      return __('Pallet type', 'woo-pakettikauppa');
+    }
+
+    public function service_not_working() {
+      return __('Service not working. Please check the settings.', 'woo-pakettikauppa');
     }
   }
 }
