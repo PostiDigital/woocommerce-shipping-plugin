@@ -87,6 +87,13 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
 
     public function enqueue_admin_js() {
       wp_enqueue_script($this->core->prefix . '_admin_custom_shipment_js', $this->core->dir_url . 'assets/js/admin_custom_shipment.js', array( 'jquery' ), $this->core->version, true);
+      wp_localize_script(
+        $this->core->prefix . '_admin_custom_shipment_js',
+        'postiCustomShipmentData',
+        array(
+          'nonce' => wp_create_nonce($this->core->prefix . '_custom_shipment_nonce')
+        )
+      );
     }
 
     public function create_custom_shipment_table() {
@@ -1431,9 +1438,9 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
     }
 
     public function get_pickup_point_by_custom_address() {
-      $method_code = $_POST['method'];
-      $custom_address = $_POST['address'];
-      $type = (isset($_POST['type'])) ? $_POST['type'] : null;
+      $method_code = sanitize_text_field($_POST['method']);
+      $custom_address = sanitize_text_field($_POST['address']);
+      $type = (isset($_POST['type'])) ? sanitize_text_field($_POST['type']) : null;
       $pickup_points = $this->get_pickup_points_for_method($method_code, null, null, null, $custom_address, $type);
       if ( $pickup_points == 'error-zip' ) {
         echo $pickup_points;
@@ -1459,8 +1466,8 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
     }
 
     public function update_estimated_shipping_price() {
-      $method_code = $_POST['method'];
-      $order_id = $_POST['order_id'];
+      $method_code = sanitize_text_field($_POST['method']);
+      $order_id = wc_clean($_POST['order_id']);
 
       if ( empty($order_id) ) {
         wp_die();
@@ -1478,7 +1485,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
 
       $selected_point = '';
       if ( ! empty($_POST['point']) ) {
-        preg_match('~\(#(.*?)\)~', $_POST['point'], $selected_point_id);
+        preg_match('~\(#(.*?)\)~', sanitize_text_field($_POST['point']), $selected_point_id);
         if ( ! empty(intval($selected_point_id[1])) ) {
           $selected_point = intval($selected_point_id[1]);
         }
@@ -1531,8 +1538,12 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
     }
 
     public function ajax_check_credentials() {
-      $account_number = $_POST['api_account'];
-      $secret_key = $_POST['api_secret'];
+      if ( ! wp_verify_nonce(sanitize_key($_POST['_wpnonce']), $this->core->prefix . '_nonce') ) {
+        echo json_encode(array('msg' => 'Unauthorized request'));
+        wp_die();
+      }
+      $account_number = sanitize_text_field($_POST['api_account']);
+      $secret_key = trim($_POST['api_secret']);
       $api_check = $this->shipment->check_api_credentials($account_number, $secret_key);
       echo json_encode($api_check);
       wp_die();
@@ -2065,12 +2076,16 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
     }
 
     public function ajax_get_pickup_points() {
+      if ( ! wp_verify_nonce(sanitize_key($_POST['_wpnonce']), $this->core->prefix . '_custom_shipment_nonce') ) {
+        return '';
+        wp_die();
+      }
       if ( ! isset($_POST['id']) ) {
         return '';
         wp_die();
       }
 
-      $id = $_POST['id'];
+      $id = sanitize_text_field($_POST['id']);
       $this->get_pickup_points_html($id);
       wp_die();
     }
@@ -2123,7 +2138,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
 
         </fieldset>
 
-        <input type="hidden" name="pakettikauppa_microtime" value="<?php echo round(microtime(true) * 1000); ?>"/>
+        <input type="hidden" id="pakettikauppa_microtime" name="pakettikauppa_microtime" value="<?php echo round(microtime(true) * 1000); ?>"/>
         <input type="hidden" name="pakettikauppa_order_id[]" value="<?php echo $order->get_id(); ?>"/>
 
       </td>

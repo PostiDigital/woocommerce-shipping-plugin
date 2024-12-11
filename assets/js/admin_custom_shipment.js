@@ -62,6 +62,7 @@ jQuery(function ($) {
         var data = {
             action: 'pakettikauppa_get_pickup_points',
             id: id,
+            _wpnonce: postiCustomShipmentData.nonce
         };
         $.post(ajaxurl, data, function (response) {
             $('#woo-pakettikauppa_'+id+' fieldset#wc_pakettikauppa_custom_shipping_method').append(response);
