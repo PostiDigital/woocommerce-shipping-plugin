@@ -1745,7 +1745,12 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
           $additional_services[] = array('9902' => array());
         }
 
-        $shipment = $this->shipment->create_shipment_from_order($order, $return_service_id, $additional_services);
+        $extra_params = array();
+        if ( in_array($service_id, array('2101', '2102', '2124', '2142', '2143', '2144', '2145')) ) {
+          $extra_params['switch_sender_receiver'] = true;
+        }
+
+        $shipment = $this->shipment->create_shipment_from_order($order, $return_service_id, $additional_services, array(), $extra_params);
 
         if ( $shipment !== null ) {
           $tracking_code = null;
