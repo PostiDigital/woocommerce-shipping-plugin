@@ -82,12 +82,10 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
       $shipping_method = $this->get_core()->shippingmethod;
       $field_pref = 'woocommerce_' . $shipping_method . '_';
       $configs = $this->get_core()->api_config;
-      if ( isset($_POST[$field_pref . 'mode']) ) {
-        $settings['mode'] = wc_clean($_POST[$field_pref . 'mode']);
+      if ( isset($_POST[$field_pref . 'account_number']) ) {
         $settings['account_number'] = sanitize_text_field($_POST[$field_pref . 'account_number']);
         $settings['secret_key'] = trim($_POST[$field_pref . 'secret_key']);
       }
-      $mode = $settings['mode'];
 
       wp_localize_script( // Passing values to JS instead of directly inserting into JS code
         $this->get_core()->prefix . '_admin_js',
@@ -117,26 +115,19 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
             },
             dataType: 'json'
           }).done(function( status ) {
-            <?php if ( $mode == 'production' ) : ?>
-              hide_mode_react(status.api_good);
-              if (status.api_good) {
-                show_api_notice("", false);
-              } else {
-                var msg = status.msg;
-                if (status.error) {
-                  msg += ".<br/><b><?php _e('Error', 'woo-pakettikauppa'); ?>:</b> " + status.error;
-                }
-                if (status.code) {
-                  msg += " <i>(<?php _e('Code', 'woo-pakettikauppa'); ?> " + status.code + ")</i>";
-                }
-                show_api_notice(msg, true);
+            hide_mode_react(status.api_good);
+            if (status.api_good) {
+              show_api_notice("", false);
+            } else {
+              var msg = status.msg;
+              if (status.error) {
+                msg += ".<br/><b><?php _e('Error', 'woo-pakettikauppa'); ?>:</b> " + status.error;
               }
-            <?php endif; ?>
-          });
-
-          $( document ).on("change", "#woocommerce_pakettikauppa_shipping_method_mode", function() {
-            hide_mode_react();
-            show_api_notice("", false);
+              if (status.code) {
+                msg += " <i>(<?php _e('Code', 'woo-pakettikauppa'); ?> " + status.code + ")</i>";
+              }
+              show_api_notice(msg, true);
+            }
           });
         });
 
@@ -437,13 +428,6 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
       return $html;
     }
 
-    protected function get_form_field_mode() {
-      return array(
-        'type'    => 'hidden',
-        'default' => 'production',
-      );
-    }
-
     public function generate_hidden_html( $key, $args )
     {
       $field_key = $this->get_field_key($key);
@@ -464,8 +448,6 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
           'type'  => 'title',
           'class' => 'hidden',
         ),
-
-        'mode'                       => $this->get_form_field_mode(),
 
         'account_number'             => array(
           'title'    => $this->get_core()->text->api_key_title(),

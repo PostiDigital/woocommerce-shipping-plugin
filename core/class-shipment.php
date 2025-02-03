@@ -209,7 +209,8 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
       } else {
         try {
           $configs = $this->core->api_config;
-          if ( ! empty($configs['production']['use_posti_auth']) ) {
+          $mode = $this->core->api_mode;
+          if ( ! empty($configs[$mode]['use_posti_auth']) ) {
             $token = $this->client->getToken();
             if ( empty($token) ) {
               $status['api_good'] = false;
@@ -816,7 +817,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
 
       $account_number = isset($settings['account_number']) ? $settings['account_number'] : '';
       $secret_key     = isset($settings['secret_key']) ? $settings['secret_key'] : '';
-      $mode           = isset($settings['mode']) ? $settings['mode'] : 'test';
+      $mode           = $this->core->api_mode;
 
       if ( empty($this->config[$mode]) ) {
           $this->config[$mode] = array();
@@ -1721,9 +1722,8 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
         // $this->settings = get_option('woocommerce_pakettikauppa_shipping_method_settings', array());
         if ( empty($this->settings) ) {
           $this->settings = array(
-            'mode' => 'test',
-            'account_number' => '00000000-0000-0000-0000-000000000000',
-            'secret_key' => '1234567890ABCDEF',
+            'account_number' => '',
+            'secret_key' => '',
             'pickup_points' => '',
             'sender_name' => get_bloginfo('name'),
             'sender_address' => get_option('woocommerce_store_address'),

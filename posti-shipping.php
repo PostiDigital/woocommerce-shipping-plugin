@@ -79,11 +79,6 @@ $instance = new Woo_Posti_Shipping(
         'use_posti_auth' => true,
         'posti_auth_url' => 'https://oauth.posti.com',
       ],
-      'test' => [
-        'base_uri' => 'https://nextshipping.posti.fi',
-        'use_posti_auth' => true,
-        'posti_auth_url' => 'https://oauth.posti.com',
-      ], 
     ], // Overrides defaults and UI settings
     'tracking_base_url' => 'https://www.posti.fi/fi/seuranta#/lahetys/',
     'order_pickup' => true, //enable or disable order pickup feature
