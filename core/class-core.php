@@ -40,6 +40,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Core') ) {
 
     public $api_config; // Used by Pakettikauppa\Client
     public $api_comment; // Used by ^
+    public $api_mode;
 
     public $order_pickup;
     public $order_pickup_url;
@@ -94,7 +95,8 @@ if ( ! class_exists(__NAMESPACE__ . '\Core') ) {
 
       $this->text = $this->load_text_class();
 
-      $this->api_config = $config['pakettikauppa_api_config'] ?? array();
+      $this->api_config = apply_filters('posti_api_configs', $config['pakettikauppa_api_config'] ?? array());
+      $this->api_mode = apply_filters('posti_api_mode', 'production');
       $this->api_comment = $config['pakettikauppa_api_comment'] ?? 'From WooCommerce';
 
       $this->order_pickup = $config['order_pickup'] ?? false;

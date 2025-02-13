@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Posti Shipping
- * Version: 3.10.4
+ * Version: 3.10.5
  * Plugin URI: https://github.com/PostiDigital/woocommerce-shipping-plugin
  * Description: Posti shipping service for WooCommerce.
  * Author: Posti
@@ -11,9 +11,9 @@
  * License: GPL v3 or later
  *
  * Requires at least: 5.0
- * Tested up to: 6.5.5
+ * Tested up to: 6.7.2
  * WC requires at least: 3.4
- * WC tested up to: 9.0.2
+ * WC tested up to: 9.6.0
  * Requires PHP: 7.1
  *
  * Copyright: © 2017-2019 Seravo Oy, 2020-2024 Posti Oy
@@ -79,11 +79,6 @@ $instance = new Woo_Posti_Shipping(
         'use_posti_auth' => true,
         'posti_auth_url' => 'https://oauth.posti.com',
       ],
-      'test' => [
-        'base_uri' => 'https://nextshipping.posti.fi',
-        'use_posti_auth' => true,
-        'posti_auth_url' => 'https://oauth.posti.com',
-      ], 
     ], // Overrides defaults and UI settings
     'tracking_base_url' => 'https://www.posti.fi/fi/seuranta#/lahetys/',
     'order_pickup' => true, //enable or disable order pickup feature

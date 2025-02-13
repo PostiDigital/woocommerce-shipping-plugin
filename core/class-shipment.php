@@ -209,7 +209,8 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
       } else {
         try {
           $configs = $this->core->api_config;
-          if ( ! empty($configs['production']['use_posti_auth']) ) {
+          $mode = $this->core->api_mode;
+          if ( ! empty($configs[$mode]['use_posti_auth']) ) {
             $token = $this->client->getToken();
             if ( empty($token) ) {
               $status['api_good'] = false;
@@ -816,7 +817,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
 
       $account_number = isset($settings['account_number']) ? $settings['account_number'] : '';
       $secret_key     = isset($settings['secret_key']) ? $settings['secret_key'] : '';
-      $mode           = isset($settings['mode']) ? $settings['mode'] : 'test';
+      $mode           = $this->core->api_mode;
 
       if ( empty($this->config[$mode]) ) {
           $this->config[$mode] = array();
@@ -921,34 +922,36 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
       $shipping_phone = $order->get_shipping_phone();
       $shipping_email = $order->get_meta('_shipping_email', true);
 
+      $sender_data = $this->get_sender_data();
+      $receiver_data = $this->get_receiver_data($order, $sender_data['country']);
+      if ( isset($extra_params['switch_sender_receiver']) ) {
+        $tmp_sender_data = $sender_data;
+        $sender_data = $receiver_data;
+        $receiver_data = $tmp_sender_data;
+      }
+
       $sender = new Sender();
-      $sender->setName1($this->settings['sender_name']);
-      $sender->setAddr1($this->settings['sender_address']);
-      $sender->setPostcode($this->settings['sender_postal_code']);
-      $sender->setCity($this->settings['sender_city']);
-      $sender->setPhone($this->settings['sender_phone']);
-      // $sender->setEmail($this->settings['sender_email']);
-      $sender->setCountry((empty($this->settings['sender_country']) ? 'FI' : $this->settings['sender_country']));
+      $sender->setName1($sender_data['name1']);
+      $sender->setName2($sender_data['name2']);
+      $sender->setAddr1($sender_data['address1']);
+      $sender->setAddr2($sender_data['address2']);
+      $sender->setPostcode($sender_data['postcode']);
+      $sender->setCity($sender_data['city']);
+      $sender->setPhone($sender_data['phone']);
+      // $sender->setEmail($sender_data['email']);
+      $sender->setCountry($sender_data['country']);
       $shipment->setSender($sender);
 
       $receiver = new Receiver();
-      $order_company = $order->get_shipping_company();
-      $order_name = $order->get_formatted_shipping_full_name();
-      if ( ! empty($order_company) ) {
-        $receiver->setName1($order_company);
-        $receiver->setName2($order_name);
-      } else {
-        $receiver->setName1($order_name);
-      }
-      $receiver->setAddr1($order->get_shipping_address_1());
-      $receiver->setAddr2($order->get_shipping_address_2());
-      $receiver->setPostcode($order->get_shipping_postcode());
-      $receiver->setCity($order->get_shipping_city());
-      $receiver_country = empty($order->get_shipping_country()) ? $order->get_billing_country() : $order->get_shipping_country();
-      $receiver_country = empty($receiver_country) ? $sender->getCountry() : $receiver_country;
-      $receiver->setCountry(empty($receiver_country) ? 'FI' : $receiver_country);
-      $receiver->setEmail(! empty($shipping_email) ? $shipping_email : $order->get_billing_email());
-      $receiver->setPhone(! empty($shipping_phone) ? $shipping_phone : $order->get_billing_phone());
+      $receiver->setName1($receiver_data['name1']);
+      $receiver->setName2($receiver_data['name2']);
+      $receiver->setAddr1($receiver_data['address1']);
+      $receiver->setAddr2($receiver_data['address2']);
+      $receiver->setPostcode($receiver_data['postcode']);
+      $receiver->setCity($receiver_data['city']);
+      $receiver->setCountry($receiver_data['country']);
+      $receiver->setEmail($receiver_data['email']);
+      $receiver->setPhone($receiver_data['phone']);
       $shipment->setReceiver($receiver);
 
       $parcel_total_count = 1;
@@ -1128,6 +1131,41 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
       }
 
       return $this->client->getResponse();
+    }
+
+    private function get_sender_data() {
+      return array(
+        'name1' => $this->settings['sender_name'],
+        'name2' => null,
+        'address1' => $this->settings['sender_address'],
+        'address2' => null,
+        'postcode' => $this->settings['sender_postal_code'],
+        'city' => $this->settings['sender_city'],
+        'phone' => $this->settings['sender_phone'],
+        'email' => $this->settings['sender_email'],
+        'country' => (empty($this->settings['sender_country']) ? 'FI' : $this->settings['sender_country'])
+      );
+    }
+
+    private function get_receiver_data( $order, $default_country ) {
+      $company = $order->get_shipping_company();
+      $name = $order->get_formatted_shipping_full_name();
+      $country = empty($order->get_shipping_country()) ? $order->get_billing_country() : $order->get_shipping_country();
+      $country = empty($country) ? $default_country : $country;
+      $phone = $order->get_shipping_phone();
+      $email = $order->get_meta('_shipping_email', true);
+
+      return array(
+        'name1' => (! empty($company)) ? $company : $name,
+        'name2' => (! empty($company)) ? $name : null,
+        'address1' => $order->get_shipping_address_1(),
+        'address2' => $order->get_shipping_address_2(),
+        'postcode' => $order->get_shipping_postcode(),
+        'city' => $order->get_shipping_city(),
+        'phone' => (! empty($phone)) ? $phone : $order->get_billing_phone(),
+        'email' => (! empty($email)) ? $email : $order->get_billing_email(),
+        'country' => empty($country) ? 'FI' : $country
+      );
     }
 
     private function prepare_additional_info_text( $values = array(), $custom_text = false ) {
@@ -1684,9 +1722,8 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
         // $this->settings = get_option('woocommerce_pakettikauppa_shipping_method_settings', array());
         if ( empty($this->settings) ) {
           $this->settings = array(
-            'mode' => 'test',
-            'account_number' => '00000000-0000-0000-0000-000000000000',
-            'secret_key' => '1234567890ABCDEF',
+            'account_number' => '',
+            'secret_key' => '',
             'pickup_points' => '',
             'sender_name' => get_bloginfo('name'),
             'sender_address' => get_option('woocommerce_store_address'),
