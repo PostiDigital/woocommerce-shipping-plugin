@@ -1,8 +1,8 @@
 === Posti Shipping ===
 Contributors: joosev, ottok, leotoikka, serter, k1sul1
-Tags: woocommerce, shipping, toimitustavat, smartship, posti, smartpost, prinetti
+Tags: woocommerce, shipping, toimitustavat, smartship, posti
 Requires at least: 5.0
-Tested up to: 6.6.1
+Tested up to: 6.7.2
 Requires PHP: 7.1
 Stable tag: trunk
 License: GPLv3 or later
@@ -51,6 +51,9 @@ Yes! If you encounter any issues related to this plugin, please report at https:
 4. Settings screen in admin
 
 == Changelog ==
+= 3.10.5 =
+* Bug fix for Express-parcel return
+
 = 3.10.4 =
 * Fix for possible Cross Site Request Forgery (CSRF) vulnerability
 
