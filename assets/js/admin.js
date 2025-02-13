@@ -281,6 +281,9 @@ jQuery(function( $ ) {
 
   $(document).ready(function(){
     pakettikauppa_meta_box_check_service($('#pakettikauppa-service'));
+    if (document.getElementById("pakettikauppa-service") && document.getElementById("pakettikauppa-service").value == '__NULL__') {
+      $(".pakettikauppa_express_freight_pallet_type_block").hide();
+    }
   });
 });
 
