@@ -51,6 +51,9 @@ Yes! If you encounter any issues related to this plugin, please report at https:
 4. Settings screen in admin
 
 == Changelog ==
+= 3.10.6 =
+* Bug fix for pallet type in parcel shipments
+
 = 3.10.5 =
 * Bug fix for Express-parcel return
 
