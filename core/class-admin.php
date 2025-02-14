@@ -1666,7 +1666,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
           if ( isset($_REQUEST['additional_text']) ) {
             $extra_params['additional_text'] = sanitize_textarea_field($_REQUEST['additional_text']);
           }
-          if ( isset($_REQUEST['package_type']) ) {
+          if ( isset($_REQUEST['package_type']) && in_array($service_id, Shipment::get_express_freight_services()) ) {
             $extra_params['package_type'] = strtoupper(sanitize_key($_REQUEST['package_type']));
           }
           $extra_params['ignore_product_weight'] = (isset($additional_order_params['ignore_weight']) && filter_var($additional_order_params['ignore_weight'], FILTER_VALIDATE_BOOLEAN));
