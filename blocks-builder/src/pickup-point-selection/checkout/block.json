@@ -4,7 +4,7 @@
     "version": "1.0.2",
     "title": "Posti pickup point selection",
     "category": "woocommerce",
-    "description": "Allow to add components for Pakettikauppa shipping method on Checkout page",
+    "description": "Allow to add components for Posti shipping method on Checkout page",
     "parent": ["woocommerce/checkout-shipping-methods-block"],
     "supports": {
         "html": false,

@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "title": "Posti pickup point information",
   "category": "woocommerce",
-  "description": "Allow to add components for Pakettikauppa shipping method on Cart page",
+  "description": "Allow to add components for Posti shipping method on Cart page",
   "parent": [
     "woocommerce/cart-order-summary-block"
   ],
