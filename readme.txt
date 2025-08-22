@@ -2,7 +2,7 @@
 Contributors: joosev, ottok, leotoikka, serter, k1sul1
 Tags: woocommerce, shipping, toimitustavat, smartship, posti
 Requires at least: 5.0
-Tested up to: 6.7.2
+Tested up to: 6.8
 Requires PHP: 7.1
 Stable tag: trunk
 License: GPLv3 or later
@@ -51,6 +51,9 @@ Yes! If you encounter any issues related to this plugin, please report at https:
 4. Settings screen in admin
 
 == Changelog ==
+= 3.10.7 =
+* Tested against Wordpress 6.8 and WooCommerce 9.8.2
+
 = 3.10.6 =
 * Bug fix for pallet type in parcel shipments
 
