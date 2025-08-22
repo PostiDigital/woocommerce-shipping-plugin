@@ -110,8 +110,14 @@ if ( ! class_exists(__NAMESPACE__ . '\Core') ) {
       add_action(
         'plugins_loaded', //'wp_loaded',
         function() {
-          $this->load();
           $this->load_textdomain();
+          $this->load_pre_init();
+        }
+      );
+      add_action(
+        'init', //'wp_loaded',
+        function() {
+          $this->load();
         }
       );
       $this->load_shipping_method();
@@ -144,6 +150,19 @@ if ( ! class_exists(__NAMESPACE__ . '\Core') ) {
      */
     public function can_load() {
       return true;
+    }
+
+    public function load_pre_init() {
+      if ( ! $this->can_load() ) {
+        return;
+      }
+
+      if ( is_admin() ) {
+        if ( $this->order_pickup ) {
+          //load manifest class
+          $this->load_manifest_class();
+        }
+      }
     }
 
     public function load() {
@@ -206,11 +225,6 @@ if ( ! class_exists(__NAMESPACE__ . '\Core') ) {
         }
         //load check tool class
         $this->load_check_tool_class();
-
-        if ( $this->order_pickup ) {
-          //load manifest class
-          $this->load_manifest_class();
-        }
       }
 
       // Always load classes
