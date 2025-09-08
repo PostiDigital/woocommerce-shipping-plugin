@@ -8,6 +8,8 @@ if ( ! defined('ABSPATH') ) {
   exit;
 }
 
+require_once 'class-shipment.php';
+
 if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
   /**
    * Shipping_Method Class

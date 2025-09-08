@@ -6,6 +6,8 @@ if ( ! defined('ABSPATH') ) {
   exit();
 }
 
+require_once 'class-shipment.php';
+
 if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
   /**
    * Admin Class

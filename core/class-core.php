@@ -7,6 +7,8 @@ if ( ! defined('ABSPATH') ) {
   exit;
 }
 
+require_once 'class-shipment.php';
+
 if ( ! class_exists(__NAMESPACE__ . '\Core') ) {
   abstract class Core {
     public $version = null;
@@ -384,7 +386,6 @@ if ( ! class_exists(__NAMESPACE__ . '\Core') ) {
      * Override this method to load a custom Shipment class
      */
     protected function load_shipment_class() {
-      require_once 'class-shipment.php';
 
       $shipment = new Shipment($this);
       $shipment->load();
