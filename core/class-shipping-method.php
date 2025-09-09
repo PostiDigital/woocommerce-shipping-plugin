@@ -436,6 +436,10 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
     }
 
     private function my_global_form_fields() {
+      if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
+        require_once 'class-shipment.php';
+      }
+
       $wc_countries = new WC_Countries();
 
       $fields = array(
