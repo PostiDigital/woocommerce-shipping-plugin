@@ -51,6 +51,9 @@ Yes! If you encounter any issues related to this plugin, please report at https:
 4. Settings screen in admin
 
 == Changelog ==
+= 3.10.8 =
+* Fix for shipment class load
+
 = 3.10.7 =
 * Tested against Wordpress 6.8 and WooCommerce 9.8.2
 
