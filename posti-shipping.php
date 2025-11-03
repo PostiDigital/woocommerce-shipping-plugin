@@ -77,7 +77,7 @@ $instance = new Woo_Posti_Shipping(
       'production' => [
         'base_uri' => 'https://nextshipping.posti.fi',
         'use_posti_auth' => true,
-        'posti_auth_url' => 'https://oauth.posti.com',
+        'posti_auth_url' => 'https://oauth2.posti.com',
       ],
     ], // Overrides defaults and UI settings
     'tracking_base_url' => 'https://www.posti.fi/fi/seuranta#/lahetys/',
