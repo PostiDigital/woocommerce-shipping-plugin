@@ -51,6 +51,10 @@ Yes! If you encounter any issues related to this plugin, please report at https:
 4. Settings screen in admin
 
 == Changelog ==
+
+= 3.10.9 =
+* Fix for OAuth endpoint
+
 = 3.10.8 =
 * Fix for shipment class load
 
