@@ -103,9 +103,12 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
     }
 
     public function add_admin_notice( $msg, $type ) {
-      if ( ! session_id() ) {
-        session_start();
-      }
+	    if (session_status() === PHP_SESSION_NONE) {
+	    if (!is_dir(ini_get('session.save_path'))) {
+	        ini_set('session.save_path', '/var/cpanel/php/sessions/ea-php82');
+	    }
+	    session_start();
+	}
       if ( ! isset($_SESSION['pakettikauppa_notices']) ) {
         $_SESSION['pakettikauppa_notices'] = array();
       }
