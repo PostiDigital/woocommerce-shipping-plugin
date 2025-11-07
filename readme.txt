@@ -12,7 +12,7 @@ This plugin enables WooCommerce orders to ship using Posti.
 
 == Description ==
 
-[Posti](https://www.posti.fi/) is a shipping service provider in Finland. This plugin integrates Posti’s parcel shipping services into WooCommerce. To start shipping, all your WooCommerce needs is this plugin and API credentials of your account registered with Posti. Order API credentials to use the plugin. (https://www.posti.fi/fi/yrityksille/tehosta-logistiikkaa/digitaaliset-palvelut-ja-rajapinnat/verkkokaupan-lisaosat)
+[Posti](https://www.posti.fi/) is a shipping service provider in Finland. This plugin integrates Posti’s parcel shipping services into WooCommerce. To start shipping, all your WooCommerce needs is this plugin and API credentials of your account registered with Posti. Order API credentials to use the plugin. (https://www.posti.fi/yrityksille/asiakastuki/ohjeet/verkkokaupan-integraatiot)
 
 This plugin requires at least WooCommerce version 4.7.0.
 
@@ -41,7 +41,7 @@ This plugin can also be installed directly from Github.
 
 = Is this ready for production use? =
 
-Yes! If you encounter any issues related to this plugin, please report at https://github.com/Seravo/woo-pakettikauppa/issues or [Posti customer service](https://www.posti.fi/verkkokauppiaat/)
+Yes! If you encounter any issues related to this plugin, please report at [Posti customer service](https://www.posti.fi/yrityksille/asiakastuki)
 
 == Screenshots ==
 
