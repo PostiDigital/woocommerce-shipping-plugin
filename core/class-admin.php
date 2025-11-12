@@ -480,18 +480,18 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
       }
 
       if ( $action === null ) {
-        return;
+        return $redirect_to;
       }
 
       if ( $action === $this->core->params_prefix . 'create_custom_shipments' ) {
         return add_query_arg('id', $ids, menu_page_url('bulk-create-custom-shipment'));
       }
 
-      if ( $action !== $this->core->params_prefix . 'create_multiple_shipping_labels' ) {
-        return;
+      if ( $action === $this->core->params_prefix . 'create_multiple_shipping_labels' ) {
+        return $this->create_multiple_shipments($redirect_to, $ids);
       }
 
-      return $this->create_multiple_shipments($redirect_to, $ids);
+      return $redirect_to;
     }
 
     /**
@@ -504,7 +504,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
      */
     public function create_multiple_shipments( $redirect_to, $ids ) {
       if ( ! is_array($ids) ) {
-        return;
+        return $redirect_to;
       }
 
       $order_ids = array();
@@ -523,7 +523,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
 
       $contents = $this->fetch_shipping_labels($tracking_codes);
       if ( ! $contents ) {
-        return;
+        return $redirect_to;
       }
 
       if ( $contents->{'response.file'}->__toString() === '' ) {
