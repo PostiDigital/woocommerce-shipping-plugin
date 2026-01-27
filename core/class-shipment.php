@@ -843,9 +843,9 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
         $lock_name      = $this->core->prefix . '_access_token_lock';
 
         $lock_ttl = 30; // seconds
-        $loop_wait = 200000; // milliseconds * 1000
+        $loop_wait = 200000; // 200ms in microseconds
         $max_wait = 10; // seconds
-        $max_loops = ($max_wait * 1000000) / $loop_wait; // calculate how many loops fit into max wait
+        $max_loops = (int) (($max_wait * 1000000) / $loop_wait); // calculate how many loops fit into max wait
 
         $token = get_transient($transient_name);
 
@@ -885,6 +885,9 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
 
               if ( get_transient($lock_name) === false ) {
                 // lock gone but token still missing
+                $this->showTokenError((object)[
+                  'message' => sprintf(__('Failed to obtain access token (%s)', 'woo-pakettikauppa'), __('lock expired', 'woo-pakettikauppa'))
+                ]);
                 return;
               }
             }
@@ -892,7 +895,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
             // timeout safeguard
             if ( empty($token) ) {
               $this->showTokenError((object)[
-                'message' => __('Failed to obtain access token (timeout)', 'woo-pakettikauppa')
+                'message' => sprintf(__('Failed to obtain access token (%s)', 'woo-pakettikauppa'), __('timeout', 'woo-pakettikauppa'))
               ]);
               return;
             }
