@@ -840,45 +840,84 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
 
       if ( $configs[$mode]['use_posti_auth'] ) {
         $transient_name = $this->core->prefix . '_access_token';
+        $lock_name      = $this->core->prefix . '_access_token_lock';
+
+        $lock_ttl = 30; // seconds
+        $loop_wait = 200000; // 200ms in microseconds
+        $max_wait = 10; // seconds
+        $max_loops = (int) (($max_wait * 1000000) / $loop_wait); // calculate how many loops fit into max wait
 
         $token = get_transient($transient_name);
 
-        /**
-         * TODO locking
-         *
-         * in case there are multiple simultanous requests to this part of the code, it will create multiple
-         * getToken() requests to the authentication server. So this needs to be eather distributedly locked or
-         * moved to a background process and run from the cron
-         */
         // check if we hame timestamp saved and check if token is not expired
         if ( empty($token) || (isset($token->timestamp) && ($token->timestamp + $token->expires_in - 100) < time()) ) {
-          $token = $this->client->getToken();
+          // check the lock for this request
+          if ( get_transient($lock_name) === false ) {
+            // lock execution from other requests
+            set_transient($lock_name, 1, $lock_ttl);
 
-          if ( empty($token) || ! isset($token->expires_in) || isset($token->error) ) {
-            add_action(
-              'admin_notices',
-              function() use ( $token ) {
-                if ( ! isset($_GET['page']) || ! isset($_GET['tab']) ) {
-                    return;
-                }
-                if ( $_GET['page'] === 'wc-settings' && $_GET['tab'] === 'shipping' ) {
-                  $message = (isset($token->message)) ? $token->message : __('Unknown error', 'woo-pakettikauppa');
-                  echo '<div class="notice notice-error"><p><b>' . $this->core->vendor_fullname . ' ' . __('error', 'woo-pakettikauppa') . ':</b> ' . $message . '</p></div>';
-                }
+            $token = $this->client->getToken();
+
+            if ( empty($token) || ! isset($token->expires_in) || isset($token->error) ) {
+              // remove lock if failed to get token
+              delete_transient($lock_name);
+              $this->showTokenError($token);
+              return;
+            }
+
+            // add timestamp to token for validating expiration
+            $token->timestamp = time();
+
+            // let's remove 100 seconds from expires_in time so in case of a network lag, requests will still be valid on server side
+            set_transient($transient_name, $token, $token->expires_in - 100);
+
+            // unlock
+            delete_transient($lock_name);
+          } else {
+            // wait until lock released or token appears
+            for ( $i = 0; $i < $max_loops; $i++ ) {
+              usleep($loop_wait);
+
+              $token = get_transient($transient_name);
+              if ( ! empty($token) ) {
+                break;
               }
-            );
 
-            return;
+              if ( get_transient($lock_name) === false ) {
+                // lock gone but token still missing
+                $this->showTokenError((object)[
+                  'message' => sprintf(__('Failed to obtain access token (%s)', 'woo-pakettikauppa'), __('lock expired', 'woo-pakettikauppa'))
+                ]);
+                return;
+              }
+            }
+
+            // timeout safeguard
+            if ( empty($token) ) {
+              $this->showTokenError((object)[
+                'message' => sprintf(__('Failed to obtain access token (%s)', 'woo-pakettikauppa'), __('timeout', 'woo-pakettikauppa'))
+              ]);
+              return;
+            }
           }
-          // add timestamp to token for validating expiration
-          $token->timestamp = time();
-
-          // let's remove 100 seconds from expires_in time so in case of a network lag, requests will still be valid on server side
-          set_transient($transient_name, $token, $token->expires_in - 100);
         }
 
         $this->client->setAccessToken($token->access_token);
       }
+    }
+
+    private function showTokenError($token)
+    {
+      add_action('admin_notices', function () use ($token) {
+        if ( isset($_GET['page'], $_GET['tab']) && $_GET['page'] === 'wc-settings' && $_GET['tab'] === 'shipping' ) {
+            $message = (isset($token->message)) ? $token->message : __('Unknown error', 'woo-pakettikauppa');
+            echo '<div class="notice notice-error"><p><b>TEST'
+              . esc_html($this->core->vendor_fullname)
+              . ' error:</b> '
+              . esc_html($message)
+              . '</p></div>';
+        }
+      });
     }
 
     /**
