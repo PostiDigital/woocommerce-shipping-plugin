@@ -1161,7 +1161,8 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
       }
 
       $order_postcode = $order->get_shipping_postcode();
-      $order_address  = $order->get_shipping_address_1() . ' ' . $order->get_shipping_city();
+      $order_address  = $order->get_shipping_address_1();
+      $order_city = $order->get_shipping_city();
       $order_country  = $order->get_shipping_country();
 
       $weight_unit = 'kg';
@@ -1309,11 +1310,11 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
                   <?php
                   $address_override_field_name = $this->core->params_prefix . 'merchant_override_custom_pickup_point_address';
                   $custom_address = $order->get_meta($address_override_field_name, true);
-                  $custom_address = empty($custom_address) ? "$order_address, $order_postcode, $order_country" : $custom_address;
+                  $custom_address = empty($custom_address) ? "$order_address, $order_postcode $order_city, $order_country" : $custom_address;
                   if ( $this->shipment->is_optional_pickup_point_service($method_code) ) {
                     $custom_address = '';
                   }
-                  $pickup_points = $this->get_pickup_points_for_method($method_code, $order_postcode, $order_address, $order_country, $custom_address);
+                  $pickup_points = $this->get_pickup_points_for_method($method_code, $order_postcode, "$order_address, $order_city", $order_country, $custom_address);
                   $select_first_option = '- ' . __('Select', 'woo-pakettikauppa') . ' -';
                   $settings = $this->shipment->get_settings();
                   $pickup_points_type = array();
@@ -2206,11 +2207,12 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
       }
 
       $order_postcode = $order->get_shipping_postcode();
-      $order_address  = $order->get_shipping_address_1() . ' ' . $order->get_shipping_city();
+      $order_address  = $order->get_shipping_address_1();
+      $order_city = $order->get_shipping_city();
       $order_country  = $order->get_shipping_country();
       $address_override_field_name = $this->core->params_prefix . 'merchant_override_custom_pickup_point_address';
       $custom_address = $order->get_meta($address_override_field_name, true);
-      $custom_address = empty($custom_address) ? "$order_address, $order_postcode, $order_country" : $custom_address;
+      $custom_address = empty($custom_address) ? "$order_address, $order_postcode $order_city, $order_country 1" : $custom_address;
 
       $service_id = '';
 
@@ -2221,7 +2223,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
 
       foreach ( $all_additional_services as $method_code => $_additional_services ) {
         if ( $this->shipment->service_has_pickup_points($method_code) ) {
-          $pickup_points = $this->get_pickup_points_for_method($method_code, $order_postcode, $order_address, $order_country, $custom_address);
+          $pickup_points = $this->get_pickup_points_for_method($method_code, $order_postcode, "$order_address, $order_city", $order_country, $custom_address);
           ?>
           <div id="pickup-changer-<?php echo $method_code; ?>" class="pakettikauppa-pickup-changer" <?php echo $service_id != $method_code ? 'style="display: none;"' : ''; ?>>
             <script>
