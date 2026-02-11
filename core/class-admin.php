@@ -2212,7 +2212,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
       $order_country  = $order->get_shipping_country();
       $address_override_field_name = $this->core->params_prefix . 'merchant_override_custom_pickup_point_address';
       $custom_address = $order->get_meta($address_override_field_name, true);
-      $custom_address = empty($custom_address) ? "$order_address, $order_postcode $order_city, $order_country 1" : $custom_address;
+      $custom_address = empty($custom_address) ? "$order_address, $order_postcode $order_city, $order_country" : $custom_address;
 
       $service_id = '';
 
