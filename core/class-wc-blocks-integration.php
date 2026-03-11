@@ -146,7 +146,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Wc_Blocks_Integration') ) {
       if ( empty($postcode) ) {
         return wp_send_json_error('A postcode is required to get the pickup points');
       }
-      $street_address = sanitize_text_field($request_body->destination->address_1) . ', ' . sanitize_text_field($request_body->destination->city);
+      $street_address = sanitize_text_field($request_body->destination->address) . ', ' . sanitize_text_field($request_body->destination->city);
 
       try {
         $pickup_points = $this->shipment->get_pickup_points(

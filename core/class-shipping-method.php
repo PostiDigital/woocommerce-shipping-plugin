@@ -256,7 +256,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
             </p>
             <h4><?php esc_html_e('Shipping method(s)', 'woocommerce'); ?></h4>
             <?php foreach ( $zone->get_shipping_methods() as $method_id => $shipping_method ) : ?>
-              <?php if ( $shipping_method->enabled === 'yes' && $shipping_method->id !== $this->get_core()->shippingmethod && $shipping_method->id !== 'local_pickup' ) : ?>
+              <?php if ( $shipping_method->id !== $this->get_core()->shippingmethod && $shipping_method->id !== 'local_pickup' ) : ?>
                 <?php
                 $selected_service = null;
                 if ( ! empty($values[ $method_id ]['service']) ) {
