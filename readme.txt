@@ -52,6 +52,12 @@ Yes! If you encounter any issues related to this plugin, please report at [Posti
 
 == Changelog ==
 
+= 3.10.10 =
+* Fix for bulk label creation breaking other plugin hooks
+* Fix for locking issue with multiple token calls
+* Fix for pickup point search string in custom shipment
+* Allowing to link Posti shipping services to inactive shipping methods
+
 = 3.10.9 =
 * Fix for OAuth endpoint
 
