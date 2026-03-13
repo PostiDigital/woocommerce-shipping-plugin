@@ -2,7 +2,7 @@
 Contributors: joosev, ottok, leotoikka, serter, k1sul1
 Tags: woocommerce, shipping, toimitustavat, smartship, posti
 Requires at least: 5.0
-Tested up to: 6.8
+Tested up to: 6.9.4
 Requires PHP: 7.1
 Stable tag: trunk
 License: GPLv3 or later
