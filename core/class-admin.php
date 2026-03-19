@@ -1041,10 +1041,11 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
         $order_items = array();
         foreach ( $items as $item ) {
           $item_data = $item->get_data();
+          $item_prod_id = ! empty($item_data['variation_id']) ? $item_data['variation_id'] : $item_data['product_id'];
           array_push(
             $order_items,
             array(
-              'id' => $item_data['product_id'],
+              'id' => $item_prod_id,
               'name' => $item_data['name'],
               'max' => $item_data['quantity'],
               'lqweight' => $this->core->product->get_product_dg_weight($item_data['product_id'], 'kg'),

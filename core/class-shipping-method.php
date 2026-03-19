@@ -745,6 +745,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
             'PRODUCTS_NAMES' => $this->get_core()->text->additional_info_param_products_names(),
             'PRODUCTS_NAME_WITH_QUANTITY' => $this->get_core()->text->additional_info_param_products_names_with_qty(),
             'PRODUCTS_SKU' => $this->get_core()->text->additional_info_param_products_sku(),
+            'PRODUCTS_SKU_WITH_QUANTITY' => $this->get_core()->text->additional_info_param_products_sku_with_qty(),
           ),
         ),
       );
