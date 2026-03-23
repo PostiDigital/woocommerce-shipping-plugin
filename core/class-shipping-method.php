@@ -531,6 +531,13 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
           'class'   => 'mode_react',
         ),
 
+        'exclude_prods_without_hs'    => array(
+          'title'   => $this->get_core()->text->exclude_prods_without_hs(),
+          'type'    => 'checkbox',
+          'default' => 'no',
+          'class'   => 'mode_react',
+        ),
+
         'express_freight_pallet_type'      => array(
           'title'   => $this->get_core()->text->express_freight_default_pallet_type(),
           'type'    => 'select',
