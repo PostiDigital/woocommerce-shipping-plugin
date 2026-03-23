@@ -1046,7 +1046,9 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
         $parcel->setPackageType($package_type);
 
         if ( ! empty($this->settings['info_code']) ) {
-          $parcel->setInfocode($this->settings['info_code']);
+          $parcel->setInfocode(
+            trim(mb_substr($this->settings['info_code'], 0, 15))
+          );
         }
 
         $shipment->addParcel($parcel);
