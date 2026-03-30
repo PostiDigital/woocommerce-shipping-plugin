@@ -716,6 +716,10 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
           'title'   => $this->get_core()->text->info_code(),
           'type'    => 'text',
           'default' => '',
+          'description' => $this->get_core()->text->info_code_desc(),
+          'custom_attributes' => array(
+            'maxlength' => 15,
+          ),          
         ),
         'cod_title' => array(
           'title' => $this->get_core()->text->cod_settings(),

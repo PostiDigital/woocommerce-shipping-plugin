@@ -1047,7 +1047,9 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
         $parcel->setPackageType($package_type);
 
         if ( ! empty($this->settings['info_code']) ) {
-          $parcel->setInfocode($this->settings['info_code']);
+          $parcel->setInfocode(
+            trim(mb_substr($this->settings['info_code'], 0, 15))
+          );
         }
 
         $shipment->addParcel($parcel);
@@ -1092,6 +1094,20 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
 
           $tariff_code       = $product->get_meta($this->core->params_prefix . 'tariff_codes', true);
           $country_of_origin = $product->get_meta($this->core->params_prefix . 'country_of_origin', true);
+
+          // For variations, fall back to parent product meta if not set on variation
+          if ( $product_variation_id && (empty($tariff_code) || empty($country_of_origin)) ) {
+            $parent_product = $wcpf->get_product($item_data['product_id']);
+            if ( ! empty($parent_product) ) {
+              if ( empty($tariff_code) ) {
+                $tariff_code = $parent_product->get_meta($this->core->params_prefix . 'tariff_codes', true);
+              }
+              if ( empty($country_of_origin) ) {
+                $country_of_origin = $parent_product->get_meta($this->core->params_prefix . 'country_of_origin', true);
+              }
+            }
+          }
+          
           $quantity = ($selected_product !== false) ? $selected_product['qty'] : $item->get_quantity();
 
           $translated_product = $product;
