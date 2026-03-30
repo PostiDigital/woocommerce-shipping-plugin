@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2022-05-05 14:56+0000\n"
-"PO-Revision-Date: 2024-11-28 14:54+0000\n"
+"PO-Revision-Date: 2026-03-23 15:16+0000\n"
 "X-Generator: Loco https://localise.biz/\n"
 "X-Domain: woo-pakettikauppa\n"
 "Language: lv\n"
@@ -20,7 +20,7 @@ msgstr ""
 "X-Loco-Version: 2.6.1; wp-5.9.3"
 
 #. %s: Vendor full name
-#: core/class-admin.php:599
+#: core/class-admin.php:606
 #, php-format
 msgid ""
 "%s has been installed/updated but no shipping methods are currently active!"
@@ -29,7 +29,7 @@ msgstr ""
 "metodes!"
 
 #. %s: Vendor full name
-#: core/class-text.php:488
+#: core/class-text.php:492
 #, php-format
 msgid "%s requires WooCommerce to be installed and activated!"
 msgstr ""
@@ -42,16 +42,16 @@ msgid "%s Setup Wizard"
 msgstr "%s paplašinājuma iestatīšanas palīgs"
 
 #. %s: Vendor name
-#: core/class-admin.php:770
+#: core/class-admin.php:777
 #, php-format
 msgid "%s Shipping"
 msgstr "%s piegāde"
 
-#: core/class-manifest.php:267
+#: core/class-manifest.php:274
 msgid "Actions"
 msgstr ""
 
-#: core/class-text.php:528
+#: core/class-text.php:532
 msgid "Add additional text on labels"
 msgstr "Pievienot papildus tekstu pavadlapā"
 
@@ -59,9 +59,9 @@ msgstr "Pievienot papildus tekstu pavadlapā"
 msgid "Add selected pickup point information to the order completed email"
 msgstr "Pievienot izvēlēto saņemšanas vietu pasūtījuma apstiprinājuma e-pastam"
 
-#: core/class-manifest.php:149 core/class-manifest.php:151
-#: core/class-manifest.php:184 core/class-admin.php:978
-#: core/class-admin.php:1415
+#: core/class-manifest.php:156 core/class-manifest.php:158
+#: core/class-manifest.php:191 core/class-admin.php:985
+#: core/class-admin.php:1423
 msgid "Add to pickup order"
 msgstr ""
 
@@ -70,19 +70,19 @@ msgid "Add tracking link to the order completed email"
 msgstr ""
 "Pievienot sūtījuma izsekošanas saiti pasūtījuma apstiprinājuma e-pastam"
 
-#: core/class-manifest.php:298
+#: core/class-manifest.php:305
 msgid "Additional information"
 msgstr ""
 
-#: core/class-admin.php:1207
+#: core/class-admin.php:1215
 msgid "Additional services"
 msgstr "Papildus pakalpojumi"
 
-#: core/class-text.php:475
+#: core/class-text.php:479
 msgid "Advanced settings"
 msgstr "Paplašinātie iestatījumi"
 
-#: core/class-wc-blocks-integration.php:116
+#: core/class-wc-blocks-integration.php:117
 msgid "After entering, please wait for a while for the results to be received"
 msgstr ""
 
@@ -98,7 +98,7 @@ msgstr ""
 msgid "All"
 msgstr ""
 
-#: core/class-manifest.php:69
+#: core/class-manifest.php:76
 msgid "All Pickup Orders"
 msgstr ""
 
@@ -106,7 +106,7 @@ msgstr ""
 msgid "Allow user to use custom address for pickup point search."
 msgstr ""
 
-#: core/class-manifest.php:319
+#: core/class-manifest.php:326
 msgid "Already placed pickup order"
 msgstr ""
 
@@ -114,11 +114,11 @@ msgstr ""
 msgid "Amount of hazardous subtances in the product as grams."
 msgstr "Bīstamo vielu apjoms precēs izteikts gramos."
 
-#: core/class-shipment.php:240
+#: core/class-shipment.php:241
 msgid "An error occurred while checking API credentials"
 msgstr "Radās kļūda pārbaudot API akreditācijas datus"
 
-#: core/class-text.php:496
+#: core/class-text.php:500
 msgid "An error occurred while searching for pickup points."
 msgstr "Radās kļūda meklējot saņemšanas vietas"
 
@@ -127,14 +127,14 @@ msgid "An error occurred. Please try again later."
 msgstr "Radās kļūda. Lūdzu mēģiniet vēlāk vēlreiz."
 
 #. %s: Error message
-#: core/class-admin.php:637 core/class-admin.php:1786 core/class-admin.php:1826
-#: core/class-admin.php:1868 core/class-admin.php:1902
-#: core/class-shipment.php:326
+#: core/class-shipment.php:327 core/class-admin.php:644
+#: core/class-admin.php:1803 core/class-admin.php:1843
+#: core/class-admin.php:1885 core/class-admin.php:1919
 #, php-format
 msgid "An error occurred: %s"
 msgstr "Radās kļūda: %s"
 
-#: core/class-shipping-method.php:158
+#: core/class-shipping-method.php:160
 msgid "API error!"
 msgstr "API kļūda!"
 
@@ -166,7 +166,7 @@ msgstr "API parole"
 msgid "API secret provided by Posti"
 msgstr "API paroli nodrošina %1$s"
 
-#: core/class-manifest.php:567
+#: core/class-manifest.php:578
 msgid "Assigned orders"
 msgstr ""
 
@@ -174,15 +174,15 @@ msgstr ""
 msgid "Bad API key or API secret"
 msgstr "Nekorekts API lietotājvārds vai parole"
 
-#: core/class-text.php:467
+#: core/class-text.php:471
 msgid "Bank account number for Cash on Delivery (IBAN)"
 msgstr "Bankas konta numurs (IBAN) COD pakalpojumam"
 
-#: core/class-text.php:471
+#: core/class-text.php:475
 msgid "BIC code for Cash on Delivery"
 msgstr "BIC kods COD pakalpojumam"
 
-#: core/class-wc-blocks-integration.php:105
+#: core/class-wc-blocks-integration.php:106
 msgid "Block options"
 msgstr ""
 
@@ -206,15 +206,15 @@ msgstr ""
 "Nav piekļuves serverim - lūdzu pārbaudiem API akreditācijas datus, servera "
 "kļūdu failus un ugunsmūra iestatījumus."
 
-#: core/class-admin.php:1934
+#: core/class-admin.php:1951
 msgid "Cannot find shipment with given shipment number."
 msgstr "Sūtījums ar šādu numuru nav atrasts."
 
-#: core/class-admin.php:523
+#: core/class-admin.php:530
 msgid "Cannot find shipments with given shipment numbers."
 msgstr "Sūtījumi ar šādiem numuriem nav atrasti."
 
-#: core/class-text.php:463
+#: core/class-text.php:467
 msgid "Cash on Delivery (COD) Settings"
 msgstr "COD iestatījumi"
 
@@ -226,7 +226,7 @@ msgstr "Pārbauda saiti"
 msgid "Checkout options"
 msgstr ""
 
-#: core/class-wc-blocks-integration.php:113
+#: core/class-wc-blocks-integration.php:114
 msgid "Choose one of pickup points close to the address you entered"
 msgstr ""
 
@@ -240,12 +240,12 @@ msgid ""
 "points"
 msgstr ""
 
-#: core/class-manifest.php:111
+#: core/class-manifest.php:118
 msgid "Closed "
 msgstr ""
 
 #. %s: label_count
-#: core/class-manifest.php:114
+#: core/class-manifest.php:121
 #, php-format
 msgid "Closed <span class=\"count\">(%s)</span>"
 msgid_plural "Closed <span class=\"count\">(%s)</span>"
@@ -253,7 +253,7 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: core/class-check-tool.php:217 core/class-shipping-method.php:119
+#: core/class-shipping-method.php:127 core/class-check-tool.php:217
 msgid "Code"
 msgstr ""
 
@@ -281,32 +281,32 @@ msgstr "Nevarēja nolasīt versiju"
 msgid "Country of origin"
 msgstr "Izcelsmes valsts"
 
-#: core/class-manifest.php:71 core/class-admin.php:1426
-#: core/class-admin.php:2061
+#: core/class-manifest.php:78 core/class-admin.php:1434
+#: core/class-admin.php:2078
 msgid "Create"
 msgstr "Izveidot"
 
-#: core/class-admin.php:371 core/class-admin.php:375
+#: core/class-admin.php:378 core/class-admin.php:382
 msgid "Create and fetch shipping labels"
 msgstr "Izveidot un saņemt pavadlapas"
 
-#: core/class-admin.php:372 core/class-admin.php:376
+#: core/class-admin.php:379 core/class-admin.php:383
 msgid "Create custom shipments"
 msgstr ""
 
-#: core/class-admin.php:1048
+#: core/class-admin.php:1055
 msgid "Create for products"
 msgstr "Izveidot precēm"
 
-#: core/class-manifest.php:70
+#: core/class-manifest.php:77
 msgid "Create New Pickup Order"
 msgstr ""
 
-#: core/class-admin.php:1019
+#: core/class-admin.php:1026
 msgid "Create Return Label"
 msgstr "Izveidot atgriešanas pavadlapu"
 
-#: core/class-admin.php:408
+#: core/class-admin.php:415
 msgid "Create shipping label"
 msgstr "Izveidot piegādes pavadlapu"
 
@@ -314,16 +314,16 @@ msgstr "Izveidot piegādes pavadlapu"
 msgid "Create shipping labels automatically"
 msgstr "Automātiski izveidot piegādes pavadlapas"
 
-#: core/class-text.php:560
+#: core/class-text.php:564
 msgid "Created return label"
 msgstr ""
 
-#: core/class-text.php:556
+#: core/class-text.php:560
 msgid "Created shipment"
 msgstr ""
 
 #. %1$s: Vendor name, %2$s: Error message
-#: core/class-admin.php:1793
+#: core/class-admin.php:1810
 #, php-format
 msgid "Creating %1$s return label failed! Errors: %2$s"
 msgstr ""
@@ -340,15 +340,15 @@ msgstr "CURL paplašinājums"
 msgid "Curl not installed"
 msgstr "CURL nav iestatīts"
 
-#: core/class-admin.php:2037
+#: core/class-admin.php:2054
 msgid "Current shipping method"
 msgstr ""
 
-#: core/class-text.php:504 core/class-wc-blocks-integration.php:114
+#: core/class-wc-blocks-integration.php:115 core/class-text.php:508
 msgid "Custom pickup address"
 msgstr "Pielāgota saņemšanas adrese"
 
-#: core/class-admin.php:1419
+#: core/class-admin.php:1427
 msgid "Custom shipping..."
 msgstr "Pielāgota sūtīšana…"
 
@@ -360,7 +360,7 @@ msgstr ""
 msgid "Customize the order processing phase."
 msgstr "Pielāgot pasūtījuma apstrādes posmu."
 
-#: core/class-manifest.php:295
+#: core/class-manifest.php:302
 msgid "Date"
 msgstr ""
 
@@ -368,30 +368,30 @@ msgstr ""
 msgid "Default shipping class cost"
 msgstr "Noklusējuma piegādes klases cena"
 
-#: core/class-admin.php:980 core/class-admin.php:1007
+#: core/class-admin.php:987 core/class-admin.php:1014
 msgid "Delete"
 msgstr "Dzēst"
 
 #. %%s: tracking code
-#: core/class-admin.php:1858
+#: core/class-admin.php:1875
 #, php-format
 msgid "Deleted %1$s return label %2$s."
 msgstr "%1$s atgriešanas pavadlapa %2$s nodzēsta."
 
 #. %1$s: Vendor name, %2$s: tracking code
-#: core/class-admin.php:1819
+#: core/class-admin.php:1836
 #, php-format
 msgid "Deleted %1$s shipping label %2$s."
 msgstr "%1$s piegādes pavadlapa %2$s nodzēsta."
 
 #. %1$s: Vendor name, %2$s: Error message
-#: core/class-admin.php:1875
+#: core/class-admin.php:1892
 #, php-format
 msgid "Deleting %1$s return label failed! Errors: %2$s"
 msgstr "Atgriešanas pavadlapas  %1$s dzēšanas kļūda! Kļūdas: %2$s"
 
 #. %1$s: Vendor name, %2$s: Error message
-#: core/class-admin.php:1833
+#: core/class-admin.php:1850
 #, php-format
 msgid "Deleting %1$s shipment failed! Errors: %2$s"
 msgstr "Piegādes pavadlapas  %1$s dzēšanas kļūda! Kļūdas: %2$s"
@@ -404,7 +404,7 @@ msgstr "BV svars (g)"
 msgid "Download"
 msgstr "Lejupielāde"
 
-#: core/class-manifest.php:296
+#: core/class-manifest.php:303
 msgid "Earliest time"
 msgstr ""
 
@@ -412,7 +412,7 @@ msgstr ""
 msgid "Edit to select shipping company and shipping prices."
 msgstr "Labot, lai izvēlētos piegādes kompāniju un piegādes cenas."
 
-#: core/class-admin.php:834
+#: core/class-admin.php:841
 msgid "Email"
 msgstr "E-pasts"
 
@@ -420,15 +420,11 @@ msgstr "E-pasts"
 msgid "Empty postcode. Please check your address information."
 msgstr "Tukšs pasta indekss. Lūdzu pārbaudiet adreses pareizību."
 
-#: core/class-admin.php:1928 core/class-shipping-method.php:116
+#: core/class-shipping-method.php:124 core/class-admin.php:1945
 msgid "Error"
 msgstr "Kļūda"
 
-#: core/class-shipment.php:865
-msgid "error"
-msgstr "kļūda"
-
-#: core/class-admin.php:1402
+#: core/class-admin.php:1410
 msgid "Estimated shipping price"
 msgstr ""
 
@@ -440,32 +436,37 @@ msgstr "Izņēmums"
 msgid "Exit"
 msgstr "Iziet"
 
-#: core/class-text.php:564
+#: core/class-text.php:568
 msgid "Express-freight default pallet type"
 msgstr ""
 
-#: core/class-shipment.php:226 core/class-shipment.php:234
+#: core/class-shipment.php:227 core/class-shipment.php:235
 msgid "Failed to check API credentials or them are bad"
 msgstr "Kļūda pārbaudot API akreditācijas datus vai tie ir nekorekti"
 
-#: core/class-shipment.php:216
+#: core/class-shipment.php:217
 msgid "Failed to connect with server"
 msgstr "Nevarēja izveidot savienojumu ar serveri"
 
 #. %s: Error message
-#: core/class-shipment.php:335 core/class-shipment.php:340
+#: core/class-shipment.php:336 core/class-shipment.php:341
 msgid "Failed to create shipment."
 msgstr "Nevarēja izveidot sūtījumu."
 
 #. %s: Error message
-#: core/class-shipment.php:321
+#: core/class-shipment.php:322
 #, php-format
 msgid "Failed to create shipment. Errors: %s"
 msgstr "Nevarēja izveidot sūtījumu. Kļūdas:"
 
-#: core/class-admin.php:1927
+#: core/class-admin.php:1944
 msgid "Failed to get shipment label."
 msgstr "Nevarēja saņemt piegādes pavadlapu."
+
+#: core/class-shipment.php:889 core/class-shipment.php:898
+#, php-format
+msgid "Failed to obtain access token (%s)"
+msgstr ""
 
 #: core/class-check-tool.php:235
 msgid "Found and works."
@@ -483,13 +484,21 @@ msgstr "Bezmaksas sūtīšanas limits"
 msgid "HS tariff number"
 msgstr "Muitas tarifu kods"
 
-#: core/class-wc-blocks-integration.php:115
+#. URI of the plugin
+msgid "https://github.com/PostiDigital/woocommerce-shipping-plugin"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://www.posti.fi/"
+msgstr ""
+
+#: core/class-wc-blocks-integration.php:116
 msgid ""
 "If none of your preferred pickup points are listed, fill in a custom address "
 "above and select another pickup point"
 msgstr ""
 
-#: core/class-text.php:500
+#: core/class-text.php:504
 msgid ""
 "If none of your preferred pickup points are listed, fill in a custom address "
 "above and select another pickup point."
@@ -515,11 +524,11 @@ msgstr ""
 "vispirms izmēģināt, pirms slēgt līgumu ar %1$s, lūdzu izvēlieties \"Testa "
 "vide\" un atstājiet API lietotāja un paroles laukus tukšus."
 
-#: core/class-text.php:297 core/class-admin.php:1084
+#: core/class-text.php:297 core/class-admin.php:1091
 msgid "Ignore product weight information"
 msgstr ""
 
-#: core/class-shipping-method.php:334
+#: core/class-shipping-method.php:336
 msgid "Include return label (if available)"
 msgstr ""
 
@@ -531,6 +540,10 @@ msgstr "iekļauj saņemšanas vietas"
 msgid "Info-code for shipments"
 msgstr "Sūtījuma info-kods"
 
+#: core/class-text.php:463
+msgid "Info-code length must be 15 characters or less"
+msgstr ""
+
 #: core/class-shipment.php:108
 msgid "Informed consignee of arrival"
 msgstr "Sūtījuma piegādes paziņojums ir nosūtīts"
@@ -539,7 +552,7 @@ msgstr "Sūtījuma piegādes paziņojums ir nosūtīts"
 msgid "Installed"
 msgstr "Instalēts"
 
-#: core/class-wc-blocks-integration.php:118
+#: core/class-wc-blocks-integration.php:119
 msgid "Invalid character entered"
 msgstr ""
 
@@ -553,7 +566,7 @@ msgstr "Nekorekts pasta indekss \"%1$s\". Lūdzu pārbaudiet ievadīto adresi."
 msgid "Invoice ID"
 msgstr ""
 
-#: core/class-admin.php:1698
+#: core/class-admin.php:1710
 msgid ""
 "It is not allowed to create a return label when shipping labels not exists"
 msgstr ""
@@ -592,15 +605,15 @@ msgstr "Sūtījums atgriežas pie sūtītāja"
 msgid "Item not delivered – delivery attempt made"
 msgstr "Sūtījums nav piegādāts - tika veikts piegādes mēģinājums"
 
-#: core/class-admin.php:938 core/class-admin.php:1003
+#: core/class-admin.php:945 core/class-admin.php:1010
 msgid "Label code"
 msgstr "Piegādes pavadlapas kods"
 
-#: core/class-shipment.php:437
+#: core/class-shipment.php:438
 msgid "Label posted to URL successfully."
 msgstr "Piegādes pavadlapa veiksmīgi nosūtīta uz saiti."
 
-#: core/class-manifest.php:297
+#: core/class-manifest.php:304
 msgid "Latest time"
 msgstr ""
 
@@ -622,23 +635,27 @@ msgstr "Saite uz %s mājaslapu"
 msgid "List"
 msgstr "Saraksts"
 
+#: core/class-shipment.php:889
+msgid "lock expired"
+msgstr ""
+
 #: core/class-text.php:366
 msgid "Make shipping phone number mandatory"
 msgstr ""
 
-#: core/class-manifest.php:367
+#: core/class-manifest.php:378
 msgid "Manifest has no orders assigned"
 msgstr ""
 
-#: core/class-manifest.php:564
+#: core/class-manifest.php:575
 msgid "Manifest ID"
 msgstr ""
 
-#: core/class-manifest.php:392
+#: core/class-manifest.php:403
 msgid "Manifest not found or incorrect status"
 msgstr ""
 
-#: core/class-manifest.php:565
+#: core/class-manifest.php:576
 msgid "Manifest status"
 msgstr ""
 
@@ -654,15 +671,15 @@ msgstr "Pārdevējs"
 msgid "Mode"
 msgstr "Režīms"
 
-#: core/class-text.php:544
+#: core/class-text.php:548
 msgid "Names and quantities of the goods in the shipment"
 msgstr ""
 
-#: core/class-text.php:540
+#: core/class-text.php:544
 msgid "Names of the goods in the shipment"
 msgstr "Sūtījuma preču nosaukumi"
 
-#: core/class-admin.php:2038
+#: core/class-admin.php:2055
 msgid "New shipping method"
 msgstr ""
 
@@ -670,7 +687,7 @@ msgstr ""
 msgid "No automatic creation of shipping labels"
 msgstr "Nav automātiskas piegādes pavadlapu izveides"
 
-#: core/class-manifest.php:555
+#: core/class-manifest.php:566
 msgid "No manifest assigned"
 msgstr ""
 
@@ -678,23 +695,23 @@ msgstr ""
 msgid "No order status change"
 msgstr "Nav pasūījuma statusa izmaiņu"
 
-#: core/class-manifest.php:316
+#: core/class-manifest.php:323
 msgid "No orders assigned"
 msgstr ""
 
-#: core/class-frontend.php:544 core/class-wc-blocks-integration.php:108
+#: core/class-frontend.php:544 core/class-wc-blocks-integration.php:109
 msgid "No pickup point: Send to the street address"
 msgstr ""
 
-#: core/class-admin.php:1352
+#: core/class-admin.php:1360
 msgid "No pickup points were found"
 msgstr "Saņemšanas vietas nav atrastas"
 
-#: core/class-text.php:492 core/class-wc-blocks-integration.php:111
+#: core/class-wc-blocks-integration.php:112 core/class-text.php:496
 msgid "No pickup points were found. Check the address."
 msgstr "Saņemšanas vietas nav atrastas. Lūdzu pārbaudiet adresi."
 
-#: core/class-text.php:51 core/class-admin.php:1251 core/class-admin.php:2109
+#: core/class-text.php:51 core/class-admin.php:1259 core/class-admin.php:2130
 msgid "No shipping"
 msgstr "Nav piegādes"
 
@@ -702,7 +719,7 @@ msgstr "Nav piegādes"
 msgid "No shipping class cost (vat included)"
 msgstr "Nav piegādes klases izmaksu (PVN iekļauts)"
 
-#: core/class-admin.php:1173
+#: core/class-admin.php:1181
 msgid "No shipping method configured! Configure shipping method from settings."
 msgstr "Piegādes metode nav iestatīta! Veiciet iestatīšanu uzstādījumos."
 
@@ -741,12 +758,12 @@ msgstr ""
 "un/vai piemērotas. Šīs piegādes metodes lietošana nav nepieciešama, lai "
 "izmantotu %s paplašinājumu."
 
-#: core/class-manifest.php:95
+#: core/class-manifest.php:102
 msgid "Open "
 msgstr ""
 
 #. %s: label_count
-#: core/class-manifest.php:98
+#: core/class-manifest.php:105
 #, php-format
 msgid "Open <span class=\"count\">(%s)</span>"
 msgid_plural "Open <span class=\"count\">(%s)</span>"
@@ -754,23 +771,23 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: core/class-admin.php:2036
+#: core/class-admin.php:2053
 msgid "Order"
 msgstr ""
 
 #. %s: order_number
-#: core/class-manifest.php:237
+#: core/class-manifest.php:244
 #, php-format
 msgid "Order #%s added to pickup order"
 msgstr ""
 
 #. %s: order_number
-#: core/class-manifest.php:240
+#: core/class-manifest.php:247
 #, php-format
 msgid "Order #%s does not have shipment labels"
 msgstr ""
 
-#: core/class-text.php:532
+#: core/class-text.php:536
 msgid "Order number"
 msgstr "Pasūtījuma numurs"
 
@@ -778,7 +795,7 @@ msgstr "Pasūtījuma numurs"
 msgid "Order pickup"
 msgstr ""
 
-#: core/class-manifest.php:468
+#: core/class-manifest.php:479
 msgid "Order pickup URL not set."
 msgstr ""
 
@@ -786,15 +803,15 @@ msgstr ""
 msgid "Order Processing"
 msgstr "Pasūtījuma apstrāde"
 
-#: core/class-manifest.php:264
+#: core/class-manifest.php:271
 msgid "Orders"
 msgstr ""
 
-#: core/class-admin.php:1420
+#: core/class-admin.php:1428
 msgid "Original shipping..."
 msgstr "Sākotnējā piegādes metode…"
 
-#: core/class-frontend.php:588 core/class-wc-blocks-integration.php:109
+#: core/class-frontend.php:588 core/class-wc-blocks-integration.php:110
 msgid "Other"
 msgstr "Cita saņemšanas vieta"
 
@@ -806,7 +823,7 @@ msgstr "Sūtījums ir izsūtīts uz ārzemēm"
 msgid "Outdoor lockers"
 msgstr ""
 
-#: core/class-admin.php:2031
+#: core/class-admin.php:2048
 msgid "Pakettikaupa create custom shipments"
 msgstr ""
 
@@ -814,46 +831,46 @@ msgstr ""
 msgid "Pakettikauppa diagnostic tool"
 msgstr "Pakettikauppa diagnostikas rīks"
 
-#: core/class-text.php:568
+#: core/class-text.php:572
 msgid "Pallet type"
 msgstr ""
 
-#: core/class-shipment.php:1774
+#: core/class-shipment.php:1850
 msgctxt "Pallet type"
 msgid "Colli"
 msgstr ""
 
-#: core/class-shipment.php:1776
+#: core/class-shipment.php:1852
 msgctxt "Pallet type"
 msgid "EUR-pallet"
 msgstr ""
 
-#: core/class-shipment.php:1777
+#: core/class-shipment.php:1853
 msgctxt "Pallet type"
 msgid "FIN-pallet"
 msgstr ""
 
-#: core/class-shipment.php:1779
+#: core/class-shipment.php:1855
 msgctxt "Pallet type"
 msgid "Furniture pallet"
 msgstr ""
 
-#: core/class-shipment.php:1775
+#: core/class-shipment.php:1851
 msgctxt "Pallet type"
 msgid "Half pallet"
 msgstr ""
 
-#: core/class-shipment.php:1780
+#: core/class-shipment.php:1856
 msgctxt "Pallet type"
 msgid "Loose colli"
 msgstr ""
 
-#: core/class-shipment.php:1778
+#: core/class-shipment.php:1854
 msgctxt "Pallet type"
 msgid "Rollcage"
 msgstr ""
 
-#: core/class-admin.php:1225 core/class-admin.php:1296
+#: core/class-admin.php:1233 core/class-admin.php:1304
 msgid "Parcel count"
 msgstr "Paku skaits"
 
@@ -865,32 +882,31 @@ msgstr ""
 msgid "PHP version"
 msgstr "PHP versija"
 
-#: core/class-text.php:508
+#: core/class-text.php:512
 msgid "Pickup address"
 msgstr "Saņemšanas adrese"
 
-#: core/class-manifest.php:68
+#: core/class-manifest.php:75
 msgid "Pickup Order"
 msgstr ""
 
-#: core/class-admin.php:929
+#: core/class-admin.php:936
 msgid "Pickup order"
 msgstr ""
 
-#: core/class-admin.php:934
+#: core/class-admin.php:941
 msgid "Pickup order status"
 msgstr ""
 
-#: core/class-manifest.php:67
+#: core/class-manifest.php:74
 msgid "Pickup Orders"
 msgstr ""
 
 #. 1: Name 2: Shipment tracking code
-#: core/class-admin.php:941 core/class-admin.php:2156
-#: core/class-wc-blocks-integration.php:106
+#: core/class-wc-blocks-integration.php:107 core/class-admin.php:948
+#: core/class-admin.php:2177 templates/pakettikauppa/myaccount-order.php:10
 #: templates/pakettikauppa/checkout-pickup.php:14
 #: templates/pakettikauppa/checkout-pickup.php:15
-#: templates/pakettikauppa/myaccount-order.php:10
 #: templates/pakettikauppa/tracking-email-html.php:22
 #: templates/pakettikauppa/tracking-email-html.php:30
 #: templates/pakettikauppa/tracking-email-txt.php:19
@@ -902,11 +918,11 @@ msgstr "Saņemšanas vieta"
 msgid "Pickup point search limit"
 msgstr "Saņemšanas vietu meklēšanas ierobežojums"
 
-#: core/class-admin.php:1353
+#: core/class-admin.php:1361
 msgid "Pickup point selection cleared"
 msgstr ""
 
-#: core/class-text.php:390 core/class-shipping-method.php:349
+#: core/class-shipping-method.php:351 core/class-text.php:390
 msgid "Pickup points"
 msgstr "Saņemšanas vietas"
 
@@ -914,19 +930,19 @@ msgstr "Saņemšanas vietas"
 msgid "Pickup points type"
 msgstr ""
 
-#: core/class-manifest.php:266
+#: core/class-manifest.php:273
 msgid "Pickup time"
 msgstr ""
 
-#: core/class-manifest.php:312
+#: core/class-manifest.php:319
 msgid "Place pickup order"
 msgstr ""
 
-#: core/class-admin.php:1103 core/class-admin.php:2089
+#: core/class-admin.php:1110 core/class-admin.php:2110
 msgid "Please add shipping info to the order to manage shipments."
 msgstr "Lai apstrādātu sūtījumus, lūdzu ievadiet piegādes informāciju."
 
-#: core/class-wc-blocks-integration.php:110
+#: core/class-wc-blocks-integration.php:111
 msgid "Please choose a pickup point"
 msgstr ""
 
@@ -958,7 +974,7 @@ msgstr ""
 "Lūdzu ievadiet pārdevēja informāciju. Šeit norādītā informācija tiks "
 "izmantota ka sūtītāja informācija piegādes pavadlapās."
 
-#: core/class-admin.php:511
+#: core/class-admin.php:518
 msgid "Please select at least one Order"
 msgstr ""
 
@@ -974,11 +990,23 @@ msgstr ""
 msgid "Post shipping label to URL"
 msgstr "Nosūtīt piegādes pavadlapu uz saiti"
 
+#. Author of the plugin
+msgid "Posti"
+msgstr ""
+
+#. Name of the plugin
+msgid "Posti Shipping"
+msgstr ""
+
 #: core/class-check-tool.php:46
 msgid "Posti Shipping diagnostic tool"
 msgstr "Posti piegādes diagnostikas rīks"
 
-#: core/class-shipment.php:433
+#. Description of the plugin
+msgid "Posti shipping service for WooCommerce."
+msgstr ""
+
+#: core/class-shipment.php:434
 msgid "Posting label to URL failed!"
 msgstr "Pavadlapu nosūtīšana uz saiti neizdevās!"
 
@@ -990,11 +1018,11 @@ msgstr "Sūtījuma sākotnējā informācija ir saņemta no nosūtītāja"
 msgid "Price (vat included)"
 msgstr "Cena (PVN iekļauts)"
 
-#: core/class-admin.php:972 core/class-admin.php:1005
+#: core/class-admin.php:979 core/class-admin.php:1012
 msgid "Print"
 msgstr "Drukāt"
 
-#: core/class-shipment.php:419
+#: core/class-shipment.php:420
 msgid "Print document"
 msgstr "Drukāt dokumentu"
 
@@ -1010,7 +1038,7 @@ msgstr ""
 msgid "Production environment"
 msgstr "Produkcijas vide"
 
-#: core/class-admin.php:969
+#: core/class-admin.php:976
 msgid "Products"
 msgstr "Preces"
 
@@ -1018,47 +1046,47 @@ msgstr "Preces"
 msgid "Ready!"
 msgstr "Gatavs!"
 
-#: core/class-admin.php:219 core/class-admin.php:241
+#: core/class-admin.php:226 core/class-admin.php:248
 msgid "Received Post ID is not a number"
 msgstr "Saņemtais pasta ID nav numurs"
 
-#: core/class-admin.php:976
+#: core/class-admin.php:983
 msgid "Refresh"
 msgstr "Atjaunot"
 
-#: core/class-admin.php:775 core/class-admin.php:816 core/class-admin.php:1238
+#: core/class-admin.php:782 core/class-admin.php:823 core/class-admin.php:1246
 msgid "Requested pickup point"
 msgstr "Pieprasītā saņemšanas vieta"
 
-#: core/class-text.php:520
+#: core/class-text.php:524
 msgid "Restart setup wzard"
 msgstr "Atsākt iestatīšanas palīgu"
 
-#: core/class-admin.php:1190
+#: core/class-admin.php:1198
 msgid "Return labels"
 msgstr "Atgriešanas pavadlapas"
 
-#: core/class-admin.php:1351 templates/pakettikauppa/checkout-pickup.php:32
+#: core/class-admin.php:1359 templates/pakettikauppa/checkout-pickup.php:32
 msgid "Search"
 msgstr "Meklēt"
 
-#: core/class-admin.php:1324
+#: core/class-admin.php:1332
 msgid "Search pickup points"
 msgstr "Meklēt saņemšanas vietas"
 
-#: core/class-text.php:512
+#: core/class-text.php:516
 msgid "Search pickup points near you by typing your address above."
 msgstr "Meklēt tuvākās saņemšanas vietas"
 
-#: core/class-admin.php:1310
+#: core/class-admin.php:1318
 msgid "Select"
 msgstr "Izvēlēties"
 
-#: core/class-frontend.php:549 core/class-wc-blocks-integration.php:107
+#: core/class-frontend.php:549 core/class-wc-blocks-integration.php:108
 msgid "Select a pickup point"
 msgstr "Izvēlieties saņemšanas vietu"
 
-#: core/class-manifest.php:292
+#: core/class-manifest.php:299
 msgid "Select date and time between courier should pickup order"
 msgstr ""
 
@@ -1066,7 +1094,7 @@ msgstr ""
 msgid "Select one shipping method"
 msgstr "Izvēlieties vienu piegādes metodi"
 
-#: core/class-admin.php:1356 core/class-admin.php:2213
+#: core/class-admin.php:1364 core/class-admin.php:2235
 msgid "Select pickup point"
 msgstr "Izvēlieties saņemšanas vietu"
 
@@ -1080,7 +1108,7 @@ msgstr ""
 msgid "Selected shipping method: %s"
 msgstr "Izvēlētā piegādes metode: %s"
 
-#: core/class-admin.php:1181
+#: core/class-admin.php:1189
 msgid "Send order"
 msgstr "Nosūtīt pasūtījumu"
 
@@ -1116,32 +1144,32 @@ msgstr "Sūtītāja telefons"
 msgid "Sender postal code"
 msgstr "Sūtītāja pasta kods"
 
-#: core/class-text.php:572
+#: core/class-text.php:576
 msgid "Service not working. Please check the settings."
 msgstr ""
 
-#: core/class-admin.php:957
+#: core/class-admin.php:964
 msgid "Services"
 msgstr "Pakalpojumi"
 
-#: core/class-text.php:479
+#: core/class-text.php:483
 msgid "Setup wizard"
 msgstr "Iestatīšanas palīgs"
 
-#: core/class-manifest.php:581
+#: core/class-manifest.php:592
 msgid "Shipment not ready"
 msgstr ""
 
-#: core/class-manifest.php:581
+#: core/class-manifest.php:592
 msgid "Shipment ready"
 msgstr ""
 
-#: core/class-admin.php:262
+#: core/class-admin.php:269
 msgid "Shipment Tracking"
 msgstr ""
 
 #. @codingStandardsIgnoreLine
-#: core/class-admin.php:1915
+#: core/class-admin.php:1932
 msgid "Shipment tracking code is not defined."
 msgstr "Sūtījuma izsekošanas numurs nav definēts."
 
@@ -1161,7 +1189,7 @@ msgstr "Piegādes izmaksas (PVN iekļauts)"
 msgid "Shipping label size"
 msgstr ""
 
-#: core/class-admin.php:1184
+#: core/class-admin.php:1192
 msgid "Shipping labels"
 msgstr "Piegādes pavadlapas"
 
@@ -1181,7 +1209,7 @@ msgstr "Piegādes metožu kartēšana"
 msgid "Shipping settings"
 msgstr "Piegādes iestatījumi"
 
-#: core/class-text.php:516
+#: core/class-text.php:520
 msgid "Show pickup point override in checkout"
 msgstr "Piedāvāt mainīt saņemšanas vietu grozā"
 
@@ -1189,12 +1217,12 @@ msgstr "Piedāvāt mainīt saņemšanas vietu grozā"
 msgid "Show pickup points as"
 msgstr "Rādīt saņemšanas vietas kā"
 
-#: core/class-text.php:483
+#: core/class-text.php:487
 msgid "Show shipping method"
 msgstr ""
 
 #. %s: Vendor name
-#: core/class-admin.php:681
+#: core/class-admin.php:688
 #, php-format
 msgid "Show site %s"
 msgstr "Rādīt saiti: %s"
@@ -1203,7 +1231,7 @@ msgstr "Rādīt saiti: %s"
 msgid "Skip this step"
 msgstr "Izlaist šo soli"
 
-#: core/class-text.php:548
+#: core/class-text.php:552
 msgid "SKU codes of the goods in the shipment"
 msgstr "Sūtījuma preču kodi"
 
@@ -1211,7 +1239,7 @@ msgstr "Sūtījuma preču kodi"
 msgid "Start the setup wizard"
 msgstr "Uzsākt iestatīšanas palīgu"
 
-#: core/class-manifest.php:265 core/class-admin.php:936
+#: core/class-manifest.php:272 core/class-admin.php:943
 msgid "Status"
 msgstr "Statuss"
 
@@ -1219,12 +1247,12 @@ msgstr "Statuss"
 msgid "Store owner information"
 msgstr "Veikala īpašnieka informācija"
 
-#: core/class-manifest.php:306
+#: core/class-manifest.php:313
 msgid "Submit"
 msgstr ""
 
 #. %s: Error message
-#: core/class-admin.php:653
+#: core/class-admin.php:660
 #, php-format
 msgid "Succeed: %s"
 msgstr ""
@@ -1273,11 +1301,11 @@ msgstr ""
 "Muitas kodam ir jāatbilst Pasaules Muitas organizācijas starptautiskajai "
 "Harmonizētās preču aprakstīšanas un kodēšanas sistēmai."
 
-#: core/class-text.php:536
+#: core/class-text.php:540
 msgid "The note is specified in the order"
 msgstr ""
 
-#: core/class-text.php:524
+#: core/class-text.php:528
 msgid ""
 "The pickup point you've chosen is not available for public access. Are you "
 "sure that you can retrieve the package?"
@@ -1285,12 +1313,12 @@ msgstr ""
 "Izvēlētai saņemšanas vietai nav publiskas piekļuves. Vai esat pārliecināti, "
 "ka varēsiet sūtījumu saņemt?"
 
-#: core/class-wc-blocks-integration.php:119
+#: core/class-wc-blocks-integration.php:120
 #, php-format
 msgid "The selection of pickup points has been changed based on the address %s"
 msgstr ""
 
-#: core/class-shipment.php:276
+#: core/class-shipment.php:277
 msgid ""
 "The shipping label was not created because the order does not contain valid "
 "shipping details."
@@ -1298,7 +1326,7 @@ msgstr ""
 "Piegādes pavadlapa netika izveidota, jo pasūtījums nesatur korektu piegādes "
 "informāciju."
 
-#: core/class-shipment.php:264
+#: core/class-shipment.php:265
 msgid ""
 "The shipping label was not created because the order does not contain valid "
 "shipping method."
@@ -1306,20 +1334,24 @@ msgstr ""
 "Piegādes pavadlapa netika izveidota, jo pasūtījums nesatur korektu piegādes "
 "metodi."
 
-#: core/class-wc-blocks-integration.php:117
+#: core/class-wc-blocks-integration.php:118
 msgid "The value is too short"
 msgstr ""
 
-#: core/class-manifest.php:476
+#: core/class-shipment.php:898
+msgid "timeout"
+msgstr ""
+
+#: core/class-manifest.php:487
 msgid "Token not found. Please check credentials"
 msgstr ""
 
-#: core/class-admin.php:759
+#: core/class-admin.php:766
 msgid "Total weight of dangerous goods"
 msgstr "Kopējais bīstamo preču svars"
 
-#: core/class-admin.php:974 core/class-admin.php:1006
-#: core/class-shipment.php:420
+#: core/class-shipment.php:421 core/class-admin.php:981
+#: core/class-admin.php:1013
 msgid "Track"
 msgstr "Izsekot"
 
@@ -1333,7 +1365,7 @@ msgid "Tracking"
 msgstr "Izsekošana"
 
 #. %s: Error message
-#: core/class-shipment.php:1127
+#: core/class-shipment.php:1169
 #, php-format
 msgid "Tracking code creation failed: %s"
 msgstr "Izsekošanas koda izveide neizdevās: %s"
@@ -1342,7 +1374,7 @@ msgstr "Izsekošanas koda izveide neizdevās: %s"
 msgid "Translate products names in labels"
 msgstr ""
 
-#: core/class-admin.php:1727
+#: core/class-admin.php:1739
 msgid "Unable to create return label for this shipment type."
 msgstr "Šim sūtījuma veidam, atgriešanas pavadlapas nav iespējamas."
 
@@ -1350,15 +1382,15 @@ msgstr "Šim sūtījuma veidam, atgriešanas pavadlapas nav iespējamas."
 msgid "Unknown"
 msgstr "Nezināms"
 
-#: core/class-shipment.php:864
+#: core/class-shipment.php:913
 msgid "Unknown error"
 msgstr "Nezināma kļūda"
 
-#: core/class-admin.php:965
+#: core/class-admin.php:972
 msgid "Unknown product"
 msgstr "Nezināma prece"
 
-#: core/class-admin.php:932 core/class-shipment.php:132
+#: core/class-shipment.php:132 core/class-admin.php:939
 msgid "Unknown status"
 msgstr "Nezināms statuss"
 
@@ -1366,7 +1398,7 @@ msgstr "Nezināms statuss"
 msgid "Use the client's language for product names displayed on labels"
 msgstr ""
 
-#: core/class-admin.php:679
+#: core/class-admin.php:686
 msgid "Visit Website"
 msgstr "Apmeklējiet mājaslapu"
 
@@ -1380,11 +1412,11 @@ msgstr "Pēc piegādes pavadlapu izveides, mainiet pasūtījuma statusu uz"
 msgid "When order status is \"%s\""
 msgstr "Kad pasūījuma statuss ir \"%s\""
 
-#: core/class-admin.php:1347
+#: core/class-admin.php:1355
 msgid "With filters"
 msgstr ""
 
-#: core/class-admin.php:1337
+#: core/class-admin.php:1345
 msgid "Without filters"
 msgstr ""
 
@@ -1406,11 +1438,11 @@ msgstr "WooCommerce versija"
 msgid "Wordpress version"
 msgstr "Wordpress versija"
 
-#: core/class-manifest.php:361
+#: core/class-manifest.php:372
 msgid "Wrong data requested, please try again"
 msgstr ""
 
-#: core/class-manifest.php:371
+#: core/class-manifest.php:382
 msgid "Wrong response."
 msgstr ""
 
@@ -1431,7 +1463,7 @@ msgstr ""
 "Jūs varat aktivizēt jaunu groza piegādes metodi izmantojot %1$s. Plašākai "
 "informācijai, skatiet %2$s"
 
-#: core/class-wc-blocks-integration.php:112
+#: core/class-wc-blocks-integration.php:113
 msgid "You can choose the pickup point on the Checkout page"
 msgstr ""
 

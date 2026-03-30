@@ -1045,8 +1045,11 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
         $parcel->setVolume(round($order_total_volume / $parcel_total_count, 4));
         $parcel->setPackageType($package_type);
 
+	
         if ( ! empty($this->settings['info_code']) ) {
-          $parcel->setInfocode($this->settings['info_code']);
+          $parcel->setInfocode(
+            trim(mb_substr($this->settings['info_code'], 0, 15))
+          );
         }
 
         $shipment->addParcel($parcel);

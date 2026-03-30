@@ -459,6 +459,10 @@ if ( ! class_exists(__NAMESPACE__ . '\Text') ) {
       return __('Info-code for shipments', 'woo-pakettikauppa');
     }
 
+    public function info_code_desc() {
+      return __('Info-code length must be 15 characters or less', 'woo-pakettikauppa');
+    }
+
     public function cod_settings() {
       return __('Cash on Delivery (COD) Settings', 'woo-pakettikauppa');
     }
