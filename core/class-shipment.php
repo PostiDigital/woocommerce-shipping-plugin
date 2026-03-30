@@ -386,7 +386,8 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
 
       if ( empty($selected_products) ) {
         foreach ( $order->get_items() as $item_id => $item ) {
-          $product_id = $item->get_product_id();
+          $variation_id = $item->get_variation_id();
+          $product_id = ! empty($variation_id) ? $variation_id : $item->get_product_id();
           $item_quantity  = $item->get_quantity();
           array_push(
             $selected_products,
@@ -1045,7 +1046,6 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
         $parcel->setVolume(round($order_total_volume / $parcel_total_count, 4));
         $parcel->setPackageType($package_type);
 
-	
         if ( ! empty($this->settings['info_code']) ) {
           $parcel->setInfocode(
             trim(mb_substr($this->settings['info_code'], 0, 15))
@@ -1068,11 +1068,12 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
             continue;
           }
 
-          if ( ! self::check_selected_product($item_data['product_id'], $selected_products) ) {
+          $product_variation_id = $item['variation_id'];
+          $item_match_id = ! empty($product_variation_id) ? $product_variation_id : $item_data['product_id'];
+
+          if ( ! self::check_selected_product($item_match_id, $selected_products) ) {
             continue;
           }
-
-          $product_variation_id = $item['variation_id'];
 
           // Check if product has variation.
           if ( $product_variation_id ) {
@@ -1081,7 +1082,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
             $product = $wcpf->get_product($item_data['product_id']);
           }
 
-          $selected_product = self::get_selected_product($item_data['product_id'], $selected_products);
+          $selected_product = self::get_selected_product($item_match_id, $selected_products);
 
           if ( empty($product) ) {
             continue;
@@ -1106,7 +1107,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
               }
             }
           }
-
+          
           $quantity = ($selected_product !== false) ? $selected_product['qty'] : $item->get_quantity();
 
           $translated_product = $product;
@@ -1225,65 +1226,89 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
     }
 
     private function prepare_additional_info_text( $values = array(), $custom_text = false ) {
-        if ( ! is_array($values) ) {
-            return 'ERROR';
+      if ( ! is_array($values) ) {
+        return 'ERROR';
+      }
+
+      $products = $values['products'] ?? array();
+
+      $shortcodes = array(
+        'order_number' => '{ORDER_NUMBER}',
+        'order_note' => '{ORDER_NOTE}',
+        'products_names' => '{PRODUCTS_NAMES}',
+        'products_names_with_qty' => '{PRODUCTS_NAME_WITH_QUANTITY}',
+        'products_sku' => '{PRODUCTS_SKU}',
+        'products_sku_with_qty' => '{PRODUCTS_SKU_WITH_QUANTITY}',
+      );
+
+      // Display "-" in the text instead of the shortcode text if there is no value
+      foreach ( $shortcodes as $key => $shortcode ) {
+        $values[$key] = (isset($values[$key]) && $values[$key] !== '') ? $values[$key] : '-';
+      }
+
+      $additional_info = '';
+
+      $label_additional_info = $this->settings['label_additional_info'];
+      if ( $custom_text !== false && ! empty($custom_text) ) {
+        $label_additional_info = $custom_text;
+      }
+
+      if ( ! empty($label_additional_info) ) {
+        $additional_info = $label_additional_info;
+        
+        // Normalize user-entered shortcodes
+        foreach ( $shortcodes as $shortcode ) {
+          $additional_info = preg_replace(
+            '/' . preg_quote($shortcode, '/') . '/i',
+            $shortcode,
+            $additional_info
+          );
         }
 
-        $keys = array(
-          'products' => array(),
-          'order_number' => '{ORDER_NUMBER}',
-          'order_note' => '{ORDER_NOTE}',
-          'products_names' => '{PRODUCTS_NAMES}',
-          'products_names_with_qty' => '{PRODUCTS_NAME_WITH_QUANTITY}',
-          'products_sku' => '{PRODUCTS_SKU}',
-        );
-        foreach ( $keys as $key_id => $key ) {
-            $values[$key_id] = (isset($values[$key_id])) ? $values[$key_id] : $key;
+        $additional_info = str_replace('\n', "\n", $additional_info);
+
+        $this->replace_string_in_text($additional_info, $shortcodes['order_number'], $values['order_number']);
+        $this->replace_string_in_text($additional_info, $shortcodes['order_note'], $values['order_note']);
+
+        $products_shortcodes_values = [
+          'names' => [],
+          'names_with_qty' => [],
+          'sku' => [],
+          'sku_with_qty' => [],
+        ];
+
+        if ( is_array($products) && ! empty($products) ) {
+          foreach ( $products as $prod ) {
+            $prod_name = $prod['name'] ?? '-';
+            $prod_qty = $prod['qty'] ?? 1;
+            $prod_sku = (! empty($prod['sku'])) ? $prod['sku'] : '-';
+
+            $products_shortcodes_values['names'][] = $prod_name;
+            $products_shortcodes_values['names_with_qty'][] = $prod_name . ' (' . $prod_qty . ')';
+            $products_shortcodes_values['sku'][] = $prod_sku;
+            $products_shortcodes_values['sku_with_qty'][] = $prod_sku . ' (' . $prod_qty . ')';
+          }
+        } else {
+          // Display "-" in the text instead of the shortcode text if there is no products
+          $products_shortcodes_values['names'][] = '-';
+          $products_shortcodes_values['names_with_qty'][] = '-';
+          $products_shortcodes_values['sku'][] = '-';
+          $products_shortcodes_values['sku_with_qty'][] = '-';
+
         }
+        $this->replace_string_in_text($additional_info, $shortcodes['products_names'], $products_shortcodes_values['names']);
+        $this->replace_string_in_text($additional_info, $shortcodes['products_names_with_qty'], $products_shortcodes_values['names_with_qty']);
+        $this->replace_string_in_text($additional_info, $shortcodes['products_sku'], $products_shortcodes_values['sku']);
+        $this->replace_string_in_text($additional_info, $shortcodes['products_sku_with_qty'], $products_shortcodes_values['sku_with_qty']);
+      }
 
-        $additional_info = '';
+      return $additional_info;
+    }
 
-        $label_additional_info = $this->settings['label_additional_info'];
-        if ( $custom_text !== false && ! empty($custom_text) ) {
-            $label_additional_info = $custom_text;
-        }
+    private function replace_string_in_text( &$text, $string, $replace ) {
+      $replace_text = (is_array($replace)) ? implode(', ', $replace) : $replace;
 
-        if ( ! empty($label_additional_info) ) {
-            $additional_info = $label_additional_info;
-            $additional_info = str_replace('\n', "\n", $additional_info);
-
-            $additional_info = str_ireplace($keys['order_number'], $values['order_number'], $additional_info);
-            $additional_info = str_ireplace($keys['order_note'], $values['order_note'], $additional_info);
-
-            $products_names_text = '';
-            $products_names_with_qty_text = '';
-            $products_sku_text = '';
-            if ( is_array($values['products']) && ! empty($values['products']) ) {
-                foreach ( $values['products'] as $prod ) {
-                    if ( ! empty($products_names_text) ) {
-                        $products_names_text .= ', ';
-                    }
-                    if ( ! empty($products_names_with_qty_text) ) {
-                        $products_names_with_qty_text .= ', ';
-                    }
-                    if ( ! empty($products_sku_text) ) {
-                        $products_sku_text .= ', ';
-                    }
-                    $products_names_text .= $prod['name'];
-                    $products_names_with_qty_text .= $prod['name'] . ' (' . $prod['qty'] . ')';
-                    $products_sku_text .= (! empty($prod['sku'])) ? $prod['sku'] : '-';
-                }
-            } else {
-                $products_names_text = $values['products_names'];
-                $products_names_text = $values['products_names_with_qty'];
-                $products_sku_text = $values['products_sku'];
-            }
-            $additional_info = str_ireplace($keys['products_names'], $products_names_text, $additional_info);
-            $additional_info = str_ireplace($keys['products_names_with_qty'], $products_names_with_qty_text, $additional_info);
-            $additional_info = str_ireplace($keys['products_sku'], $products_sku_text, $additional_info);
-        }
-
-        return $additional_info;
+      $text = str_replace($string, $replace_text, $text);
     }
 
     public static function check_selected_product( $prod_id, $selected_products ) {
@@ -1324,11 +1349,12 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
           continue;
         }
 
-        if ( ! self::check_selected_product($item['product_id'], $selected_products) ) {
+        $product_variation_id = $item['variation_id'];
+        $item_match_id = ! empty($product_variation_id) ? $product_variation_id : $item['product_id'];
+
+        if ( ! self::check_selected_product($item_match_id, $selected_products) ) {
           continue;
         }
-
-        $product_variation_id = $item['variation_id'];
 
         // Check if product has variation.
         if ( $product_variation_id ) {
@@ -1337,7 +1363,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
           $product = $wcpf->get_product($item['product_id']);
         }
 
-        $selected_product = self::get_selected_product($item['product_id'], $selected_products);
+        $selected_product = self::get_selected_product($item_match_id, $selected_products);
 
         if ( $product->is_virtual() ) {
           continue;
@@ -1372,11 +1398,12 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
           continue;
         }
 
-        if ( ! self::check_selected_product($item['product_id'], $selected_products) ) {
+        $product_variation_id = $item['variation_id'];
+        $item_match_id = ! empty($product_variation_id) ? $product_variation_id : $item['product_id'];
+
+        if ( ! self::check_selected_product($item_match_id, $selected_products) ) {
           continue;
         }
-
-        $product_variation_id = $item['variation_id'];
 
         // Check if product has variation.
         if ( $product_variation_id ) {
@@ -1385,7 +1412,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
           $product = $wcpf->get_product($item['product_id']);
         }
 
-        $selected_product = self::get_selected_product($item['product_id'], $selected_products);
+        $selected_product = self::get_selected_product($item_match_id, $selected_products);
 
         if ( $product->is_virtual() ) {
           continue;
