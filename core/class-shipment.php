@@ -1047,7 +1047,6 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
 
 	
         if ( ! empty($this->settings['info_code']) ) {
-          $parcel->setInfocode(
           $parcel->setInfocode($this->settings['info_code']);
             trim(mb_substr($this->settings['info_code'], 0, 15))
           );
