@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2022-05-09 14:01+0000\n"
-"PO-Revision-Date: 2024-11-28 14:54+0000\n"
+"PO-Revision-Date: 2026-03-23 15:15+0000\n"
 "X-Generator: Loco https://localise.biz/\n"
 "X-Domain: woo-pakettikauppa\n"
 "Language: et\n"
@@ -19,7 +19,7 @@ msgstr ""
 "X-Loco-Version: 2.6.2; wp-6.0"
 
 #. %s: Vendor full name
-#: core/class-admin.php:599
+#: core/class-admin.php:606
 #, php-format
 msgid ""
 "%s has been installed/updated but no shipping methods are currently active!"
@@ -27,7 +27,7 @@ msgstr ""
 "%s on paigaldatud/värskendatud, kuid tarnemeetodid pole konfigureeritud!"
 
 #. %s: Vendor full name
-#: core/class-text.php:488
+#: core/class-text.php:492
 #, php-format
 msgid "%s requires WooCommerce to be installed and activated!"
 msgstr "%s nõuab et WooCommerce oleks paigaldatud ja aktiveeritud!"
@@ -39,16 +39,16 @@ msgid "%s Setup Wizard"
 msgstr "%s Paigaldamise viisard"
 
 #. %s: Vendor name
-#: core/class-admin.php:770
+#: core/class-admin.php:777
 #, php-format
 msgid "%s Shipping"
 msgstr "%s Saatmine"
 
-#: core/class-manifest.php:267
+#: core/class-manifest.php:274
 msgid "Actions"
 msgstr ""
 
-#: core/class-text.php:528
+#: core/class-text.php:532
 msgid "Add additional text on labels"
 msgstr "Lisa pakikaardile tekst"
 
@@ -56,9 +56,9 @@ msgstr "Lisa pakikaardile tekst"
 msgid "Add selected pickup point information to the order completed email"
 msgstr "Lisa valitud pakiautomaadi andmed tellimuse vormistamise meilile"
 
-#: core/class-manifest.php:149 core/class-manifest.php:151
-#: core/class-manifest.php:184 core/class-admin.php:978
-#: core/class-admin.php:1415
+#: core/class-manifest.php:156 core/class-manifest.php:158
+#: core/class-manifest.php:191 core/class-admin.php:985
+#: core/class-admin.php:1423
 msgid "Add to pickup order"
 msgstr ""
 
@@ -66,19 +66,19 @@ msgstr ""
 msgid "Add tracking link to the order completed email"
 msgstr "Lisage oma tellimuse täitmise e-kirjale saadetise jälgimise link"
 
-#: core/class-manifest.php:298
+#: core/class-manifest.php:305
 msgid "Additional information"
 msgstr ""
 
-#: core/class-admin.php:1207
+#: core/class-admin.php:1215
 msgid "Additional services"
 msgstr "Lisateenused"
 
-#: core/class-text.php:475
+#: core/class-text.php:479
 msgid "Advanced settings"
 msgstr "Täpsemad seaded"
 
-#: core/class-wc-blocks-integration.php:116
+#: core/class-wc-blocks-integration.php:117
 msgid "After entering, please wait for a while for the results to be received"
 msgstr ""
 
@@ -94,7 +94,7 @@ msgstr ""
 msgid "All"
 msgstr ""
 
-#: core/class-manifest.php:69
+#: core/class-manifest.php:76
 msgid "All Pickup Orders"
 msgstr ""
 
@@ -102,7 +102,7 @@ msgstr ""
 msgid "Allow user to use custom address for pickup point search."
 msgstr ""
 
-#: core/class-manifest.php:319
+#: core/class-manifest.php:326
 msgid "Already placed pickup order"
 msgstr ""
 
@@ -110,11 +110,11 @@ msgstr ""
 msgid "Amount of hazardous subtances in the product as grams."
 msgstr "Ohtlike ainete osakaal tootes grammides."
 
-#: core/class-shipment.php:240
+#: core/class-shipment.php:241
 msgid "An error occurred while checking API credentials"
 msgstr "API tunnuste kontrollimisel esines viga"
 
-#: core/class-text.php:496
+#: core/class-text.php:500
 msgid "An error occurred while searching for pickup points."
 msgstr "Pakiautomaatide otsingul ilmnes viga."
 
@@ -123,14 +123,14 @@ msgid "An error occurred. Please try again later."
 msgstr "Veateade. Proovi hiljem uuesti."
 
 #. %s: Error message
-#: core/class-admin.php:637 core/class-admin.php:1786 core/class-admin.php:1826
-#: core/class-admin.php:1868 core/class-admin.php:1902
-#: core/class-shipment.php:326
+#: core/class-shipment.php:327 core/class-admin.php:644
+#: core/class-admin.php:1803 core/class-admin.php:1843
+#: core/class-admin.php:1885 core/class-admin.php:1919
 #, php-format
 msgid "An error occurred: %s"
 msgstr "Veateade: %s"
 
-#: core/class-shipping-method.php:158
+#: core/class-shipping-method.php:160
 msgid "API error!"
 msgstr "API viga!"
 
@@ -162,7 +162,7 @@ msgstr "API parool"
 msgid "API secret provided by Posti"
 msgstr "API parool antud %1$s poolt"
 
-#: core/class-manifest.php:567
+#: core/class-manifest.php:578
 msgid "Assigned orders"
 msgstr ""
 
@@ -170,15 +170,15 @@ msgstr ""
 msgid "Bad API key or API secret"
 msgstr "Vale API kasutaja või parool"
 
-#: core/class-text.php:467
+#: core/class-text.php:471
 msgid "Bank account number for Cash on Delivery (IBAN)"
 msgstr "IBAN lunamakse jaoks"
 
-#: core/class-text.php:471
+#: core/class-text.php:475
 msgid "BIC code for Cash on Delivery"
 msgstr "BIC lunamakse jaoks"
 
-#: core/class-wc-blocks-integration.php:105
+#: core/class-wc-blocks-integration.php:106
 msgid "Block options"
 msgstr ""
 
@@ -202,15 +202,15 @@ msgstr ""
 "Serveriga ühendamine ebaõnnestus - Palun kontrolli API tunnuseid, serveri "
 "logifaile ja tulemüüri seadistust."
 
-#: core/class-admin.php:1934
+#: core/class-admin.php:1951
 msgid "Cannot find shipment with given shipment number."
 msgstr "Saadetise leidmine ebaõnnestus."
 
-#: core/class-admin.php:523
+#: core/class-admin.php:530
 msgid "Cannot find shipments with given shipment numbers."
 msgstr "Saadetiste leidmine ebaõnnestus."
 
-#: core/class-text.php:463
+#: core/class-text.php:467
 msgid "Cash on Delivery (COD) Settings"
 msgstr "Lunamakse seaded"
 
@@ -222,7 +222,7 @@ msgstr "URL kontrollimine"
 msgid "Checkout options"
 msgstr ""
 
-#: core/class-wc-blocks-integration.php:113
+#: core/class-wc-blocks-integration.php:114
 msgid "Choose one of pickup points close to the address you entered"
 msgstr ""
 
@@ -236,19 +236,19 @@ msgid ""
 "points"
 msgstr ""
 
-#: core/class-manifest.php:111
+#: core/class-manifest.php:118
 msgid "Closed "
 msgstr ""
 
 #. %s: label_count
-#: core/class-manifest.php:114
+#: core/class-manifest.php:121
 #, php-format
 msgid "Closed <span class=\"count\">(%s)</span>"
 msgid_plural "Closed <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: core/class-check-tool.php:217 core/class-shipping-method.php:119
+#: core/class-shipping-method.php:127 core/class-check-tool.php:217
 msgid "Code"
 msgstr ""
 
@@ -274,32 +274,32 @@ msgstr "Versiooni lugemine ebaõnnestus"
 msgid "Country of origin"
 msgstr "Lähteriik"
 
-#: core/class-manifest.php:71 core/class-admin.php:1426
-#: core/class-admin.php:2061
+#: core/class-manifest.php:78 core/class-admin.php:1434
+#: core/class-admin.php:2078
 msgid "Create"
 msgstr "Loo"
 
-#: core/class-admin.php:371 core/class-admin.php:375
+#: core/class-admin.php:378 core/class-admin.php:382
 msgid "Create and fetch shipping labels"
 msgstr "Loo ja lae alla pakikaardid"
 
-#: core/class-admin.php:372 core/class-admin.php:376
+#: core/class-admin.php:379 core/class-admin.php:383
 msgid "Create custom shipments"
 msgstr ""
 
-#: core/class-admin.php:1048
+#: core/class-admin.php:1055
 msgid "Create for products"
 msgstr "Loo toodete jaoks"
 
-#: core/class-manifest.php:70
+#: core/class-manifest.php:77
 msgid "Create New Pickup Order"
 msgstr ""
 
-#: core/class-admin.php:1019
+#: core/class-admin.php:1026
 msgid "Create Return Label"
 msgstr "Loo tagastamise pakikaart"
 
-#: core/class-admin.php:408
+#: core/class-admin.php:415
 msgid "Create shipping label"
 msgstr "Loo pakikaart"
 
@@ -307,16 +307,16 @@ msgstr "Loo pakikaart"
 msgid "Create shipping labels automatically"
 msgstr "Loo pakikaardid automaatselt"
 
-#: core/class-text.php:560
+#: core/class-text.php:564
 msgid "Created return label"
 msgstr ""
 
-#: core/class-text.php:556
+#: core/class-text.php:560
 msgid "Created shipment"
 msgstr ""
 
 #. %1$s: Vendor name, %2$s: Error message
-#: core/class-admin.php:1793
+#: core/class-admin.php:1810
 #, php-format
 msgid "Creating %1$s return label failed! Errors: %2$s"
 msgstr ""
@@ -333,15 +333,15 @@ msgstr "Curl laiendus"
 msgid "Curl not installed"
 msgstr "Curl pole paigaldatud"
 
-#: core/class-admin.php:2037
+#: core/class-admin.php:2054
 msgid "Current shipping method"
 msgstr ""
 
-#: core/class-text.php:504 core/class-wc-blocks-integration.php:114
+#: core/class-wc-blocks-integration.php:115 core/class-text.php:508
 msgid "Custom pickup address"
 msgstr "Kohandatud pealevõtmise aadress"
 
-#: core/class-admin.php:1419
+#: core/class-admin.php:1427
 msgid "Custom shipping..."
 msgstr "Kohandatud kättetoimetamine..."
 
@@ -353,7 +353,7 @@ msgstr ""
 msgid "Customize the order processing phase."
 msgstr "Kohandage tellimuse töötlemise etapp."
 
-#: core/class-manifest.php:295
+#: core/class-manifest.php:302
 msgid "Date"
 msgstr ""
 
@@ -361,30 +361,30 @@ msgstr ""
 msgid "Default shipping class cost"
 msgstr "Tarneklassi vaikehind"
 
-#: core/class-admin.php:980 core/class-admin.php:1007
+#: core/class-admin.php:987 core/class-admin.php:1014
 msgid "Delete"
 msgstr "Kustuta"
 
 #. %%s: tracking code
-#: core/class-admin.php:1858
+#: core/class-admin.php:1875
 #, php-format
 msgid "Deleted %1$s return label %2$s."
 msgstr "Kustutatud %1$s tagastamise pakikaart %2$s."
 
 #. %1$s: Vendor name, %2$s: tracking code
-#: core/class-admin.php:1819
+#: core/class-admin.php:1836
 #, php-format
 msgid "Deleted %1$s shipping label %2$s."
 msgstr "Kustutatud %1$s saatmise pakikaart %2$s."
 
 #. %1$s: Vendor name, %2$s: Error message
-#: core/class-admin.php:1875
+#: core/class-admin.php:1892
 #, php-format
 msgid "Deleting %1$s return label failed! Errors: %2$s"
 msgstr "%1$s tagastuse pakikaardi kustutamine ebaõnnestus! Vead: %2$s"
 
 #. %1$s: Vendor name, %2$s: Error message
-#: core/class-admin.php:1833
+#: core/class-admin.php:1850
 #, php-format
 msgid "Deleting %1$s shipment failed! Errors: %2$s"
 msgstr "%1$s saadetise kustutamine ebaõnnestus! Vead: %2$s"
@@ -397,7 +397,7 @@ msgstr "OK kaal (g)"
 msgid "Download"
 msgstr "Allalaadimine"
 
-#: core/class-manifest.php:296
+#: core/class-manifest.php:303
 msgid "Earliest time"
 msgstr ""
 
@@ -405,7 +405,7 @@ msgstr ""
 msgid "Edit to select shipping company and shipping prices."
 msgstr "Muuda, et valida saatmisettevõte ja hinnad."
 
-#: core/class-admin.php:834
+#: core/class-admin.php:841
 msgid "Email"
 msgstr "Email"
 
@@ -413,15 +413,11 @@ msgstr "Email"
 msgid "Empty postcode. Please check your address information."
 msgstr "Puuduv postikood. Palun kontrolli aadressi."
 
-#: core/class-admin.php:1928 core/class-shipping-method.php:116
+#: core/class-shipping-method.php:124 core/class-admin.php:1945
 msgid "Error"
 msgstr "Viga"
 
-#: core/class-shipment.php:865
-msgid "error"
-msgstr "viga"
-
-#: core/class-admin.php:1402
+#: core/class-admin.php:1410
 msgid "Estimated shipping price"
 msgstr ""
 
@@ -433,32 +429,37 @@ msgstr "Erand"
 msgid "Exit"
 msgstr "Väljapääs"
 
-#: core/class-text.php:564
+#: core/class-text.php:568
 msgid "Express-freight default pallet type"
 msgstr ""
 
-#: core/class-shipment.php:226 core/class-shipment.php:234
+#: core/class-shipment.php:227 core/class-shipment.php:235
 msgid "Failed to check API credentials or them are bad"
 msgstr "Viga API tunnuses"
 
-#: core/class-shipment.php:216
+#: core/class-shipment.php:217
 msgid "Failed to connect with server"
 msgstr "Serveriga ühendamine ebaõnnestus"
 
 #. %s: Error message
-#: core/class-shipment.php:335 core/class-shipment.php:340
+#: core/class-shipment.php:336 core/class-shipment.php:341
 msgid "Failed to create shipment."
 msgstr "Saadetise loomine ebaõnnestus."
 
 #. %s: Error message
-#: core/class-shipment.php:321
+#: core/class-shipment.php:322
 #, php-format
 msgid "Failed to create shipment. Errors: %s"
 msgstr "Saadetise loomine ebaõnnestus. Vead: %s"
 
-#: core/class-admin.php:1927
+#: core/class-admin.php:1944
 msgid "Failed to get shipment label."
 msgstr "Saadetise pakikaardi loomine ebaõnnestus."
+
+#: core/class-shipment.php:889 core/class-shipment.php:898
+#, php-format
+msgid "Failed to obtain access token (%s)"
+msgstr ""
 
 #: core/class-check-tool.php:235
 msgid "Found and works."
@@ -476,13 +477,21 @@ msgstr "Tasuta kättetoimetamise limiit"
 msgid "HS tariff number"
 msgstr "HS tariifnumber"
 
-#: core/class-wc-blocks-integration.php:115
+#. URI of the plugin
+msgid "https://github.com/PostiDigital/woocommerce-shipping-plugin"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://www.posti.fi/"
+msgstr ""
+
+#: core/class-wc-blocks-integration.php:116
 msgid ""
 "If none of your preferred pickup points are listed, fill in a custom address "
 "above and select another pickup point"
 msgstr ""
 
-#: core/class-text.php:500
+#: core/class-text.php:504
 msgid ""
 "If none of your preferred pickup points are listed, fill in a custom address "
 "above and select another pickup point."
@@ -507,11 +516,11 @@ msgstr ""
 "lepingu sõlmimist %1$s-ga, valige \"Testirežiim\" ja jätke API "
 "sisselogimisväljad tühjaks."
 
-#: core/class-text.php:297 core/class-admin.php:1084
+#: core/class-text.php:297 core/class-admin.php:1091
 msgid "Ignore product weight information"
 msgstr ""
 
-#: core/class-shipping-method.php:334
+#: core/class-shipping-method.php:336
 msgid "Include return label (if available)"
 msgstr ""
 
@@ -523,6 +532,10 @@ msgstr "Sisaldab pakiautomaate"
 msgid "Info-code for shipments"
 msgstr "Saadetiste info kood"
 
+#: core/class-text.php:463
+msgid "Info-code length must be 15 characters or less"
+msgstr ""
+
 #: core/class-shipment.php:108
 msgid "Informed consignee of arrival"
 msgstr "Saabumiseteade edastatud"
@@ -531,7 +544,7 @@ msgstr "Saabumiseteade edastatud"
 msgid "Installed"
 msgstr "Paigaldatud"
 
-#: core/class-wc-blocks-integration.php:118
+#: core/class-wc-blocks-integration.php:119
 msgid "Invalid character entered"
 msgstr ""
 
@@ -545,7 +558,7 @@ msgstr "Vale postiindeks \"%1$s\". Palun kontrollige aadressi andmeid."
 msgid "Invoice ID"
 msgstr ""
 
-#: core/class-admin.php:1698
+#: core/class-admin.php:1710
 msgid ""
 "It is not allowed to create a return label when shipping labels not exists"
 msgstr ""
@@ -583,15 +596,15 @@ msgstr "Saadetis tagastatakse saatjale"
 msgid "Item not delivered – delivery attempt made"
 msgstr "Kättetoimetamiskatse tehtud, kuid saadetist ei saadud kohale toimetada"
 
-#: core/class-admin.php:938 core/class-admin.php:1003
+#: core/class-admin.php:945 core/class-admin.php:1010
 msgid "Label code"
 msgstr "Pakikaardi kood"
 
-#: core/class-shipment.php:437
+#: core/class-shipment.php:438
 msgid "Label posted to URL successfully."
 msgstr "Pakikaart edukalt URL saadetud."
 
-#: core/class-manifest.php:297
+#: core/class-manifest.php:304
 msgid "Latest time"
 msgstr ""
 
@@ -613,23 +626,27 @@ msgstr "Link %s veebisaidile"
 msgid "List"
 msgstr "Loend"
 
+#: core/class-shipment.php:889
+msgid "lock expired"
+msgstr ""
+
 #: core/class-text.php:366
 msgid "Make shipping phone number mandatory"
 msgstr ""
 
-#: core/class-manifest.php:367
+#: core/class-manifest.php:378
 msgid "Manifest has no orders assigned"
 msgstr ""
 
-#: core/class-manifest.php:564
+#: core/class-manifest.php:575
 msgid "Manifest ID"
 msgstr ""
 
-#: core/class-manifest.php:392
+#: core/class-manifest.php:403
 msgid "Manifest not found or incorrect status"
 msgstr ""
 
-#: core/class-manifest.php:565
+#: core/class-manifest.php:576
 msgid "Manifest status"
 msgstr ""
 
@@ -645,15 +662,15 @@ msgstr "Kaupmees"
 msgid "Mode"
 msgstr "Olek"
 
-#: core/class-text.php:544
+#: core/class-text.php:548
 msgid "Names and quantities of the goods in the shipment"
 msgstr ""
 
-#: core/class-text.php:540
+#: core/class-text.php:544
 msgid "Names of the goods in the shipment"
 msgstr "Toodete nimetused"
 
-#: core/class-admin.php:2038
+#: core/class-admin.php:2055
 msgid "New shipping method"
 msgstr ""
 
@@ -661,7 +678,7 @@ msgstr ""
 msgid "No automatic creation of shipping labels"
 msgstr "Pakikaartide automaatset loomist ei toimu"
 
-#: core/class-manifest.php:555
+#: core/class-manifest.php:566
 msgid "No manifest assigned"
 msgstr ""
 
@@ -669,23 +686,23 @@ msgstr ""
 msgid "No order status change"
 msgstr "Tellimuse staatus ei muutu"
 
-#: core/class-manifest.php:316
+#: core/class-manifest.php:323
 msgid "No orders assigned"
 msgstr ""
 
-#: core/class-frontend.php:544 core/class-wc-blocks-integration.php:108
+#: core/class-frontend.php:544 core/class-wc-blocks-integration.php:109
 msgid "No pickup point: Send to the street address"
 msgstr ""
 
-#: core/class-admin.php:1352
+#: core/class-admin.php:1360
 msgid "No pickup points were found"
 msgstr "Pakiautomaate ei leitud"
 
-#: core/class-text.php:492 core/class-wc-blocks-integration.php:111
+#: core/class-wc-blocks-integration.php:112 core/class-text.php:496
 msgid "No pickup points were found. Check the address."
 msgstr "Pakiautomaate ei leitud. Kontrolli aadressi."
 
-#: core/class-text.php:51 core/class-admin.php:1251 core/class-admin.php:2109
+#: core/class-text.php:51 core/class-admin.php:1259 core/class-admin.php:2130
 msgid "No shipping"
 msgstr "Saatmine puudub"
 
@@ -693,7 +710,7 @@ msgstr "Saatmine puudub"
 msgid "No shipping class cost (vat included)"
 msgstr "Tarneklassi hind puudub (sisaldab KM)"
 
-#: core/class-admin.php:1173
+#: core/class-admin.php:1181
 msgid "No shipping method configured! Configure shipping method from settings."
 msgstr "Tarnemeetod ei ole seadistatud! Konfigureeri tarnemeetod seadete alt."
 
@@ -731,35 +748,35 @@ msgstr ""
 "Kasutage seda tarnemeetodit vaid siis, kui muud pole saadaval või ei sobi. "
 "Kasutades seda tarnemeetodit ei ole kohustuslik kasutada %s moodulit."
 
-#: core/class-manifest.php:95
+#: core/class-manifest.php:102
 msgid "Open "
 msgstr ""
 
 #. %s: label_count
-#: core/class-manifest.php:98
+#: core/class-manifest.php:105
 #, php-format
 msgid "Open <span class=\"count\">(%s)</span>"
 msgid_plural "Open <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: core/class-admin.php:2036
+#: core/class-admin.php:2053
 msgid "Order"
 msgstr ""
 
 #. %s: order_number
-#: core/class-manifest.php:237
+#: core/class-manifest.php:244
 #, php-format
 msgid "Order #%s added to pickup order"
 msgstr ""
 
 #. %s: order_number
-#: core/class-manifest.php:240
+#: core/class-manifest.php:247
 #, php-format
 msgid "Order #%s does not have shipment labels"
 msgstr ""
 
-#: core/class-text.php:532
+#: core/class-text.php:536
 msgid "Order number"
 msgstr "Tellimuse number"
 
@@ -767,7 +784,7 @@ msgstr "Tellimuse number"
 msgid "Order pickup"
 msgstr ""
 
-#: core/class-manifest.php:468
+#: core/class-manifest.php:479
 msgid "Order pickup URL not set."
 msgstr ""
 
@@ -775,15 +792,15 @@ msgstr ""
 msgid "Order Processing"
 msgstr "Tellimuse töötlemine"
 
-#: core/class-manifest.php:264
+#: core/class-manifest.php:271
 msgid "Orders"
 msgstr ""
 
-#: core/class-admin.php:1420
+#: core/class-admin.php:1428
 msgid "Original shipping..."
 msgstr "Algne tarne…"
 
-#: core/class-frontend.php:588 core/class-wc-blocks-integration.php:109
+#: core/class-frontend.php:588 core/class-wc-blocks-integration.php:110
 msgid "Other"
 msgstr "Muu"
 
@@ -795,7 +812,7 @@ msgstr "Väljuv saadetis"
 msgid "Outdoor lockers"
 msgstr ""
 
-#: core/class-admin.php:2031
+#: core/class-admin.php:2048
 msgid "Pakettikaupa create custom shipments"
 msgstr ""
 
@@ -803,46 +820,46 @@ msgstr ""
 msgid "Pakettikauppa diagnostic tool"
 msgstr "Pakettikauppa diagnostika tööriist"
 
-#: core/class-text.php:568
+#: core/class-text.php:572
 msgid "Pallet type"
 msgstr ""
 
-#: core/class-shipment.php:1774
+#: core/class-shipment.php:1850
 msgctxt "Pallet type"
 msgid "Colli"
 msgstr ""
 
-#: core/class-shipment.php:1776
+#: core/class-shipment.php:1852
 msgctxt "Pallet type"
 msgid "EUR-pallet"
 msgstr ""
 
-#: core/class-shipment.php:1777
+#: core/class-shipment.php:1853
 msgctxt "Pallet type"
 msgid "FIN-pallet"
 msgstr ""
 
-#: core/class-shipment.php:1779
+#: core/class-shipment.php:1855
 msgctxt "Pallet type"
 msgid "Furniture pallet"
 msgstr ""
 
-#: core/class-shipment.php:1775
+#: core/class-shipment.php:1851
 msgctxt "Pallet type"
 msgid "Half pallet"
 msgstr ""
 
-#: core/class-shipment.php:1780
+#: core/class-shipment.php:1856
 msgctxt "Pallet type"
 msgid "Loose colli"
 msgstr ""
 
-#: core/class-shipment.php:1778
+#: core/class-shipment.php:1854
 msgctxt "Pallet type"
 msgid "Rollcage"
 msgstr ""
 
-#: core/class-admin.php:1225 core/class-admin.php:1296
+#: core/class-admin.php:1233 core/class-admin.php:1304
 msgid "Parcel count"
 msgstr "Pakkide arv"
 
@@ -854,32 +871,31 @@ msgstr ""
 msgid "PHP version"
 msgstr "PHP versioon"
 
-#: core/class-text.php:508
+#: core/class-text.php:512
 msgid "Pickup address"
 msgstr "Pakiautomaadi aadress"
 
-#: core/class-manifest.php:68
+#: core/class-manifest.php:75
 msgid "Pickup Order"
 msgstr ""
 
-#: core/class-admin.php:929
+#: core/class-admin.php:936
 msgid "Pickup order"
 msgstr ""
 
-#: core/class-admin.php:934
+#: core/class-admin.php:941
 msgid "Pickup order status"
 msgstr ""
 
-#: core/class-manifest.php:67
+#: core/class-manifest.php:74
 msgid "Pickup Orders"
 msgstr ""
 
 #. 1: Name 2: Shipment tracking code
-#: core/class-admin.php:941 core/class-admin.php:2156
-#: core/class-wc-blocks-integration.php:106
+#: core/class-wc-blocks-integration.php:107 core/class-admin.php:948
+#: core/class-admin.php:2177 templates/pakettikauppa/myaccount-order.php:10
 #: templates/pakettikauppa/checkout-pickup.php:14
 #: templates/pakettikauppa/checkout-pickup.php:15
-#: templates/pakettikauppa/myaccount-order.php:10
 #: templates/pakettikauppa/tracking-email-html.php:22
 #: templates/pakettikauppa/tracking-email-html.php:30
 #: templates/pakettikauppa/tracking-email-txt.php:19
@@ -891,11 +907,11 @@ msgstr "Pakiautomaat"
 msgid "Pickup point search limit"
 msgstr "Pakiautomaatide otsingu piir"
 
-#: core/class-admin.php:1353
+#: core/class-admin.php:1361
 msgid "Pickup point selection cleared"
 msgstr ""
 
-#: core/class-text.php:390 core/class-shipping-method.php:349
+#: core/class-shipping-method.php:351 core/class-text.php:390
 msgid "Pickup points"
 msgstr "Pakiautomaadid"
 
@@ -903,19 +919,19 @@ msgstr "Pakiautomaadid"
 msgid "Pickup points type"
 msgstr ""
 
-#: core/class-manifest.php:266
+#: core/class-manifest.php:273
 msgid "Pickup time"
 msgstr ""
 
-#: core/class-manifest.php:312
+#: core/class-manifest.php:319
 msgid "Place pickup order"
 msgstr ""
 
-#: core/class-admin.php:1103 core/class-admin.php:2089
+#: core/class-admin.php:1110 core/class-admin.php:2110
 msgid "Please add shipping info to the order to manage shipments."
 msgstr "Palun lisa tarneinfo, et saadetist hallata."
 
-#: core/class-wc-blocks-integration.php:110
+#: core/class-wc-blocks-integration.php:111
 msgid "Please choose a pickup point"
 msgstr ""
 
@@ -945,7 +961,7 @@ msgstr ""
 "Sisestage kaupmehe nimi ja aadress. Seda infot kasutatakse saatjana "
 "pakikaardil."
 
-#: core/class-admin.php:511
+#: core/class-admin.php:518
 msgid "Please select at least one Order"
 msgstr ""
 
@@ -961,11 +977,23 @@ msgstr ""
 msgid "Post shipping label to URL"
 msgstr "Saada pakikaart URL aadressile"
 
+#. Author of the plugin
+msgid "Posti"
+msgstr ""
+
+#. Name of the plugin
+msgid "Posti Shipping"
+msgstr ""
+
 #: core/class-check-tool.php:46
 msgid "Posti Shipping diagnostic tool"
 msgstr "Posti transpordi diagnostika tööriist"
 
-#: core/class-shipment.php:433
+#. Description of the plugin
+msgid "Posti shipping service for WooCommerce."
+msgstr ""
+
+#: core/class-shipment.php:434
 msgid "Posting label to URL failed!"
 msgstr "Pakikaardi saatmine URL-aadressile nurjus!"
 
@@ -977,11 +1005,11 @@ msgstr "Saatjalt on saadud eelteavituse teade"
 msgid "Price (vat included)"
 msgstr "Hind (KM sisaldub hinnas)"
 
-#: core/class-admin.php:972 core/class-admin.php:1005
+#: core/class-admin.php:979 core/class-admin.php:1012
 msgid "Print"
 msgstr "Prindi"
 
-#: core/class-shipment.php:419
+#: core/class-shipment.php:420
 msgid "Print document"
 msgstr "Prindi dokumendid"
 
@@ -997,7 +1025,7 @@ msgstr ""
 msgid "Production environment"
 msgstr "Tootmiskeskkond"
 
-#: core/class-admin.php:969
+#: core/class-admin.php:976
 msgid "Products"
 msgstr "Tooted"
 
@@ -1005,47 +1033,47 @@ msgstr "Tooted"
 msgid "Ready!"
 msgstr "Valmis!"
 
-#: core/class-admin.php:219 core/class-admin.php:241
+#: core/class-admin.php:226 core/class-admin.php:248
 msgid "Received Post ID is not a number"
 msgstr "Saabunud posti ID ei ole number"
 
-#: core/class-admin.php:976
+#: core/class-admin.php:983
 msgid "Refresh"
 msgstr "Värskenda"
 
-#: core/class-admin.php:775 core/class-admin.php:816 core/class-admin.php:1238
+#: core/class-admin.php:782 core/class-admin.php:823 core/class-admin.php:1246
 msgid "Requested pickup point"
 msgstr "Valitud pakiautomaat"
 
-#: core/class-text.php:520
+#: core/class-text.php:524
 msgid "Restart setup wzard"
 msgstr "Taaskäivita paigaldamise viisard"
 
-#: core/class-admin.php:1190
+#: core/class-admin.php:1198
 msgid "Return labels"
 msgstr "Tagastamise pakikaart"
 
-#: core/class-admin.php:1351 templates/pakettikauppa/checkout-pickup.php:32
+#: core/class-admin.php:1359 templates/pakettikauppa/checkout-pickup.php:32
 msgid "Search"
 msgstr "Otsing"
 
-#: core/class-admin.php:1324
+#: core/class-admin.php:1332
 msgid "Search pickup points"
 msgstr "Otsi pakiautomaate"
 
-#: core/class-text.php:512
+#: core/class-text.php:516
 msgid "Search pickup points near you by typing your address above."
 msgstr "Leidke lähedal olevad pakiautomaadid, sisestades aadress."
 
-#: core/class-admin.php:1310
+#: core/class-admin.php:1318
 msgid "Select"
 msgstr "Vali"
 
-#: core/class-frontend.php:549 core/class-wc-blocks-integration.php:107
+#: core/class-frontend.php:549 core/class-wc-blocks-integration.php:108
 msgid "Select a pickup point"
 msgstr "Vali pakiautomaat"
 
-#: core/class-manifest.php:292
+#: core/class-manifest.php:299
 msgid "Select date and time between courier should pickup order"
 msgstr ""
 
@@ -1053,7 +1081,7 @@ msgstr ""
 msgid "Select one shipping method"
 msgstr "Valige üks tarneviis"
 
-#: core/class-admin.php:1356 core/class-admin.php:2213
+#: core/class-admin.php:1364 core/class-admin.php:2235
 msgid "Select pickup point"
 msgstr "Vali pakiautomaat"
 
@@ -1067,7 +1095,7 @@ msgstr ""
 msgid "Selected shipping method: %s"
 msgstr "Valitud tarnemeetod: %s"
 
-#: core/class-admin.php:1181
+#: core/class-admin.php:1189
 msgid "Send order"
 msgstr "Saada tellimus"
 
@@ -1103,32 +1131,32 @@ msgstr "Saatja telefoni number"
 msgid "Sender postal code"
 msgstr "Saatja postiindeks"
 
-#: core/class-text.php:572
+#: core/class-text.php:576
 msgid "Service not working. Please check the settings."
 msgstr ""
 
-#: core/class-admin.php:957
+#: core/class-admin.php:964
 msgid "Services"
 msgstr "Teenused"
 
-#: core/class-text.php:479
+#: core/class-text.php:483
 msgid "Setup wizard"
 msgstr "Paigaldamise viisard"
 
-#: core/class-manifest.php:581
+#: core/class-manifest.php:592
 msgid "Shipment not ready"
 msgstr ""
 
-#: core/class-manifest.php:581
+#: core/class-manifest.php:592
 msgid "Shipment ready"
 msgstr ""
 
-#: core/class-admin.php:262
+#: core/class-admin.php:269
 msgid "Shipment Tracking"
 msgstr ""
 
 #. @codingStandardsIgnoreLine
-#: core/class-admin.php:1915
+#: core/class-admin.php:1932
 msgid "Shipment tracking code is not defined."
 msgstr "Antud jälgimisnumbriga saadetist ei leitud."
 
@@ -1148,7 +1176,7 @@ msgstr "Kohaletoimetamise hind (sisaldab KM)"
 msgid "Shipping label size"
 msgstr ""
 
-#: core/class-admin.php:1184
+#: core/class-admin.php:1192
 msgid "Shipping labels"
 msgstr "Pakikaardid"
 
@@ -1168,7 +1196,7 @@ msgstr "Tarnemeetodite spetsifikatsioonid"
 msgid "Shipping settings"
 msgstr "Kuva seaded"
 
-#: core/class-text.php:516
+#: core/class-text.php:520
 msgid "Show pickup point override in checkout"
 msgstr "Kuva kassas pakiautomaadi ülekirjutamine"
 
@@ -1176,12 +1204,12 @@ msgstr "Kuva kassas pakiautomaadi ülekirjutamine"
 msgid "Show pickup points as"
 msgstr "Kuva pakiautomaate kui"
 
-#: core/class-text.php:483
+#: core/class-text.php:487
 msgid "Show shipping method"
 msgstr "Kuva tarnemeetodit"
 
 #. %s: Vendor name
-#: core/class-admin.php:681
+#: core/class-admin.php:688
 #, php-format
 msgid "Show site %s"
 msgstr "Kuva lehe %s"
@@ -1190,7 +1218,7 @@ msgstr "Kuva lehe %s"
 msgid "Skip this step"
 msgstr "Jäta vahele"
 
-#: core/class-text.php:548
+#: core/class-text.php:552
 msgid "SKU codes of the goods in the shipment"
 msgstr "Saadetise SKU koodid"
 
@@ -1198,7 +1226,7 @@ msgstr "Saadetise SKU koodid"
 msgid "Start the setup wizard"
 msgstr "Käivita paigaldamise viisard"
 
-#: core/class-manifest.php:265 core/class-admin.php:936
+#: core/class-manifest.php:272 core/class-admin.php:943
 msgid "Status"
 msgstr "Staatus"
 
@@ -1206,12 +1234,12 @@ msgstr "Staatus"
 msgid "Store owner information"
 msgstr "Poe omaniku informatsioon"
 
-#: core/class-manifest.php:306
+#: core/class-manifest.php:313
 msgid "Submit"
 msgstr ""
 
 #. %s: Error message
-#: core/class-admin.php:653
+#: core/class-admin.php:660
 #, php-format
 msgid "Succeed: %s"
 msgstr ""
@@ -1258,11 +1286,11 @@ msgstr ""
 "HS-tariifnumber peab põhinema Maailma Tolliorganisatsiooni poolt välja "
 "töötatud Harmoneeritud Süsteemi nomenklatuuri abil."
 
-#: core/class-text.php:536
+#: core/class-text.php:540
 msgid "The note is specified in the order"
 msgstr ""
 
-#: core/class-text.php:524
+#: core/class-text.php:528
 msgid ""
 "The pickup point you've chosen is not available for public access. Are you "
 "sure that you can retrieve the package?"
@@ -1270,38 +1298,42 @@ msgstr ""
 "Valitud pakipunkt pole avalik. Kas olete kindel, et teil on võimalik "
 "saadetis kätte saada?"
 
-#: core/class-wc-blocks-integration.php:119
+#: core/class-wc-blocks-integration.php:120
 #, php-format
 msgid "The selection of pickup points has been changed based on the address %s"
 msgstr ""
 
-#: core/class-shipment.php:276
+#: core/class-shipment.php:277
 msgid ""
 "The shipping label was not created because the order does not contain valid "
 "shipping details."
 msgstr ""
 "Pakikaarti ei loodud kuna tellimusel puuduvad korrektsed saatmisandmed."
 
-#: core/class-shipment.php:264
+#: core/class-shipment.php:265
 msgid ""
 "The shipping label was not created because the order does not contain valid "
 "shipping method."
 msgstr "Pakikaarti ei loodud kuna tellimusel puudub korrektne tarnemeetod."
 
-#: core/class-wc-blocks-integration.php:117
+#: core/class-wc-blocks-integration.php:118
 msgid "The value is too short"
 msgstr ""
 
-#: core/class-manifest.php:476
+#: core/class-shipment.php:898
+msgid "timeout"
+msgstr ""
+
+#: core/class-manifest.php:487
 msgid "Token not found. Please check credentials"
 msgstr ""
 
-#: core/class-admin.php:759
+#: core/class-admin.php:766
 msgid "Total weight of dangerous goods"
 msgstr "Ohtlike kaupade kogukaal"
 
-#: core/class-admin.php:974 core/class-admin.php:1006
-#: core/class-shipment.php:420
+#: core/class-shipment.php:421 core/class-admin.php:981
+#: core/class-admin.php:1013
 msgid "Track"
 msgstr "Jälgi"
 
@@ -1315,7 +1347,7 @@ msgid "Tracking"
 msgstr "Jälgimine"
 
 #. %s: Error message
-#: core/class-shipment.php:1127
+#: core/class-shipment.php:1169
 #, php-format
 msgid "Tracking code creation failed: %s"
 msgstr "Jälgimiskoodi loomine ebaõnnestus: %s"
@@ -1324,7 +1356,7 @@ msgstr "Jälgimiskoodi loomine ebaõnnestus: %s"
 msgid "Translate products names in labels"
 msgstr ""
 
-#: core/class-admin.php:1727
+#: core/class-admin.php:1739
 msgid "Unable to create return label for this shipment type."
 msgstr "Selle saadetise jaoks ei ole võimalik tagastustellimust luua."
 
@@ -1332,15 +1364,15 @@ msgstr "Selle saadetise jaoks ei ole võimalik tagastustellimust luua."
 msgid "Unknown"
 msgstr "Tundmatu"
 
-#: core/class-shipment.php:864
+#: core/class-shipment.php:913
 msgid "Unknown error"
 msgstr "Tundmatu viga"
 
-#: core/class-admin.php:965
+#: core/class-admin.php:972
 msgid "Unknown product"
 msgstr "Tundmatu toode"
 
-#: core/class-admin.php:932 core/class-shipment.php:132
+#: core/class-shipment.php:132 core/class-admin.php:939
 msgid "Unknown status"
 msgstr "Tundmatu staatus"
 
@@ -1348,7 +1380,7 @@ msgstr "Tundmatu staatus"
 msgid "Use the client's language for product names displayed on labels"
 msgstr ""
 
-#: core/class-admin.php:679
+#: core/class-admin.php:686
 msgid "Visit Website"
 msgstr "Külasta kodulehte"
 
@@ -1362,11 +1394,11 @@ msgstr "Kui pakikaart on loodud, muuda järgmisena tellimuse staatust"
 msgid "When order status is \"%s\""
 msgstr "Kui tellimuse staatus on \"%s\""
 
-#: core/class-admin.php:1347
+#: core/class-admin.php:1355
 msgid "With filters"
 msgstr ""
 
-#: core/class-admin.php:1337
+#: core/class-admin.php:1345
 msgid "Without filters"
 msgstr ""
 
@@ -1388,11 +1420,11 @@ msgstr "WooCommerce versioon"
 msgid "Wordpress version"
 msgstr "Wordpressi versioon"
 
-#: core/class-manifest.php:361
+#: core/class-manifest.php:372
 msgid "Wrong data requested, please try again"
 msgstr ""
 
-#: core/class-manifest.php:371
+#: core/class-manifest.php:382
 msgid "Wrong response."
 msgstr ""
 
@@ -1411,7 +1443,7 @@ msgid ""
 "information, see %2$s"
 msgstr ""
 
-#: core/class-wc-blocks-integration.php:112
+#: core/class-wc-blocks-integration.php:113
 msgid "You can choose the pickup point on the Checkout page"
 msgstr ""
 

@@ -723,6 +723,10 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
           'title'   => $this->get_core()->text->info_code(),
           'type'    => 'text',
           'default' => '',
+          'description' => $this->get_core()->text->info_code_desc(),
+          'custom_attributes' => array(
+            'maxlength' => 15,
+          ),          
         ),
         'cod_title' => array(
           'title' => $this->get_core()->text->cod_settings(),
@@ -752,6 +756,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
             'PRODUCTS_NAMES' => $this->get_core()->text->additional_info_param_products_names(),
             'PRODUCTS_NAME_WITH_QUANTITY' => $this->get_core()->text->additional_info_param_products_names_with_qty(),
             'PRODUCTS_SKU' => $this->get_core()->text->additional_info_param_products_sku(),
+            'PRODUCTS_SKU_WITH_QUANTITY' => $this->get_core()->text->additional_info_param_products_sku_with_qty(),
           ),
         ),
       );

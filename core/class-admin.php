@@ -103,24 +103,30 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
     }
 
     public function add_admin_notice( $msg, $type ) {
-      if ( ! session_id() ) {
-        session_start();
+      $user_id = get_current_user_id();
+      $key = 'pakettikauppa_notices_' . $user_id;
+
+      $notices = get_transient($key);
+      if ( ! is_array($notices) ) {
+        $notices = [];
       }
-      if ( ! isset($_SESSION['pakettikauppa_notices']) ) {
-        $_SESSION['pakettikauppa_notices'] = array();
-      }
-      $_SESSION['pakettikauppa_notices'][] = array(
+
+      $notices[] = [
         'msg' => $msg,
-        'type' => $type,
-      );
+        'type' => $type
+      ];
+
+      set_transient($key, $notices, 5 * MINUTE_IN_SECONDS);
     }
 
     public function show_admin_notices() {
-      if ( ! session_id() ) {
-        session_start();
-      }
-      if ( $_SESSION !== null && array_key_exists('pakettikauppa_notices', $_SESSION) ) {
-        foreach ( $_SESSION['pakettikauppa_notices'] as $notice ) {
+      $user_id = get_current_user_id();
+      $key = 'pakettikauppa_notices_' . $user_id;
+
+      $notices = get_transient($key);
+      
+      if ( is_array($notices) ) {
+        foreach ( $notices as $notice ) {
           if ( $notice['type'] === 'error' ) {
             $this->add_error_notice($notice['msg'], false);
           }
@@ -128,7 +134,10 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
             $this->add_success_notice($notice['msg'], false);
           }
         }
-        unset($_SESSION['pakettikauppa_notices']);
+      }
+
+      if ($notices !== false) {
+        delete_transient($key);
       }
     }
 
@@ -1041,10 +1050,11 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
         $order_items = array();
         foreach ( $items as $item ) {
           $item_data = $item->get_data();
+          $item_prod_id = ! empty($item_data['variation_id']) ? $item_data['variation_id'] : $item_data['product_id'];
           array_push(
             $order_items,
             array(
-              'id' => $item_data['product_id'],
+              'id' => $item_prod_id,
               'name' => $item_data['name'],
               'max' => $item_data['quantity'],
               'lqweight' => $this->core->product->get_product_dg_weight($item_data['product_id'], 'kg'),
