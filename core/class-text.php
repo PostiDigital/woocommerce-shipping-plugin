@@ -297,6 +297,10 @@ if ( ! class_exists(__NAMESPACE__ . '\Text') ) {
       return __('Ignore product weight information', 'woo-pakettikauppa');
     }
 
+    public function exclude_prods_without_hs() {
+      return __('Exclude products without HS tariff code from the CN23 customs document', 'woo-pakettikauppa');
+    }
+
     public function add_tracking_link_to_email() {
       return __('Add tracking link to the order completed email', 'woo-pakettikauppa');
     }
@@ -458,6 +462,10 @@ if ( ! class_exists(__NAMESPACE__ . '\Text') ) {
     public function info_code() {
       return __('Info-code for shipments', 'woo-pakettikauppa');
     }
+    
+    public function info_code_desc() {
+      return __('Info-code length must be 15 characters or less', 'woo-pakettikauppa');
+    }    
 
     public function cod_settings() {
       return __('Cash on Delivery (COD) Settings', 'woo-pakettikauppa');
@@ -546,6 +554,10 @@ if ( ! class_exists(__NAMESPACE__ . '\Text') ) {
 
     public function additional_info_param_products_sku() {
       return __('SKU codes of the goods in the shipment', 'woo-pakettikauppa');
+    }
+
+    public function additional_info_param_products_sku_with_qty() {
+      return __('SKU codes and quantities of the goods in the shipment', 'woo-pakettikauppa');
     }
 
     public function activated_core_plugin_error() {
