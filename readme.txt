@@ -52,6 +52,14 @@ Yes! If you encounter any issues related to this plugin, please report at [Posti
 
 == Changelog ==
 
+= 3.10.11 =
+* Using WP cache mechanism (transient) instead of session in admin notices
+* Tested against WordPress 6.9
+* New label shortcode for SKU and quantity
+* HS tariff number for variable products from main product
+* New setting to exclude products from CN23 if no HS tariff number
+* Limiting info code field value to 15 chars
+
 = 3.10.10 =
 * Fix for bulk label creation breaking other plugin hooks
 * Fix for locking issue with multiple token calls
