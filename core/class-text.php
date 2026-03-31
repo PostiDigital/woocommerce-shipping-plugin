@@ -297,6 +297,10 @@ if ( ! class_exists(__NAMESPACE__ . '\Text') ) {
       return __('Ignore product weight information', 'woo-pakettikauppa');
     }
 
+    public function exclude_prods_without_hs() {
+      return __('Exclude products without HS tariff code from the CN23 customs document', 'woo-pakettikauppa');
+    }
+
     public function add_tracking_link_to_email() {
       return __('Add tracking link to the order completed email', 'woo-pakettikauppa');
     }

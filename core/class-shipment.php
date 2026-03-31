@@ -1121,6 +1121,12 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
             'qty' => $quantity,
           );
 
+          if ( isset($this->settings['exclude_prods_without_hs']) && $this->settings['exclude_prods_without_hs'] == 'yes' ) {
+            if ( empty($tariff_code) ) {
+              continue;
+            }
+          }
+
           $content_line                    = new ContentLine();
           $content_line->currency          = 'EUR';
           $content_line->country_of_origin = $country_of_origin;
