@@ -306,17 +306,20 @@ export const Block = ({ checkoutExtensionData, extension }) => {
             setContainerErrorClass('');
         }
 
-        if ( ! currentData.rate?.instance || ! isMethodHavePickups(currentData.rate.instance) ) {
-            return;
-        }
+        const hasPickups = currentData.rate?.instance && isMethodHavePickups(currentData.rate.instance);
+        const selectedValue = hasPickups ? currentData.pickup_points.selected : '';
 
         setExtensionData(
             'wc-pakettikauppa',
             'pakettikauppa_pickup_point',
-            currentData.pickup_points.selected
+            selectedValue
         );
 
-        if ( isMethodPickupRequired(currentData.rate.instance) && currentData.pickup_points.selected === '' ) {
+        if ( ! hasPickups ) {
+            return;
+        }
+
+        if ( isMethodPickupRequired(currentData.rate.instance) && selectedValue === '' ) {
             setValidationErrors({
                 [validationErrorId]: {
                     message: txt.pickup_error,
