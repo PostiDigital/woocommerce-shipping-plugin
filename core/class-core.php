@@ -100,7 +100,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Core') ) {
       $this->api_comment = $config['pakettikauppa_api_comment'] ?? 'From WooCommerce';
 
       $this->order_pickup = $config['order_pickup'] ?? false;
-      $this->order_pickup_url = $config['order_pickup_callback_url'] ?? false;
+      $this->order_pickup_url = apply_filters('posti_pickup_callback_url', $config['order_pickup_callback_url'] ?? false);
 
       self::$instance = $this;
 
