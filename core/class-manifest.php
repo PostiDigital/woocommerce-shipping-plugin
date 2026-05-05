@@ -388,6 +388,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Manifest') ) {
                                 'post_status' => 'closed',
                               )
                             );
+                            update_post_meta($id, $this->core->prefix . '_manifest_pickup_time', $date . ' ' . $time_from . ' - ' . $time_to);
                               //make orders complete
                               $current_orders = get_post_meta($id, $this->core->prefix . '_manifest_orders', true);
                               foreach ( $current_orders as $order_id ) {
