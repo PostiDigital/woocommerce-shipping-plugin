@@ -52,6 +52,9 @@ Yes! If you encounter any issues related to this plugin, please report at [Posti
 
 == Changelog ==
 
+= 3.10.12 =
+* Bug fix for storing unnecessary pickup point data in checkout
+
 = 3.10.11 =
 * Using WP cache mechanism (transient) instead of session in admin notices
 * Tested against WordPress 6.9
