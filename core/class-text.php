@@ -157,12 +157,16 @@ if ( ! class_exists(__NAMESPACE__ . '\Text') ) {
          * %2$s: Vendor url, not translateable
          */
         __(
-          'If you have already registered with %1$s, please choose "Production mode" and enter the credentials you received from %1$s. If you have not yet registered, please register at %2$s. If you wish to test the plugin before making a contract with %1$s, please choose "Test mode" and leave the API secret/key fields empty.',
+          'If you have already registered with %1$s, enter the credentials you have received from %1$s. If you have not yet registered, please register at %2$s.',
           'woo-pakettikauppa'
         ),
         $vendor_name,
         '<a target="_blank" rel="noopener noreferrer" href="' . $vendor_url . '">' . $vendor_url . '</a>'
       );
+    }
+
+    public function setup_become_customer_url() {
+      return esc_url(__('https://www.posti.fi/en/for-businesses', 'woo-pakettikauppa'));
     }
 
     public function setup_merchant_info() {
