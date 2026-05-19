@@ -416,7 +416,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Manifest') ) {
             $xml->addAttribute('xmlns', 'http://api.posti.fi/xml/POSTRA/1');
 
             $header = $xml->addChild('Header');
-            $header->addChild('SenderId', $settings['order_pickup_sender_id']);
+            $header->addChild('SenderId', 'WOOPLUGIN');
             $header->addChild('ReceiverId', '003715318644');
             $header->addChild('DocumentDateTime', gmdate('c'));
             $header->addChild('Sequence', floor(microtime(true) * 1000));

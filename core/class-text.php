@@ -271,10 +271,6 @@ if ( ! class_exists(__NAMESPACE__ . '\Text') ) {
       return __('Invoice ID', 'woo-pakettikauppa');
     }
 
-    public function sender_id_title() {
-      return __('Sender ID', 'woo-pakettikauppa');
-    }
-
     public function shipping_settings_title() {
       return __('Shipping settings', 'woo-pakettikauppa');
     }
