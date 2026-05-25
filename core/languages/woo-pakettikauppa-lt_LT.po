@@ -11,191 +11,196 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2022-05-02 11:14+0000\n"
-"PO-Revision-Date: 2026-03-23 15:17+0000\n"
+"PO-Revision-Date: 2026-05-14 10:46+0000\n"
 "X-Generator: Loco https://localise.biz/\n"
 "X-Domain: woo-pakettikauppa\n"
 "Language: lt_LT\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10 >= 2 "
 "&&(n%100<10||n%100 >= 20)? 1 : 2);\n"
-"X-Loco-Version: 2.6.14; wp-6.7.1"
+"X-Loco-Version: 2.8.4; wp-6.9.4; php-8.0.30"
 
 #. %s: Vendor full name
-#: core/class-admin.php:606
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:615
 #, php-format
 msgid ""
 "%s has been installed/updated but no shipping methods are currently active!"
 msgstr "%s buvo įdiegtas/atnaujintas, bet vis dar nėra aktyvių siuntimo būdų!"
 
 #. %s: Vendor full name
-#: core/class-text.php:492
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:500
 #, php-format
 msgid "%s requires WooCommerce to be installed and activated!"
 msgstr "%s būtina, jog WooCommerce įskiepis būtų įdiegtas ir aktyvuotas!"
 
 #. %s: Vendor full name
-#: core/class-text.php:27
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:27
 #, php-format
 msgid "%s Setup Wizard"
 msgstr "%s sąrankos vedlys"
 
 #. %s: Vendor name
-#: core/class-admin.php:777
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:786
 #, php-format
 msgid "%s Shipping"
 msgstr "%s pristatymas"
 
-#: core/class-manifest.php:274
+#: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:274
 msgid "Actions"
 msgstr "Veiksmai"
 
-#: core/class-text.php:532
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:540
 msgid "Add additional text on labels"
 msgstr "Siuntimo etiketėje pridėti papildomą tekstą"
 
-#: core/class-text.php:305
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:313
 msgid "Add selected pickup point information to the order completed email"
 msgstr ""
 "Pridėti pasirinkto atsiėmimo taško informaciją prie užsakymo užbaigimo el."
 "laiško"
 
-#: core/class-manifest.php:156 core/class-manifest.php:158
-#: core/class-manifest.php:191 core/class-admin.php:985
-#: core/class-admin.php:1423
+#: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:156
+#: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:158
+#: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:191
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:994
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1433
 msgid "Add to pickup order"
-msgstr ""
+msgstr "Pridėti prie paėmimo užsakymo"
 
-#: core/class-text.php:301
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:309
 msgid "Add tracking link to the order completed email"
 msgstr "Pridėti siuntos sekimo nuorodą prie užsakymo užbaigimo el.laiško"
 
-#: core/class-manifest.php:305
+#: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:305
 msgid "Additional information"
 msgstr "Papildoma informacija"
 
-#: core/class-admin.php:1215
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1225
 msgid "Additional services"
 msgstr "Papildomos paslaugos"
 
-#: core/class-text.php:479
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:487
 msgid "Advanced settings"
 msgstr "Išplėstiniai nustatymai"
 
-#: core/class-wc-blocks-integration.php:117
+#: ../../../../modules/wordpress/posti-shipping/core/class-wc-blocks-integration.php:117
 msgid "After entering, please wait for a while for the results to be received"
-msgstr "Po įvedimo, prašome truputi palaukti kol rezultatai bus gauti"
+msgstr "Po įvedimo, prašome truputį palaukti, kol rezultatai bus gauti"
 
-#: core/class-text.php:95
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:95
 msgid "After which amount shipping is free."
-msgstr "Nuo kurios sumos užsakymas tampa nemokamas."
+msgstr "Nuo kokios sumos pristatymas tampa nemokamas."
 
-#: core/class-text.php:394
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:402
 msgid "Agencies"
 msgstr "Agentūros"
 
-#: core/class-text.php:374
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:382
 msgid "All"
 msgstr "Visi"
 
-#: core/class-manifest.php:76
+#: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:76
 msgid "All Pickup Orders"
-msgstr ""
+msgstr "Visi paėmimo užsakymai"
 
-#: core/class-text.php:422
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:430
 msgid "Allow user to use custom address for pickup point search."
 msgstr "Leisti vartotojui nurodyti kitą adresą atsiėmimo taško paieškoje."
 
-#: core/class-manifest.php:326
+#: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:326
 msgid "Already placed pickup order"
-msgstr ""
+msgstr "Jau yra pridėtas paėmimo užsakymas"
 
-#: core/class-product.php:329
+#: ../../../../modules/wordpress/posti-shipping/core/class-product.php:329
 msgid "Amount of hazardous subtances in the product as grams."
 msgstr "Pavojingų medžiagų kiekis produkte gramais."
 
-#: core/class-shipment.php:241
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:241
 msgid "An error occurred while checking API credentials"
-msgstr "Gauta klaida tikrinant API prisijungimus"
+msgstr "Įvyko klaida tikrinant API prisijungimus"
 
-#: core/class-text.php:500
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:508
 msgid "An error occurred while searching for pickup points."
-msgstr "Gauta klaida ieškant atsiėmimo taškų."
+msgstr "Įvyko klaida ieškant atsiėmimo taškų."
 
-#: core/class-frontend.php:173
+#: ../../../../modules/wordpress/posti-shipping/core/class-frontend.php:173
 msgid "An error occurred. Please try again later."
-msgstr "Gauta klaida. Prašome pabandyti vėliau."
+msgstr "Įvyko klaida. Prašome pabandyti vėliau."
 
 #. %s: Error message
-#: core/class-shipment.php:327 core/class-admin.php:644
-#: core/class-admin.php:1803 core/class-admin.php:1843
-#: core/class-admin.php:1885 core/class-admin.php:1919
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:327
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:653
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1813
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1853
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1895
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1929
 #, php-format
 msgid "An error occurred: %s"
-msgstr "Gauta klaida: %s"
+msgstr "Įvyko klaida: %s"
 
-#: core/class-shipping-method.php:160
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipping-method.php:160
 msgid "API error!"
 msgstr "API klaida!"
 
-#: core/class-shipment.php:201
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:201
 msgid "API is good"
 msgstr "API veikia"
 
-#: core/class-text.php:236
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:240
 msgid "API key"
 msgstr "API raktas (API key)"
 
 #. %1$s: Vendor name, not translatable
-#: core/class-text.php:245
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:249
 #, php-format
 msgid "API key provided by %1$s"
 msgstr "API raktas gautas iš %1$s"
 
-#: core/class-check-tool.php:103
+#: ../../../../modules/wordpress/posti-shipping/core/class-check-tool.php:103
 msgid "API login information"
 msgstr "API prisijungimo informacija"
 
-#: core/class-text.php:251
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:255
 msgid "API secret"
 msgstr "API slaptažodis (API secret)"
 
-#: core/class-text.php:255
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:259
 #| msgid "API secret provided by %1$s"
 msgid "API secret provided by Posti"
 msgstr "API slaptažodis gautas iš Posti"
 
-#: core/class-manifest.php:578
+#: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:579
 msgid "Assigned orders"
 msgstr "Priskirti užsakymai"
 
-#: core/class-shipment.php:208
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:208
 msgid "Bad API key or API secret"
 msgstr "Blogas API raktas arba API slaptažodis"
 
-#: core/class-text.php:471
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:479
 msgid "Bank account number for Cash on Delivery (IBAN)"
 msgstr "Banko sąskaitos numeris (IBAN) apmokėjimui atsiimant"
 
-#: core/class-text.php:475
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:483
 msgid "BIC code for Cash on Delivery"
 msgstr "BIC kodas apmokėjimui atsiimant"
 
-#: core/class-wc-blocks-integration.php:106
+#: ../../../../modules/wordpress/posti-shipping/core/class-wc-blocks-integration.php:106
 msgid "Block options"
 msgstr "Bloko nustatymai"
 
-#: core/class-text.php:346
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:354
 msgid "Browser"
 msgstr "Naršyklė"
 
-#: core/class-shipment.php:105
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:105
 msgid "C.O.D payment is paid to the sender"
 msgstr "C.O.D mokėjimas sumokėtas siuntėjui"
 
-#: core/class-check-tool.php:107
+#: ../../../../modules/wordpress/posti-shipping/core/class-check-tool.php:107
 msgid "Cached token"
 msgstr "Talpykloje saugomas atpažinimo raktas"
 
-#: core/class-text.php:63
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:63
 msgid ""
 "Can not connect to server - please check API credentials, servers error log "
 "and firewall settings."
@@ -203,48 +208,48 @@ msgstr ""
 "Nepavyksta prisijungti prie serverio - prašome patikrinti API prisijungimus, "
 "serverio klaidų žurnalą ir ugniasienės nustatymus."
 
-#: core/class-admin.php:1951
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1961
 msgid "Cannot find shipment with given shipment number."
 msgstr "Nepavyksta rasti siuntos pagal duotą siuntos sekimo numerį."
 
-#: core/class-admin.php:530
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:539
 msgid "Cannot find shipments with given shipment numbers."
 msgstr "Nepavyksta rasti siuntų pagal duotus siuntos sekimo numerius."
 
-#: core/class-text.php:467
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:475
 msgid "Cash on Delivery (COD) Settings"
 msgstr "Apmokėjimo atsiimant (COD) nustatymai"
 
-#: core/class-check-tool.php:98
+#: ../../../../modules/wordpress/posti-shipping/core/class-check-tool.php:98
 msgid "Checking URL "
 msgstr "Tikrinama nuoroda"
 
-#: core/class-text.php:362
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:370
 msgid "Checkout options"
 msgstr "Užsakymo nustatymai"
 
-#: core/class-wc-blocks-integration.php:114
+#: ../../../../modules/wordpress/posti-shipping/core/class-wc-blocks-integration.php:114
 msgid "Choose one of pickup points close to the address you entered"
 msgstr ""
 "Prašome pasirinkti vieną atsiėmimo tašką esantį netoli Jūsų įvesto adreso"
 
-#: templates/pakettikauppa/checkout-pickup.php:22
+#: ../../../../modules/wordpress/posti-shipping/templates/pakettikauppa/checkout-pickup.php:22
 msgid "Choose one of pickup points close to the address you entered:"
 msgstr "Pasirinkite netoli Jūsų nurodyto adreso esantį atsiėmimo tašką:"
 
-#: core/class-text.php:398
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:406
 msgid ""
 "Choose which type of pickup points will be displayed in the list of pickup "
 "points"
 msgstr ""
 "Pasirinkite, kokio tipo paėmimo taškai bus rodomi atsiėmimo taškų sąraše"
 
-#: core/class-manifest.php:118
+#: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:118
 msgid "Closed "
 msgstr "Uždaryta"
 
 #. %s: label_count
-#: core/class-manifest.php:121
+#: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:121
 #, php-format
 msgid "Closed <span class=\"count\">(%s)</span>"
 msgid_plural "Closed <span class=\"count\">(%s)</span>"
@@ -252,232 +257,247 @@ msgstr[0] "Uždaryta <span class=\"count\">(%s)</span>"
 msgstr[1] "Uždaryta <span class=\"count\">(%s)</span>"
 msgstr[2] "Uždaryta <span class=\"count\">(%s)</span>"
 
-#: core/class-shipping-method.php:127 core/class-check-tool.php:217
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipping-method.php:127
+#: ../../../../modules/wordpress/posti-shipping/core/class-check-tool.php:217
 msgid "Code"
 msgstr "Kodas"
 
-#: core/class-text.php:196
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:200
 msgid ""
 "Congratulations, everything is now set up and you are now ready to start "
 "using the plugin!"
 msgstr "Sveikiname, viskas jau nustatyta ir paruošta įskiepio naudojimui!"
 
-#: core/class-text.php:129
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:129
 msgid "Continue"
 msgstr "Tęsti"
 
-#: core/class-check-tool.php:154 core/class-check-tool.php:159
+#: ../../../../modules/wordpress/posti-shipping/core/class-check-tool.php:154
+#: ../../../../modules/wordpress/posti-shipping/core/class-check-tool.php:159
 msgid "Could not load plugin's file"
-msgstr "Nepavyksta užkrauti įskiepio failo"
+msgstr "Nepavyko užkrauti įskiepio failo"
 
-#: core/class-check-tool.php:164
+#: ../../../../modules/wordpress/posti-shipping/core/class-check-tool.php:164
 msgid "Could not read version"
 msgstr "Nepavyksta nuskaityti versijos"
 
-#: core/class-product.php:313
+#: ../../../../modules/wordpress/posti-shipping/core/class-product.php:313
 msgid "Country of origin"
 msgstr "Kilmės šalis"
 
-#: core/class-manifest.php:78 core/class-admin.php:1434
-#: core/class-admin.php:2078
+#: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:78
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1444
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:2088
 msgid "Create"
 msgstr "Sukurti"
 
-#: core/class-admin.php:378 core/class-admin.php:382
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:387
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:391
 msgid "Create and fetch shipping labels"
 msgstr "Sukurti ir gauti siuntimo etiketes"
 
-#: core/class-admin.php:379 core/class-admin.php:383
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:388
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:392
 msgid "Create custom shipments"
 msgstr "Sukurti individualias siuntas"
 
-#: core/class-admin.php:1055
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1065
 msgid "Create for products"
 msgstr "Sukurti produktams"
 
-#: core/class-manifest.php:77
+#: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:77
 msgid "Create New Pickup Order"
-msgstr ""
+msgstr "Sukurti naują paėmimo užsakymą"
 
-#: core/class-admin.php:1026
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1035
 msgid "Create Return Label"
 msgstr "Sukurti grąžinimo etiketę"
 
-#: core/class-admin.php:415
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:424
 msgid "Create shipping label"
 msgstr "Sukurti siuntimo etiketę"
 
-#: core/class-text.php:325
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:333
 msgid "Create shipping labels automatically"
 msgstr "Automatiškai sukurti siuntimo etiketes"
 
-#: core/class-text.php:564
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:576
 msgid "Created return label"
 msgstr "Sukurtas grąžinimo lipdukas"
 
-#: core/class-text.php:560
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:572
 msgid "Created shipment"
 msgstr "Sukurta siunta"
 
 #. %1$s: Vendor name, %2$s: Error message
-#: core/class-admin.php:1810
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1820
 #, php-format
 msgid "Creating %1$s return label failed! Errors: %2$s"
-msgstr ""
+msgstr "Nepavyko sukurti %1$s grąžinimo etiketės! Klaidos: %2$s"
 
-#: core/class-text.php:200
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:204
 msgid "Credentials"
 msgstr "Prisijungimai"
 
-#: core/class-check-tool.php:79
+#: ../../../../modules/wordpress/posti-shipping/core/class-check-tool.php:79
 msgid "Curl extension"
 msgstr "CURL papildinys"
 
-#: core/class-check-tool.php:184
+#: ../../../../modules/wordpress/posti-shipping/core/class-check-tool.php:184
 msgid "Curl not installed"
 msgstr "CURL neįdiegtas"
 
-#: core/class-admin.php:2054
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:2064
 msgid "Current shipping method"
 msgstr "Dabartinis pristatymo būdas"
 
-#: core/class-wc-blocks-integration.php:115 core/class-text.php:508
+#: ../../../../modules/wordpress/posti-shipping/core/class-wc-blocks-integration.php:115
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:516
 msgid "Custom pickup address"
 msgstr "Pasirinktinis atsiėmimo adresas"
 
-#: core/class-admin.php:1427
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1437
 msgid "Custom shipping..."
 msgstr "Kitas pristatymo būdas..."
 
-#: core/class-text.php:267
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:271
 msgid "Customer ID"
 msgstr "Kliento ID"
 
-#: core/class-text.php:192
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:196
 msgid "Customize the order processing phase."
-msgstr "Konfigūruokite užsakymo apdorojimo etapą."
+msgstr "Pritaikykite užsakymo apdorojimo etapą."
 
-#: core/class-manifest.php:302
+#: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:302
 msgid "Date"
 msgstr "Data"
 
-#: core/class-text.php:99
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:99
 msgid "Default shipping class cost"
 msgstr "Numatytoji pristatymo klasės kaina"
 
-#: core/class-admin.php:987 core/class-admin.php:1014
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:996
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1023
 msgid "Delete"
 msgstr "Ištrinti"
 
 #. %%s: tracking code
-#: core/class-admin.php:1875
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1885
 #, php-format
 msgid "Deleted %1$s return label %2$s."
 msgstr "Ištrinta %1$s grąžinimo etiketė %2$s."
 
 #. %1$s: Vendor name, %2$s: tracking code
-#: core/class-admin.php:1836
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1846
 #, php-format
 msgid "Deleted %1$s shipping label %2$s."
 msgstr "Ištrinta %1$s siuntimo etiketė %2$s."
 
 #. %1$s: Vendor name, %2$s: Error message
-#: core/class-admin.php:1892
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1902
 #, php-format
 msgid "Deleting %1$s return label failed! Errors: %2$s"
 msgstr "Nepavyko ištrinti %1$s grąžinimo etiketės! Klaidos: %2$s"
 
 #. %1$s: Vendor name, %2$s: Error message
-#: core/class-admin.php:1850
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1860
 #, php-format
 msgid "Deleting %1$s shipment failed! Errors: %2$s"
 msgstr "Nepavyko ištrinti %1$s siuntimo etiketės! Klaidos: %2$s"
 
-#: core/class-product.php:321
+#: ../../../../modules/wordpress/posti-shipping/core/class-product.php:321
 msgid "DG weight (g)"
 msgstr "PM svoris (g)"
 
-#: core/class-text.php:350
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:358
 msgid "Download"
 msgstr "Parsisiųsti"
 
-#: core/class-manifest.php:303
+#: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:303
 msgid "Earliest time"
-msgstr "Ankščiausias laikas"
+msgstr "Anksčiausias laikas"
 
-#: core/class-text.php:39
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:39
 msgid "Edit to select shipping company and shipping prices."
-msgstr "Redaguokite, kad pasirinktumėte siuntimo įmonę ir siuntimo kainas."
+msgstr "Redaguokite norėdami pasirinkti siuntimo įmonę ir siuntimo kainas."
 
-#: core/class-admin.php:841
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:850
 msgid "Email"
 msgstr "El. paštas"
 
-#: core/class-frontend.php:396
+#: ../../../../modules/wordpress/posti-shipping/core/class-frontend.php:396
 msgid "Empty postcode. Please check your address information."
-msgstr "Tuščias pašto kodas. Prašome patikrinti Jūsų adresą."
+msgstr "Tuščias pašto kodas. Prašome patikrinti savo adresą."
 
-#: core/class-shipping-method.php:124 core/class-admin.php:1945
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipping-method.php:124
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1955
 msgid "Error"
 msgstr "Klaida"
 
-#: core/class-admin.php:1410
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1420
 msgid "Estimated shipping price"
 msgstr "Numatoma pristatymo kaina"
 
-#: core/class-shipment.php:96
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:96
 msgid "Exception"
 msgstr "Išimtis"
 
-#: core/class-text.php:133
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:305
+msgid "Exclude products without HS tariff code from the CN23 customs document"
+msgstr "Į CN23 muitinės dokumentą neįtraukti produktų be HS tarifo kodo"
+
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:133
 msgid "Exit"
 msgstr "Išeiti"
 
-#: core/class-text.php:568
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:580
 msgid "Express-freight default pallet type"
-msgstr ""
+msgstr "Numatytasis \"Express-freight\" padėklų tipas"
 
-#: core/class-shipment.php:227 core/class-shipment.php:235
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:227
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:235
 msgid "Failed to check API credentials or them are bad"
 msgstr "Nepavyko patikrinti API prisijungimų arba jie yra blogi"
 
-#: core/class-shipment.php:217
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:217
 msgid "Failed to connect with server"
 msgstr "Nepavyko susisiekti su serveriu"
 
 #. %s: Error message
-#: core/class-shipment.php:336 core/class-shipment.php:341
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:336
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:341
 msgid "Failed to create shipment."
 msgstr "Nepavyko sukurti siuntos."
 
 #. %s: Error message
-#: core/class-shipment.php:322
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:322
 #, php-format
 msgid "Failed to create shipment. Errors: %s"
 msgstr "Nepavyko sukurti siuntos. Klaidos: %s"
 
-#: core/class-admin.php:1944
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1954
 msgid "Failed to get shipment label."
 msgstr "Nepavyko gauti siuntos etiketės."
 
-#: core/class-shipment.php:889 core/class-shipment.php:898
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:890
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:899
 #, php-format
 msgid "Failed to obtain access token (%s)"
-msgstr ""
+msgstr "Nepavyko gauti prieigos rakto (%s)"
 
-#: core/class-check-tool.php:235
+#: ../../../../modules/wordpress/posti-shipping/core/class-check-tool.php:235
 msgid "Found and works."
 msgstr "Surasta ir veikia."
 
-#: core/class-check-tool.php:233
+#: ../../../../modules/wordpress/posti-shipping/core/class-check-tool.php:233
 msgid "Found, but does not work. Deleted."
 msgstr "Surasta, bet neveikia. Ištrinta."
 
-#: core/class-text.php:91
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:91
 msgid "Free shipping tier"
-msgstr "Nemokamo pristatymo limitas"
+msgstr "Nemokamo pristatymo riba"
 
-#: core/class-product.php:306
+#: ../../../../modules/wordpress/posti-shipping/core/class-product.php:306
 msgid "HS tariff number"
 msgstr "HS tarifo numeris"
 
@@ -489,7 +509,11 @@ msgstr ""
 msgid "https://www.posti.fi/"
 msgstr ""
 
-#: core/class-wc-blocks-integration.php:116
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:169
+msgid "https://www.posti.fi/en/for-businesses"
+msgstr ""
+
+#: ../../../../modules/wordpress/posti-shipping/core/class-wc-blocks-integration.php:116
 msgid ""
 "If none of your preferred pickup points are listed, fill in a custom address "
 "above and select another pickup point"
@@ -497,7 +521,7 @@ msgstr ""
 "Jeigu nėra rodomas Jūsų norimas atsiėmimo taškas, aukščiau esančiame "
 "laukelyje įveskite norimą adresą ir pasirinkite kitą atsiėmimo tašką"
 
-#: core/class-text.php:504
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:512
 msgid ""
 "If none of your preferred pickup points are listed, fill in a custom address "
 "above and select another pickup point."
@@ -507,242 +531,242 @@ msgstr ""
 
 #. %1$s: Vendor name, not translateable
 #. %2$s: Vendor url, not translateable
-#: core/class-text.php:159
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:159
 #, php-format
 msgid ""
-"If you have already registered with %1$s, please choose \"Production mode\" "
-"and enter the credentials you received from %1$s. If you have not yet "
-"registered, please register at %2$s. If you wish to test the plugin before "
-"making a contract with %1$s, please choose \"Test mode\" and leave the API "
-"secret/key fields empty."
+"If you have already registered with %1$s, enter the credentials you have "
+"received from %1$s. If you have not yet registered, please register at %2$s."
 msgstr ""
-"Jei jau užsiregistravote %1$s, pasirinkite „Veikiantis režimas“ ir įveskite "
-"prisijungimus, kuriuos gavote iš %1$s. Jei dar neužsiregistravote, "
-"užsiregistruokite adresu %2$s. Jei norite išbandyti įskiepį prieš sudarydami "
-"sutartį su %1$s, pasirinkite „Testavimo režimas“ ir palikite API "
-"prisijungimo laukelius tuščius."
 
-#: core/class-text.php:297 core/class-admin.php:1091
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:301
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1101
 msgid "Ignore product weight information"
 msgstr "Ignoruoti produkto svorio informaciją"
 
-#: core/class-shipping-method.php:336
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipping-method.php:336
 msgid "Include return label (if available)"
 msgstr "Įtraukti grąžinimo lipduką (jei galima)"
 
-#: core/class-text.php:55
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:55
 msgid "includes pickup points"
 msgstr "turi atsiėmimo taškus"
 
-#: core/class-text.php:459
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:467
 msgid "Info-code for shipments"
 msgstr "Siuntos informacinis kodas"
 
-#: core/class-text.php:463
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:471
 msgid "Info-code length must be 15 characters or less"
-msgstr ""
+msgstr "Info kodas turi susidaryti iš 15 arba mažiau simbolių"
 
-#: core/class-shipment.php:108
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:108
 msgid "Informed consignee of arrival"
 msgstr "Informuoti gavėją kai siunta atkeliauja"
 
-#: core/class-check-tool.php:117
+#: ../../../../modules/wordpress/posti-shipping/core/class-check-tool.php:117
 msgid "Installed"
 msgstr "Įdiegta"
 
-#: core/class-wc-blocks-integration.php:119
+#: ../../../../modules/wordpress/posti-shipping/core/class-wc-blocks-integration.php:119
 msgid "Invalid character entered"
 msgstr "Įvestas netinkamas simbolis"
 
 #. %s: Postcode
-#: core/class-frontend.php:400
+#: ../../../../modules/wordpress/posti-shipping/core/class-frontend.php:400
 #, php-format
 msgid "Invalid postcode \"%1$s\". Please check your address information."
 msgstr ""
-"Blogas pašto kodas \"%1$s\". Prašome patikrinti Jūsų adreso informaciją."
+"Neteisingas pašto kodas \"%1$s\". Prašome patikrinti Jūsų adreso informaciją."
 
-#: core/class-text.php:271
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:275
 msgid "Invoice ID"
 msgstr "Sąskaitos ID"
 
-#: core/class-admin.php:1710
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1720
 msgid ""
 "It is not allowed to create a return label when shipping labels not exists"
 msgstr "Neleidžiama sukurti grąžinimo etiketės kai nėra siuntimo etiketės."
 
-#: core/class-shipment.php:99
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:99
 msgid "Item has been handed over to the recipient"
 msgstr "Siunta perduota gavėjui"
 
-#: core/class-shipment.php:126
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:126
 msgid "Item is arrived to a post office"
 msgstr "Siunta atkeliavo į pašto skyrių"
 
-#: core/class-shipment.php:93
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:93
 msgid "Item is collected from sender - picked up"
 msgstr "Siunta paimta iš siuntėjo"
 
-#: core/class-shipment.php:102
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:102
 msgid "Item is in transport"
 msgstr "Siunta transportuojama"
 
-#: core/class-shipment.php:111
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:111
 msgid "Item is loaded onto a means of transport"
 msgstr "Siunta pakraunama į transporto priemonę"
 
-#: core/class-shipment.php:120
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:120
 msgid "Item is ready for delivery transportation"
 msgstr "Siunta paruošta transportavimui"
 
-#: core/class-shipment.php:123
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:123
 msgid "Item is returning to the sender"
 msgstr "Siunta grąžinama siuntėjui"
 
-#: core/class-shipment.php:114
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:114
 msgid "Item not delivered – delivery attempt made"
 msgstr "Siunta nepristatyta – buvo bandoma pristatyti"
 
-#: core/class-admin.php:945 core/class-admin.php:1010
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:954
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1019
 msgid "Label code"
 msgstr "Siuntos etiketės kodas"
 
-#: core/class-shipment.php:438
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:439
 msgid "Label posted to URL successfully."
 msgstr "Siuntos etiketė sėkmingai paskelbta nuorodoje."
 
-#: core/class-manifest.php:304
+#: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:304
 msgid "Latest time"
 msgstr "Vėliausias laikas"
 
-#: core/class-text.php:125
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:125
 msgid "Let's start!"
 msgstr "Pradėkime!"
 
-#: core/class-text.php:406
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:414
 msgid "Limit the amount of nearest pickup points shown."
 msgstr "Artimiausių rodomų atsiėmimo taškų limitas."
 
 #. Vendor name, not translatable
-#: core/class-text.php:113
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:113
 #, php-format
 msgid "Link to %s website"
 msgstr "Nuoroda į %s tinklapį"
 
-#: core/class-text.php:418
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:426
 msgid "List"
 msgstr "Sąrašas"
 
-#: core/class-shipment.php:889
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:890
 msgid "lock expired"
 msgstr ""
 
-#: core/class-text.php:366
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:374
 msgid "Make shipping phone number mandatory"
 msgstr "Padaryti pristatymo telefono numerį privalomu"
 
-#: core/class-manifest.php:378
+#: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:378
 msgid "Manifest has no orders assigned"
 msgstr "Važtaraštis neturi priskirtų užsakymų"
 
-#: core/class-manifest.php:575
+#: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:576
 msgid "Manifest ID"
 msgstr "Važtaraščio ID"
 
-#: core/class-manifest.php:403
+#: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:404
 msgid "Manifest not found or incorrect status"
 msgstr "Važtaraštis nerastas arba neteisinga būsena"
 
-#: core/class-manifest.php:576
+#: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:577
 msgid "Manifest status"
 msgstr "Važtaraščio būsena"
 
-#: core/class-text.php:414
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:422
 msgid "Menu"
 msgstr "Meniu"
 
-#: core/class-text.php:204
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:208
 msgid "Merchant"
 msgstr "Pardavėjas"
 
-#: core/class-text.php:224
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:228
 msgid "Mode"
 msgstr "Režimas"
 
-#: core/class-text.php:548
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:556
 msgid "Names and quantities of the goods in the shipment"
 msgstr "Siuntoje esančių prekių pavadinimai ir kiekiai"
 
-#: core/class-text.php:544
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:552
 msgid "Names of the goods in the shipment"
 msgstr "Siuntoje esančių prekių pavadinimai"
 
-#: core/class-admin.php:2055
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:2065
 msgid "New shipping method"
 msgstr "Naujas pristatymo būdas"
 
-#: core/class-text.php:329
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:337
 msgid "No automatic creation of shipping labels"
 msgstr "Nėra automatinio siuntos etikečių kūrimo"
 
-#: core/class-manifest.php:566
+#: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:567
 msgid "No manifest assigned"
 msgstr "Važtaraštis nepriskirtas"
 
-#: core/class-text.php:313
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:321
 msgid "No order status change"
 msgstr "Nepakeistas užsakymo statusas"
 
-#: core/class-manifest.php:323
+#: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:323
 msgid "No orders assigned"
 msgstr "Užsakymai nepriskirti"
 
-#: core/class-frontend.php:544 core/class-wc-blocks-integration.php:109
+#: ../../../../modules/wordpress/posti-shipping/core/class-frontend.php:544
+#: ../../../../modules/wordpress/posti-shipping/core/class-wc-blocks-integration.php:109
 msgid "No pickup point: Send to the street address"
 msgstr "Nėra atsiėmimo vietos: siųskite adresu"
 
-#: core/class-admin.php:1360
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1370
 msgid "No pickup points were found"
 msgstr "Nerasta atsiėmimo taškų"
 
-#: core/class-wc-blocks-integration.php:112 core/class-text.php:496
+#: ../../../../modules/wordpress/posti-shipping/core/class-wc-blocks-integration.php:112
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:504
 msgid "No pickup points were found. Check the address."
 msgstr "Nerasta atsiėmimo taškų. Patikrinkite adresą."
 
-#: core/class-text.php:51 core/class-admin.php:1259 core/class-admin.php:2130
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:51
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1269
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:2140
 msgid "No shipping"
 msgstr "Siuntimas nenustatytas"
 
-#: core/class-text.php:103
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:103
 msgid "No shipping class cost (vat included)"
 msgstr "Nėra pristatymo klasės kainos (su PVM)"
 
-#: core/class-admin.php:1181
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1191
 msgid "No shipping method configured! Configure shipping method from settings."
 msgstr ""
 "Nesukonfigūruotas siuntimo būdas. Sukonfigūruokite siuntimo būdą "
 "nustatymuose."
 
-#: core/class-check-tool.php:197 core/class-check-tool.php:227
+#: ../../../../modules/wordpress/posti-shipping/core/class-check-tool.php:197
+#: ../../../../modules/wordpress/posti-shipping/core/class-check-tool.php:227
 msgid "Not found"
 msgstr "Nerasta"
 
-#: core/class-check-tool.php:119 core/class-check-tool.php:139
+#: ../../../../modules/wordpress/posti-shipping/core/class-check-tool.php:119
+#: ../../../../modules/wordpress/posti-shipping/core/class-check-tool.php:139
 msgid "Not installed"
 msgstr "Neįdiegta"
 
-#: core/class-text.php:117
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:117
 msgid "Not now"
 msgstr "Ne dabar"
 
-#: core/class-text.php:220
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:224
 msgid "Note"
 msgstr "Pastaba"
 
-#: core/class-check-tool.php:199
+#: ../../../../modules/wordpress/posti-shipping/core/class-check-tool.php:199
 msgid "OK"
 msgstr "Gerai"
 
-#: core/class-text.php:67
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:67
 #| msgid ""
 #| "Only use this shipping method if no other shipping methods are available "
 #| "and suitable. Using this shipping method is not required to be able to "
@@ -756,12 +780,12 @@ msgstr ""
 "jie negalimi. Nebūtina naudoti šio pristatymo būdo, kad būtų galima naudoti "
 "\"Posti Shipping\" įskiepį."
 
-#: core/class-manifest.php:102
+#: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:102
 msgid "Open "
 msgstr "Atidaryti"
 
 #. %s: label_count
-#: core/class-manifest.php:105
+#: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:105
 #, php-format
 msgid "Open <span class=\"count\">(%s)</span>"
 msgid_plural "Open <span class=\"count\">(%s)</span>"
@@ -769,190 +793,196 @@ msgstr[0] "Atidaryti <span class=\"count\">(%s)</span>"
 msgstr[1] "Atidaryti <span class=\"count\">(%s)</span>"
 msgstr[2] "Atidaryti <span class=\"count\">(%s)</span>"
 
-#: core/class-admin.php:2053
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:2063
 msgid "Order"
 msgstr "Užsakymas"
 
 #. %s: order_number
-#: core/class-manifest.php:244
+#: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:244
 #, php-format
 msgid "Order #%s added to pickup order"
-msgstr ""
+msgstr "Užsakymas #%s pridėtas prie paėmimo užsakymo"
 
 #. %s: order_number
-#: core/class-manifest.php:247
+#: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:247
 #, php-format
 msgid "Order #%s does not have shipment labels"
 msgstr "Užsakymas %s neturi siuntos lipdukų"
 
-#: core/class-text.php:536
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:544
 msgid "Order number"
 msgstr "Užsakymo numeris"
 
-#: core/class-text.php:263
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:267
 msgid "Order pickup"
-msgstr ""
+msgstr "Užsakymo paėmimas"
 
-#: core/class-manifest.php:479
+#: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:480
 msgid "Order pickup URL not set."
-msgstr ""
+msgstr "Nenustatyta užsakymo paėmimo nuoroda"
 
-#: core/class-text.php:212
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:216
 msgid "Order Processing"
 msgstr "Užsakymas vykdomas"
 
-#: core/class-manifest.php:271
+#: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:271
 msgid "Orders"
 msgstr "Užsakymai"
 
-#: core/class-admin.php:1428
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1438
 msgid "Original shipping..."
 msgstr "Originalus pristatymo būdas..."
 
-#: core/class-frontend.php:588 core/class-wc-blocks-integration.php:110
+#: ../../../../modules/wordpress/posti-shipping/core/class-frontend.php:588
+#: ../../../../modules/wordpress/posti-shipping/core/class-wc-blocks-integration.php:110
 msgid "Other"
 msgstr "Kitas atsiėmimo taškas"
 
-#: core/class-shipment.php:129
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:129
 msgid "Outbound"
 msgstr "Siunta vežama į užsienį"
 
-#: core/class-text.php:382
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:390
 msgid "Outdoor lockers"
 msgstr "Lauko rakinamos spintelės"
 
-#: core/class-admin.php:2048
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:2058
 msgid "Pakettikaupa create custom shipments"
 msgstr ""
 
-#: core/class-check-tool.php:48
+#: ../../../../modules/wordpress/posti-shipping/core/class-check-tool.php:48
 msgid "Pakettikauppa diagnostic tool"
 msgstr "Pakettikauppa diagnostikos priemonė"
 
-#: core/class-text.php:572
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:584
 msgid "Pallet type"
-msgstr ""
+msgstr "Paletės tipas"
 
-#: core/class-shipment.php:1850
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:1900
 msgctxt "Pallet type"
 msgid "Colli"
 msgstr ""
 
-#: core/class-shipment.php:1852
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:1902
 msgctxt "Pallet type"
 msgid "EUR-pallet"
 msgstr ""
 
-#: core/class-shipment.php:1853
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:1903
 msgctxt "Pallet type"
 msgid "FIN-pallet"
 msgstr ""
 
-#: core/class-shipment.php:1855
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:1905
 msgctxt "Pallet type"
 msgid "Furniture pallet"
 msgstr ""
 
-#: core/class-shipment.php:1851
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:1901
 msgctxt "Pallet type"
 msgid "Half pallet"
 msgstr ""
 
-#: core/class-shipment.php:1856
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:1906
 msgctxt "Pallet type"
 msgid "Loose colli"
 msgstr ""
 
-#: core/class-shipment.php:1854
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:1904
 msgctxt "Pallet type"
 msgid "Rollcage"
 msgstr ""
 
-#: core/class-admin.php:1233 core/class-admin.php:1304
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1243
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1314
 msgid "Parcel count"
 msgstr "Siuntų skaičius"
 
-#: core/class-text.php:386
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:394
 msgid "Parcel lockers"
 msgstr "Siuntų spintelės"
 
-#: core/class-check-tool.php:76
+#: ../../../../modules/wordpress/posti-shipping/core/class-check-tool.php:76
 msgid "PHP version"
 msgstr "PHP versija"
 
-#: core/class-text.php:512
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:520
 msgid "Pickup address"
 msgstr "Atsiėmimo adresas"
 
-#: core/class-manifest.php:75
+#: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:75
 msgid "Pickup Order"
-msgstr ""
+msgstr "Paėmimo užsakymas"
 
-#: core/class-admin.php:936
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:945
 msgid "Pickup order"
-msgstr ""
+msgstr "Paėmimo užsakymas"
 
-#: core/class-admin.php:941
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:950
 msgid "Pickup order status"
-msgstr ""
+msgstr "Paėmimo užsakymo būsena"
 
-#: core/class-manifest.php:74
+#: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:74
 msgid "Pickup Orders"
-msgstr ""
+msgstr "Paėmimo užsakymai"
 
 #. 1: Name 2: Shipment tracking code
-#: core/class-wc-blocks-integration.php:107 core/class-admin.php:948
-#: core/class-admin.php:2177 templates/pakettikauppa/myaccount-order.php:10
-#: templates/pakettikauppa/checkout-pickup.php:14
-#: templates/pakettikauppa/checkout-pickup.php:15
-#: templates/pakettikauppa/tracking-email-html.php:22
-#: templates/pakettikauppa/tracking-email-html.php:30
-#: templates/pakettikauppa/tracking-email-txt.php:19
-#: templates/pakettikauppa/tracking-email-txt.php:21
+#: ../../../../modules/wordpress/posti-shipping/core/class-wc-blocks-integration.php:107
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:957
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:2187
+#: ../../../../modules/wordpress/posti-shipping/templates/pakettikauppa/myaccount-order.php:10
+#: ../../../../modules/wordpress/posti-shipping/templates/pakettikauppa/checkout-pickup.php:14
+#: ../../../../modules/wordpress/posti-shipping/templates/pakettikauppa/checkout-pickup.php:15
+#: ../../../../modules/wordpress/posti-shipping/templates/pakettikauppa/tracking-email-html.php:22
+#: ../../../../modules/wordpress/posti-shipping/templates/pakettikauppa/tracking-email-html.php:30
+#: ../../../../modules/wordpress/posti-shipping/templates/pakettikauppa/tracking-email-txt.php:19
+#: ../../../../modules/wordpress/posti-shipping/templates/pakettikauppa/tracking-email-txt.php:21
 msgid "Pickup point"
 msgstr "Atsiėmimo taškas"
 
-#: core/class-text.php:402
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:410
 msgid "Pickup point search limit"
 msgstr "Atsiėmimo taško paieškos limitas"
 
-#: core/class-admin.php:1361
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1371
 msgid "Pickup point selection cleared"
-msgstr ""
+msgstr "Atsiėmimo punkto pasirinkimas išvalytas"
 
-#: core/class-shipping-method.php:351 core/class-text.php:390
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipping-method.php:351
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:398
 msgid "Pickup points"
 msgstr "Atsiėmimo taškai"
 
-#: core/class-text.php:370
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:378
 msgid "Pickup points type"
 msgstr "Atsiėmimo taškų tipas"
 
-#: core/class-manifest.php:273
+#: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:273
 msgid "Pickup time"
 msgstr "Paėmimo laikas"
 
-#: core/class-manifest.php:319
+#: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:319
 msgid "Place pickup order"
-msgstr ""
+msgstr "Pateikti paėmimo užsakymą"
 
-#: core/class-admin.php:1110 core/class-admin.php:2110
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1120
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:2120
 msgid "Please add shipping info to the order to manage shipments."
 msgstr ""
 "Prašome pridėti pristatymo informaciją į užsakymą, kad valdyti siuntas."
 
-#: core/class-wc-blocks-integration.php:111
+#: ../../../../modules/wordpress/posti-shipping/core/class-wc-blocks-integration.php:111
 msgid "Please choose a pickup point"
 msgstr "Prašome pasirinkti atsiėmimo tašką"
 
-#: core/class-frontend.php:629
+#: ../../../../modules/wordpress/posti-shipping/core/class-frontend.php:629
 msgid "Please choose a pickup point."
 msgstr "Prašome pasirinkti atsiėmimo tašką."
 
 #. %1$s: vendor name
 #. %2$s: link to WooCommerce shipping zone setting page
 #. %3$s: link to external WooCommerce documentation
-#: core/class-text.php:184
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:188
 #, php-format
 msgid ""
 "Please configure the shipping methods of the currently active shipping zones "
@@ -965,7 +995,7 @@ msgstr ""
 "reikalinga, jog būtų jau sukonfigūruotos WooCommerce pristatymo zonos ir "
 "metodai esantys %2$s. Daugiau informacijos galite gauti apsilankę %3$s."
 
-#: core/class-text.php:169
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:173
 msgid ""
 "Please fill the details of the merchant below. The information provided here "
 "will be used as the sender in shipping labels."
@@ -973,11 +1003,11 @@ msgstr ""
 "Toliau įveskite išsamią prekybininko informaciją. Čia pateikta informacija "
 "bus naudojama kaip siuntėjas siuntimo etiketėse."
 
-#: core/class-admin.php:518
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:527
 msgid "Please select at least one Order"
 msgstr "Prašome pasirinkti bent vieną užsakymą"
 
-#: core/class-text.php:358
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:366
 msgid ""
 "Plugin can upload shipping label to an URL when creating shipping label. "
 "Define URL if you want to upload PDF."
@@ -985,9 +1015,9 @@ msgstr ""
 "Įskiepis etiketės sukūrimo metu gali ją įkelti į nurodytą URL. Nurodykite "
 "URL, į kurį būtų siunčiamas PDF."
 
-#: core/class-text.php:354
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:362
 msgid "Post shipping label to URL"
-msgstr "Persiųsti siuntimo etiketę į URL"
+msgstr "Įkelti siuntimo etiketę į URL"
 
 #. Author of the plugin
 msgid "Posti"
@@ -997,7 +1027,7 @@ msgstr ""
 msgid "Posti Shipping"
 msgstr ""
 
-#: core/class-check-tool.php:46
+#: ../../../../modules/wordpress/posti-shipping/core/class-check-tool.php:46
 msgid "Posti Shipping diagnostic tool"
 msgstr "Posti pristatymo diagnostikos įrankis"
 
@@ -1005,263 +1035,275 @@ msgstr "Posti pristatymo diagnostikos įrankis"
 msgid "Posti shipping service for WooCommerce."
 msgstr ""
 
-#: core/class-shipment.php:434
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:435
 msgid "Posting label to URL failed!"
 msgstr "Nepavyko persiųsti siuntimo etiketės į URL!"
 
-#: core/class-shipment.php:117
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:117
 msgid "Pre-information is received from sender"
 msgstr "Išankstinė informacija gaunama iš siuntėjo"
 
-#: core/class-text.php:79
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:79
 msgid "Price (vat included)"
 msgstr "Kaina (su PVM)"
 
-#: core/class-admin.php:979 core/class-admin.php:1012
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:988
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1021
 msgid "Print"
 msgstr "Spausdinti"
 
-#: core/class-shipment.php:420
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:421
 msgid "Print document"
 msgstr "Spausdinti dokumentą"
 
-#: core/class-text.php:342
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:350
 msgid "Print labels"
 msgstr "Spausdinti siuntimo etiketes"
 
-#: core/class-text.php:378
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:386
 msgid "Private lockers"
 msgstr "Privačios rakinamos spintelės"
 
-#: core/class-text.php:232
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:236
 msgid "Production environment"
 msgstr "Produkcijos režimas"
 
-#: core/class-admin.php:976
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:985
 msgid "Products"
 msgstr "Produktai"
 
-#: core/class-text.php:216
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:220
 msgid "Ready!"
 msgstr "Paruošta!"
 
-#: core/class-admin.php:226 core/class-admin.php:248
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:235
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:257
 msgid "Received Post ID is not a number"
 msgstr "Gautas įrašo ID nėra skaičius"
 
-#: core/class-admin.php:983
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:992
 msgid "Refresh"
 msgstr "Atnaujinti"
 
-#: core/class-admin.php:782 core/class-admin.php:823 core/class-admin.php:1246
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:791
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:832
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1256
 msgid "Requested pickup point"
 msgstr "Nurodytas atsiėmimo taškas"
 
-#: core/class-text.php:524
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:532
 msgid "Restart setup wzard"
 msgstr "Iš naujo paleisti sąrankos vedlį"
 
-#: core/class-admin.php:1198
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1208
 msgid "Return labels"
 msgstr "Grąžinimo etiketės"
 
-#: core/class-admin.php:1359 templates/pakettikauppa/checkout-pickup.php:32
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1369
+#: ../../../../modules/wordpress/posti-shipping/templates/pakettikauppa/checkout-pickup.php:32
 msgid "Search"
 msgstr "Ieškoti"
 
-#: core/class-admin.php:1332
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1342
 msgid "Search pickup points"
 msgstr "Ieškoti atsiėmimo taško"
 
-#: core/class-text.php:516
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:524
 msgid "Search pickup points near you by typing your address above."
 msgstr ""
 "Ieškokite esančio netoliese atsiėmimo taško įvesdami aukščiau Jūsų adresą."
 
-#: core/class-admin.php:1318
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1328
 msgid "Select"
 msgstr "Pasirinkti"
 
-#: core/class-frontend.php:549 core/class-wc-blocks-integration.php:108
+#: ../../../../modules/wordpress/posti-shipping/core/class-frontend.php:549
+#: ../../../../modules/wordpress/posti-shipping/core/class-wc-blocks-integration.php:108
 msgid "Select a pickup point"
 msgstr "Pasirinkti atsiėmimo tašką"
 
-#: core/class-manifest.php:299
+#: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:299
 msgid "Select date and time between courier should pickup order"
-msgstr "Pasirinkti datą ir laiką tarp kurių kurjeris turėti paimti užsakymą"
+msgstr "Pasirinkti datą ir laiką tarp kurių kurjeris turėtu paimti užsakymą"
 
-#: core/class-text.php:59
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:59
 msgid "Select one shipping method"
 msgstr "Pasirinkti vieną pristatymo būdą"
 
-#: core/class-admin.php:1364 core/class-admin.php:2235
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1374
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:2245
 msgid "Select pickup point"
 msgstr "Pasirinkti atsiėmimo tašką"
 
-#: core/class-wc-blocks.php:106
+#: ../../../../modules/wordpress/posti-shipping/core/class-wc-blocks.php:106
 msgid "Selected pickup point"
 msgstr "Pasirinktas atsiėmimo taškas"
 
 #. %s: shipping method
-#: core/class-text.php:45
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:45
 #, php-format
 msgid "Selected shipping method: %s"
 msgstr "Pasirinktas pristatymo būdas: %s"
 
-#: core/class-admin.php:1189
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1199
 msgid "Send order"
 msgstr "Siųsti užsakymą"
 
-#: core/class-text.php:435
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:443
 msgid "Sender address"
 msgstr "Siuntėjo adresas"
 
-#: core/class-text.php:443
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:451
 msgid "Sender city"
 msgstr "Siuntėjo miestas"
 
-#: core/class-text.php:447
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:455
 msgid "Sender country"
 msgstr "Siuntėjo šalis"
 
-#: core/class-text.php:455
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:463
 msgid "Sender email"
 msgstr "Siuntėjo el.paštas"
 
-#: core/class-text.php:275
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:279
 msgid "Sender ID"
 msgstr "Siuntėjo ID"
 
-#: core/class-text.php:431
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:439
 msgid "Sender name"
 msgstr "Siuntėjo vardas"
 
-#: core/class-text.php:451
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:459
 msgid "Sender phone"
 msgstr "Siuntėjo telefonas"
 
-#: core/class-text.php:439
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:447
 msgid "Sender postal code"
 msgstr "Siuntėjo pašto kodas"
 
-#: core/class-text.php:576
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:588
 msgid "Service not working. Please check the settings."
 msgstr "Servisas neveikia. Prašome patikrinti nustatymus."
 
-#: core/class-admin.php:964
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:973
 msgid "Services"
 msgstr "Paslaugos"
 
-#: core/class-text.php:483
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:491
 msgid "Setup wizard"
 msgstr "Sąrankos vedlys"
 
-#: core/class-manifest.php:592
+#: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:593
 msgid "Shipment not ready"
 msgstr "Siunta neparuošta"
 
-#: core/class-manifest.php:592
+#: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:593
 msgid "Shipment ready"
 msgstr "Siunta paruošta"
 
-#: core/class-admin.php:269
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:278
 msgid "Shipment Tracking"
 msgstr "Siuntos sekimas"
 
 #. @codingStandardsIgnoreLine
-#: core/class-admin.php:1932
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1942
 msgid "Shipment tracking code is not defined."
 msgstr "Nenurodytas siuntos sekimo kodas."
 
-#: core/class-text.php:208
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:212
 msgid "Shipping"
 msgstr "Siuntimas"
 
-#: core/class-text.php:83
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:83
 msgid "Shipping cost"
 msgstr "Siuntimo kaina"
 
-#: core/class-text.php:87
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:87
 msgid "Shipping cost  (vat included)"
 msgstr "Siuntimo kaina (su PVM)"
 
-#: core/class-text.php:338
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:346
 msgid "Shipping label size"
 msgstr "Siuntimo etiketės dydis"
 
-#: core/class-admin.php:1192
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1202
 msgid "Shipping labels"
 msgstr "Siuntimo etiketės"
 
-#: core/class-text.php:75
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:75
 msgid "Shipping method"
 msgstr "Siuntimo būdas"
 
-#: core/class-text.php:71
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:71
 msgid "Shipping methods"
 msgstr "Siuntimo būdai"
 
-#: core/class-text.php:259
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:263
 msgid "Shipping methods mapping"
 msgstr "Siuntimo būdų priskyrimas"
 
-#: core/class-text.php:279
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:283
 msgid "Shipping settings"
 msgstr "Siuntimo nustatymai"
 
-#: core/class-text.php:520
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:528
 msgid "Show pickup point override in checkout"
 msgstr "Rodyti atsiėmimo taško perrašymą užsakymo kūrime"
 
-#: core/class-text.php:410
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:418
 msgid "Show pickup points as"
 msgstr "Rodyti atsiėmimmo taškus kaip"
 
-#: core/class-text.php:487
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:495
 msgid "Show shipping method"
 msgstr "Rodyti siuntimo būdą"
 
 #. %s: Vendor name
-#: core/class-admin.php:688
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:697
 #, php-format
 msgid "Show site %s"
 msgstr "Rodyti tinklapį %s"
 
-#: core/class-text.php:121
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:121
 msgid "Skip this step"
 msgstr "Praleisti šį žingsnį"
 
-#: core/class-text.php:552
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:564
+msgid "SKU codes and quantities of the goods in the shipment"
+msgstr "Siuntos SKU kodai ir prekių kiekiai"
+
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:560
 msgid "SKU codes of the goods in the shipment"
 msgstr "Siuntoje esančių prekių SKU kodai"
 
-#: core/class-text.php:31
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:31
 msgid "Start the setup wizard"
 msgstr "Paleisti sąrankos vedlį"
 
-#: core/class-manifest.php:272 core/class-admin.php:943
+#: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:272
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:952
 msgid "Status"
 msgstr "Būsena"
 
-#: core/class-text.php:427
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:435
 msgid "Store owner information"
 msgstr "Parduotuvės valdytojo informacija"
 
-#: core/class-manifest.php:313
+#: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:313
 msgid "Submit"
 msgstr "Pateikti"
 
 #. %s: Error message
-#: core/class-admin.php:660
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:669
 #, php-format
 msgid "Succeed: %s"
 msgstr "Sėkminga: %s"
 
-#: core/class-text.php:228
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:232
 msgid "Testing environment"
 msgstr "Testavimo režimas"
 
-#: core/class-text.php:137
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:137
 #| msgid ""
 #| "Thank you for installing %s! This wizard will guide you through the setup "
 #| "process to get you started."
@@ -1272,7 +1314,7 @@ msgstr ""
 "Dėkojame, kad įdiegėte \"Posti Shipping\"! Šis vedlys padės jums atlikti "
 "sąrankos procesą, kad galėtumėte pradėti."
 
-#: core/class-text.php:141
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:141
 #| msgid ""
 #| "Thank you for installing %s! To get started smoothly, please open our "
 #| "setup wizard."
@@ -1283,13 +1325,13 @@ msgstr ""
 "Dėkojame, kad įdiegėte \"Posti Shipping\"! Norėdami sklandžiai pradėti "
 "naudojimąsį, atidarykite sąrankos vedlį."
 
-#: core/class-product.php:317
+#: ../../../../modules/wordpress/posti-shipping/core/class-product.php:317
 msgid ""
 "The country where the goods originated, e.g. were produced/manufactured or "
 "assembled."
 msgstr "Šalis, kurioje prekė buvo sukurta, pvz pagaminta ar surinkta."
 
-#: core/class-product.php:309
+#: ../../../../modules/wordpress/posti-shipping/core/class-product.php:309
 msgid ""
 "The HS tariff number must be based on the Harmonized Commodity Description "
 "and Coding System developed by the World Customs Organization."
@@ -1297,11 +1339,11 @@ msgstr ""
 "HS tarifo numeris turi būti pagrįstas Pasaulio muitinių organizacijos "
 "sukurta suderinta prekių aprašymo ir kodavimo sistema."
 
-#: core/class-text.php:540
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:548
 msgid "The note is specified in the order"
 msgstr "Užsakyme nurodyta žinutė"
 
-#: core/class-text.php:528
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:536
 msgid ""
 "The pickup point you've chosen is not available for public access. Are you "
 "sure that you can retrieve the package?"
@@ -1309,12 +1351,12 @@ msgstr ""
 "Jūsų pasirinktas atsiėmimo taškas nėra viešai prieinamas. Ar tikrai norite "
 "atsiimti savo siuntą?"
 
-#: core/class-wc-blocks-integration.php:120
+#: ../../../../modules/wordpress/posti-shipping/core/class-wc-blocks-integration.php:120
 #, php-format
 msgid "The selection of pickup points has been changed based on the address %s"
 msgstr "Atsiėmimo taškų pasirinkimai buvo pakeisti pagal adresą %s"
 
-#: core/class-shipment.php:277
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:277
 msgid ""
 "The shipping label was not created because the order does not contain valid "
 "shipping details."
@@ -1322,7 +1364,7 @@ msgstr ""
 "Siuntimo etiketė nebuvo sukurta, kadangi užsakymas neturi tinkamos siuntimo "
 "informacijos."
 
-#: core/class-shipment.php:265
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:265
 msgid ""
 "The shipping label was not created because the order does not contain valid "
 "shipping method."
@@ -1330,127 +1372,130 @@ msgstr ""
 "Siuntimo etiketė nebuvo sukurta, kadangi užsakymas neturi tinkamo siuntimo "
 "būdo."
 
-#: core/class-wc-blocks-integration.php:118
+#: ../../../../modules/wordpress/posti-shipping/core/class-wc-blocks-integration.php:118
 msgid "The value is too short"
 msgstr "Reikšmė per trumpa"
 
-#: core/class-shipment.php:898
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:899
 msgid "timeout"
 msgstr ""
 
-#: core/class-manifest.php:487
+#: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:488
 msgid "Token not found. Please check credentials"
 msgstr "Atpažinimo raktas nerastas. Prašome patikrinti prisijungimus"
 
-#: core/class-admin.php:766
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:775
 msgid "Total weight of dangerous goods"
 msgstr "Bendras pavojingų medžiagų svoris"
 
-#: core/class-shipment.php:421 core/class-admin.php:981
-#: core/class-admin.php:1013
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:422
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:990
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1022
 msgid "Track"
 msgstr "Sekti"
 
-#: templates/pakettikauppa/tracking-email-html.php:36
+#: ../../../../modules/wordpress/posti-shipping/templates/pakettikauppa/tracking-email-html.php:36
 msgid "track your order"
 msgstr "sekti Jūsų užsakymą"
 
-#: templates/pakettikauppa/tracking-email-html.php:11
-#: templates/pakettikauppa/tracking-email-txt.php:13
+#: ../../../../modules/wordpress/posti-shipping/templates/pakettikauppa/tracking-email-html.php:11
+#: ../../../../modules/wordpress/posti-shipping/templates/pakettikauppa/tracking-email-txt.php:13
 msgid "Tracking"
 msgstr "Siuntos sekimas"
 
 #. %s: Error message
-#: core/class-shipment.php:1169
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:1193
 #, php-format
 msgid "Tracking code creation failed: %s"
 msgstr "Nepavyko sukurti siuntos sekimo kodo: %s"
 
-#: core/class-text.php:317
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:325
 msgid "Translate products names in labels"
 msgstr "Išversti produktų pavadinimus lipdukuose"
 
-#: core/class-admin.php:1739
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1749
 msgid "Unable to create return label for this shipment type."
 msgstr "Negalima sukurti grąžinimo etiketės šiam siuntos tipui."
 
-#: core/class-product.php:315
+#: ../../../../modules/wordpress/posti-shipping/core/class-product.php:315
 msgid "Unknown"
 msgstr "Nežinoma"
 
-#: core/class-shipment.php:913
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:914
 msgid "Unknown error"
 msgstr "Nežinoma klaida"
 
-#: core/class-admin.php:972
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:981
 msgid "Unknown product"
 msgstr "Nežinoma prekė"
 
-#: core/class-shipment.php:132 core/class-admin.php:939
+#: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:132
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:948
 msgid "Unknown status"
 msgstr "Nežinoma būsena"
 
-#: core/class-text.php:321
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:329
 msgid "Use the client's language for product names displayed on labels"
 msgstr "Naudoti pirkėjo kalbą produktų pavadinimo rodymui lipdukuose"
 
-#: core/class-admin.php:686
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:695
 msgid "Visit Website"
 msgstr "Apsilankyti tinklapyje"
 
-#: core/class-text.php:309
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:317
 msgid "When creating shipping label change order status to"
 msgstr "Kai sukuriama siuntimo etiketė, pakeisti užsakymo būseną į"
 
 #. order status, pretranslated
-#: core/class-text.php:334
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:342
 #, php-format
 msgid "When order status is \"%s\""
 msgstr "Kai užsakymo būsena yra \"%s\""
 
-#: core/class-admin.php:1355
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1365
 msgid "With filters"
 msgstr "Su filtrais"
 
-#: core/class-admin.php:1345
+#: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1355
 msgid "Without filters"
 msgstr "Be filtrų"
 
 #. %s: vendor_name
-#: core/class-check-tool.php:91
+#: ../../../../modules/wordpress/posti-shipping/core/class-check-tool.php:91
 #, php-format
 msgid "WooCommerce %s version"
 msgstr "WooCommerce %s versija"
 
-#: core/class-text.php:186 core/class-text.php:291
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:190
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:295
 msgid "WooCommerce > Settings > Shipping > Shipping zones"
 msgstr "WooCommerce > Nustatymai > Pristatymas > Pristatymo zonos"
 
-#: core/class-check-tool.php:85
+#: ../../../../modules/wordpress/posti-shipping/core/class-check-tool.php:85
 msgid "WooCommerce version"
 msgstr "WooCommerce versija"
 
-#: core/class-check-tool.php:82
+#: ../../../../modules/wordpress/posti-shipping/core/class-check-tool.php:82
 msgid "Wordpress version"
 msgstr "Wordpress versija"
 
-#: core/class-manifest.php:372
+#: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:372
 msgid "Wrong data requested, please try again"
 msgstr "Prašoma neteisingų duomenų, bandykite dar kartą"
 
-#: core/class-manifest.php:382
+#: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:382
 msgid "Wrong response."
 msgstr "Klaidingas atsakas."
 
 #. 1: Shipment tracking link with text "track your order" 2: Shipment tracking code
-#: templates/pakettikauppa/tracking-email-html.php:36
+#: ../../../../modules/wordpress/posti-shipping/templates/pakettikauppa/tracking-email-html.php:36
 #, php-format
 msgid "You can %1$s with tracking code %2$s."
 msgstr "Galite %1$s su sekimo numeriu %2$s."
 
 #. %1$s: Steps to Shipping zones page
 #. %2$s: WooCommerce URL, not translatable
-#: core/class-text.php:290
+#: ../../../../modules/wordpress/posti-shipping/core/class-text.php:294
 #, php-format
 msgid ""
 "You can activate new shipping method to checkout in %1$s. For more "
@@ -1459,12 +1504,12 @@ msgstr ""
 "Galite suaktyvinti naują pristatymo būdą užsakymo kūrime einant %1$s. "
 "Norėdami gauti daugiau informacijos, žr. %2$s."
 
-#: core/class-wc-blocks-integration.php:113
+#: ../../../../modules/wordpress/posti-shipping/core/class-wc-blocks-integration.php:113
 msgid "You can choose the pickup point on the Checkout page"
 msgstr "Atsiėmimo tašką galėsite pasirinkti apmokėjimo puslapyje"
 
 #. Shipment tracking URL
-#: templates/pakettikauppa/tracking-email-txt.php:25
+#: ../../../../modules/wordpress/posti-shipping/templates/pakettikauppa/tracking-email-txt.php:25
 #, php-format
 msgid "You can track your order at %1$s."
 msgstr "Savo užsakymą galite sekti %1$s."
