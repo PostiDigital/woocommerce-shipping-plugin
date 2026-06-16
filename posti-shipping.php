@@ -11,7 +11,7 @@
  * License: GPL v3 or later
  *
  * Requires at least: 5.0
- * Tested up to: 6.9.4
+ * Tested up to: 7.0
  * WC requires at least: 4.7
  * WC tested up to: 10.7.0
  * Requires PHP: 7.1
