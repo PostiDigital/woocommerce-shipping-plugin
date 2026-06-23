@@ -204,9 +204,9 @@ if ( ! class_exists(__NAMESPACE__ . '\Product') ) {
       );
 
       foreach ( $selected_products as $product ) {
-        $item_tabs_data = $this->get_tabs_fields_values($product['prod']);
-        if ( ! empty($item_tabs_data[$this->core->params_prefix . 'dangerous_lqweight']) ) {
-          $dangerous_goods['weight'] += $item_tabs_data[$this->core->params_prefix . 'dangerous_lqweight'] * $product['qty'];
+        $dg_weight = $this->get_product_dg_weight($product['prod']);
+        if ( $dg_weight > 0 ) {
+          $dangerous_goods['weight'] += $dg_weight * $product['qty'];
           $dangerous_goods['count'] += $product['qty'];
         }
       }
@@ -217,10 +217,22 @@ if ( ! class_exists(__NAMESPACE__ . '\Product') ) {
     }
 
     public function get_product_dg_weight( $product_id, $weight_unit = 'g' ) {
-      $item_tabs_data = $this->get_tabs_fields_values($product_id);
       $item_data_key = $this->core->params_prefix . 'dangerous_lqweight';
-      if ( ! empty($item_tabs_data[$item_data_key]) ) {
-        return $this->change_number_unit($item_tabs_data[$item_data_key], 'g', $weight_unit);
+
+      $item_tabs_data = $this->get_tabs_fields_values($product_id);
+      $dg_weight = isset($item_tabs_data[$item_data_key]) ? $item_tabs_data[$item_data_key] : '';
+
+      // For variations, fall back to the parent product meta if not set on the variation
+      if ( empty($dg_weight) ) {
+        $parent_id = wp_get_post_parent_id($product_id);
+        if ( ! empty($parent_id) ) {
+          $parent_tabs_data = $this->get_tabs_fields_values($parent_id);
+          $dg_weight = isset($parent_tabs_data[$item_data_key]) ? $parent_tabs_data[$item_data_key] : '';
+        }
+      }
+
+      if ( ! empty($dg_weight) ) {
+        return $this->change_number_unit($dg_weight, 'g', $weight_unit);
       }
 
       return 0;

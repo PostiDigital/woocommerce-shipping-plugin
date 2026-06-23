@@ -204,7 +204,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Setup_Wizard') ) {
         ?>
       </p>
       <p class="wcpk-setup-info">
-        <?php echo $this->core->text->setup_credential_info(); ?>
+        <?php echo $this->core->text->setup_credential_info(null, $this->core->text->setup_become_customer_url()); ?>
       </p>
       <div class="wcpk-setup-settings-wrapper">
         <form method="post">

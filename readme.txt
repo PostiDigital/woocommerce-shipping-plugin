@@ -2,7 +2,7 @@
 Contributors: joosev, ottok, leotoikka, serter, k1sul1
 Tags: woocommerce, shipping, toimitustavat, smartship, posti
 Requires at least: 5.0
-Tested up to: 6.9.4
+Tested up to: 7.0
 Requires PHP: 7.1
 Stable tag: trunk
 License: GPLv3 or later
@@ -51,6 +51,11 @@ Yes! If you encounter any issues related to this plugin, please report at [Posti
 4. Settings screen in admin
 
 == Changelog ==
+
+= 3.10.13 =
+* Bug fix for missing LQ dangerous goods weight with variable products
+* Small text changes and missing translations added 
+* Tested against WordPress 7.0
 
 = 3.10.12 =
 * Bug fix for storing unnecessary pickup point data in checkout
