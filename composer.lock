@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4f64d5892c1aa11059be425db3035717",
+    "content-hash": "b4ec70ccae8cfa9cf3be2fdb5a48767f",
     "packages": [
         {
             "name": "pakettikauppa/api-library",
-            "version": "2.0.7",
+            "version": "dev-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Pakettikauppa/api-library.git",
-                "reference": "2e8971ca61b21130b390d6146e131e4ca33479a0"
+                "reference": "6735e73495df70213336d6341698c11442101bb5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Pakettikauppa/api-library/zipball/2e8971ca61b21130b390d6146e131e4ca33479a0",
-                "reference": "2e8971ca61b21130b390d6146e131e4ca33479a0",
+                "url": "https://api.github.com/repos/Pakettikauppa/api-library/zipball/6735e73495df70213336d6341698c11442101bb5",
+                "reference": "6735e73495df70213336d6341698c11442101bb5",
                 "shasum": ""
             },
             "require": {
@@ -63,18 +63,20 @@
             "support": {
                 "email": "integration@pakettikauppa.fi",
                 "issues": "https://github.com/Pakettikauppa/api-library/issues",
-                "source": "https://github.com/Pakettikauppa/api-library/tree/2.0.7"
+                "source": "https://github.com/Pakettikauppa/api-library/tree/dev"
             },
-            "time": "2023-06-19T08:39:09+00:00"
+            "time": "2026-06-23T09:56:37+00:00"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "pakettikauppa/api-library": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
-    "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "platform": {},
+    "platform-dev": {},
+    "plugin-api-version": "2.6.0"
 }
