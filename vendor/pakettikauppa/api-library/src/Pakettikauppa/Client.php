@@ -412,9 +412,9 @@ class Client
     /**
      * @return array
      */
-    public function listAdditionalServices()
+    public function listAdditionalServices($params = array())
     {
-        return json_decode($this->doPost('/additional-services/list', array()));
+        return json_decode($this->doPost('/additional-services/list', $params));
     }
 
     /**
@@ -429,9 +429,9 @@ class Client
     /**
      * @return array
      */
-    public function listShippingMethods()
+    public function listShippingMethods($params = array())
     {
-        return json_decode($this->doPost('/shipping-methods/list', array()));
+        return json_decode($this->doPost('/shipping-methods/list', $params));
     }
 
     /**
@@ -666,10 +666,6 @@ class Client
         ));
 
         $response                   = curl_exec($ch);
-
-        $this->http_response_code   = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $this->http_error           = (curl_errno($ch)) ? curl_error($ch) : '';
-        $this->http_response        = $response;
 
         $this->log(sprintf("Response: %s\nData\n%s\n",
           $requestId,
