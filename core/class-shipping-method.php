@@ -323,7 +323,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
 
     /**
      * Build the API request params (language + sender country) for a given
-     * sender country.
+     * sender country. FI/AX use Finnish, everything else English.
      *
      * @param string $sender_country ISO country code of the sender
      *
