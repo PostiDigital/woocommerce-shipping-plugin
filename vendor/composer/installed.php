@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         'pakettikauppa/api-library' => array(
-            'pretty_version' => 'dev-dev',
-            'version' => 'dev-dev',
-            'reference' => '6735e73495df70213336d6341698c11442101bb5',
+            'pretty_version' => '2.0.8',
+            'version' => '2.0.8.0',
+            'reference' => 'ad442aa21376a7abcdbb042938e81247f420bee1',
             'type' => 'library',
             'install_path' => __DIR__ . '/../pakettikauppa/api-library',
             'aliases' => array(),
