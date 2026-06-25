@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b4ec70ccae8cfa9cf3be2fdb5a48767f",
+    "content-hash": "801a5518844b18819a91519b00356e2b",
     "packages": [
         {
             "name": "pakettikauppa/api-library",
-            "version": "dev-dev",
+            "version": "2.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Pakettikauppa/api-library.git",
-                "reference": "6735e73495df70213336d6341698c11442101bb5"
+                "reference": "ad442aa21376a7abcdbb042938e81247f420bee1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Pakettikauppa/api-library/zipball/6735e73495df70213336d6341698c11442101bb5",
-                "reference": "6735e73495df70213336d6341698c11442101bb5",
+                "url": "https://api.github.com/repos/Pakettikauppa/api-library/zipball/ad442aa21376a7abcdbb042938e81247f420bee1",
+                "reference": "ad442aa21376a7abcdbb042938e81247f420bee1",
                 "shasum": ""
             },
             "require": {
@@ -63,17 +63,15 @@
             "support": {
                 "email": "integration@pakettikauppa.fi",
                 "issues": "https://github.com/Pakettikauppa/api-library/issues",
-                "source": "https://github.com/Pakettikauppa/api-library/tree/dev"
+                "source": "https://github.com/Pakettikauppa/api-library/tree/2.0.8"
             },
-            "time": "2026-06-23T09:56:37+00:00"
+            "time": "2026-06-23T12:01:22+00:00"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "pakettikauppa/api-library": 20
-    },
+    "stability-flags": {},
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {},

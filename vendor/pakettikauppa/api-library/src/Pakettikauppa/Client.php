@@ -437,7 +437,7 @@ class Client
     /**
      * Search pickup points.
      *
-     * @param int $postcode
+     * @param string $postcode
      * @param string $street_address
      * @param string $country
      * @param string $service_provider Limits results for to certain providers possible values are packet service codes (like 2103 for Postipaketti. Use listShippingMethods to get service codes).
@@ -666,6 +666,10 @@ class Client
         ));
 
         $response                   = curl_exec($ch);
+
+        $this->http_response_code   = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $this->http_error           = (curl_errno($ch)) ? curl_error($ch) : '';
+        $this->http_response        = $response;
 
         $this->log(sprintf("Response: %s\nData\n%s\n",
           $requestId,
