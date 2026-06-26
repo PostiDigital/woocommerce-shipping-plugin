@@ -434,3 +434,47 @@ function click_enchancedtextarea_code(field_key, param_key) {
   var $ = jQuery;
   $("#" + field_key).val($("#" + field_key).val() + "{" + param_key + "}");
 }
+
+/* Reload the shipping methods mapping when the sender country changes, so the
+   available carrier services update without saving and reloading the page. */
+jQuery(function ($) {
+  if (typeof pakettikauppa_params === 'undefined' || !pakettikauppa_params.sender_country_field) {
+    return;
+  }
+
+  var $country = $('#' + pakettikauppa_params.sender_country_field);
+  if (!$country.length) {
+    return;
+  }
+
+  $country.on('change', function () {
+    var country = $(this).val();
+    var $container = $('#pk-mapping-container');
+    if (!$container.length) {
+      return;
+    }
+
+    $container.addClass('pk-mapping-container--loading');
+
+    $.ajax({
+      type: 'POST',
+      url: ajaxurl,
+      data: {
+        action: 'pakettikauppa_get_mapping',
+        sender_country: country,
+        _wpnonce: pakettikauppa_params.mapping_nonce
+      },
+      dataType: 'json'
+    }).done(function (response) {
+      if (response && response.success && response.data && typeof response.data.html !== 'undefined') {
+        $container.html(response.data.html);
+        if (typeof pkInitMappingCards === 'function') {
+          pkInitMappingCards(document.getElementById('pk-mapping-container'));
+        }
+      }
+    }).always(function () {
+      $container.removeClass('pk-mapping-container--loading');
+    });
+  });
+});
+
