@@ -73,6 +73,23 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
     }
 
     public function validate_pickuppoints_field( $key, $value ) {
+      // Merge with previously saved mapping so that shipping methods whose
+      // fields were not submitted (e.g. their service is unavailable for the
+      // currently selected sender country) keep their stored configuration
+      // instead of being silently dropped.
+      $old = $this->get_option($key);
+      if ( is_string($old) && $old !== '' ) {
+        $old = json_decode($old, true);
+      }
+
+      if ( is_array($old) && is_array($value) ) {
+        foreach ( $old as $method_id => $method_config ) {
+          if ( ! isset($value[ $method_id ]) ) {
+            $value[ $method_id ] = $method_config;
+          }
+        }
+      }
+
       $values = wp_json_encode($value);
       return $values;
     }
@@ -167,23 +184,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
     }
 
     public function generate_pickuppoints_html( $key, $value ) {
-      $field_key = $this->get_field_key($key);
-
-      if ( $this->get_option($key) !== '' ) {
-        $values = $this->get_option($key);
-        if ( is_string($values) ) {
-          $values = json_decode($this->get_option($key), true);
-        }
-      } else {
-        $values = array();
-      }
-
-      $all_shipping_methods = $this->get_core()->shipment->services();
-      if ( empty($all_shipping_methods) ) {
-        $all_shipping_methods = array();
-      }
-
-      $methods = $this->get_core()->shipment->get_pickup_point_methods();
+      $sender_country = $this->get_option('sender_country');
 
       ob_start();
     ?>
@@ -207,6 +208,41 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
             var servicesElement = document.getElementById('services-' + methodId + '-' + strUser);
             var pickuppointsElement = document.getElementById('pickuppoints-' + methodId);
             var servicePickuppointsElement = document.getElementById('service-' + methodId + '-' + strUser + '-pickuppoints');
+
+            var card = elem.closest('.pk-method-card');
+            if (card) {
+                if (strUser === '__NULL__') {
+                    card.classList.add('pk-method-card--inactive');
+                } else {
+                    card.classList.remove('pk-method-card--inactive');
+                }
+                // Once the user picks any option, the previously selected
+                // unavailable service is no longer in effect.
+                var selectedOption = elem.options[elem.selectedIndex];
+                var isUnavailable = !!(selectedOption && selectedOption.classList.contains('pk-option-unavailable'));
+                if (!isUnavailable) {
+                    card.classList.remove('pk-method-card--unavailable');
+                    var warning = card.querySelector('.pk-method-card__warning');
+                    if (warning) {
+                        warning.style.display = 'none';
+                    }
+                }
+
+                // Recompute the status dot colour.
+                var wcEnabled = card.getAttribute('data-wc-enabled') === '1';
+                var hasService = (strUser !== '__NULL__');
+                var dotState = 'active';
+                if (!hasService) {
+                    dotState = 'inactive';
+                }
+                if (isUnavailable || (hasService && !wcEnabled)) {
+                    dotState = 'error';
+                }
+                var dot = card.querySelector('.pk-method-card__dot');
+                if (dot) {
+                    dot.className = 'pk-method-card__dot pk-dot--' + dotState;
+                }
+            }
 
             for(var i=0; i<elements.length; ++i) {
                 elements[i].style.display = "none";
@@ -239,132 +275,294 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
               }
             }
         }
+
+        function pkInitMappingCards(container) {
+            var scope = container || document;
+            var selects = scope.querySelectorAll('.pk-method-card select.pk-service-select');
+            for (var i = 0; i < selects.length; ++i) {
+                pkChangeOptions(selects[i], selects[i].getAttribute('data-method'));
+            }
+        }
       </script>
       <tr>
         <th colspan="2" class="titledesc mode_react" scope="row"><?php echo esc_html($value['title']); ?></th>
       </tr>
       <tr>
         <td colspan="2" class="mode_react">
-          <?php foreach ( \WC_Shipping_Zones::get_zones('admin') as $zone_raw ) : ?>
-            <hr>
-            <?php $zone = new \WC_Shipping_Zone($zone_raw['zone_id']); ?>
-            <h3>
-              <?php esc_html_e('Zone name', 'woocommerce'); ?>: <?php echo $zone->get_zone_name(); ?>
-            </h3>
-            <p>
-              <?php esc_html_e('Zone regions', 'woocommerce'); ?>: <?php echo $zone->get_formatted_location(); ?>
-            </p>
-            <h4><?php esc_html_e('Shipping method(s)', 'woocommerce'); ?></h4>
-            <?php foreach ( $zone->get_shipping_methods() as $method_id => $shipping_method ) : ?>
-              <?php if ( $shipping_method->id !== $this->get_core()->shippingmethod && $shipping_method->id !== 'local_pickup' ) : ?>
+          <div id="pk-mapping-container" class="pk-mapping-container">
+            <?php echo $this->render_pickup_points_mapping($sender_country); ?>
+          </div>
+        </td>
+      </tr>
+      <script>pkInitMappingCards(document.getElementById("pk-mapping-container"));</script>
+
+      <?php
+      $html = ob_get_contents();
+      ob_end_clean();
+      return $html;
+    }
+
+    /**
+     * Resolve the list of carrier services for a given sender country.
+     *
+     * @param string $sender_country ISO country code of the sender
+     *
+     * @return array Associative array of service_id => service_name
+     */
+    public function get_services_for_country( $sender_country ) {
+      $shipping_methods_params = $this->get_shipping_methods_params_for_country($sender_country);
+
+      $all_shipping_methods = $this->get_core()->shipment->services($shipping_methods_params);
+      if ( empty($all_shipping_methods) ) {
+        $all_shipping_methods = array();
+      }
+
+      return $all_shipping_methods;
+    }
+
+    /**
+     * Resolve language for services list based on current admin locale.
+     *
+     * @return string Two-letter language code supported by API.
+     */
+    private function get_services_language_from_admin_locale() {
+      $locale = get_locale();
+
+      // In admin-ajax context determine_locale() can resolve to site locale,
+      // so prefer current user's admin locale for settings UI language.
+      if ( function_exists('get_user_locale') ) {
+        $locale = get_user_locale();
+      } elseif ( function_exists('determine_locale') ) {
+        $locale = determine_locale();
+      }
+
+      $language = strtolower(substr(strval($locale), 0, 2));
+      $supported_languages = array( 'fi', 'en' );
+
+      if ( ! in_array($language, $supported_languages, true) ) {
+        $language = 'en';
+      }
+
+      return $language;
+    }
+
+    /**
+     * Build the API request params (language + sender country) for a given
+     * sender country.
+     *
+     * @param string $sender_country ISO country code of the sender
+     *
+     * @return array
+     */
+    public function get_shipping_methods_params_for_country( $sender_country ) {
+      $services_lang = $this->get_services_language_from_admin_locale();
+      $shipping_methods_params = array(
+        'language' => $services_lang,
+      );
+      if ( in_array($sender_country, array( 'FI', 'AX', 'EE', 'LV', 'LT' ), true) ) {
+        $shipping_methods_params['sender_country'] = $sender_country;
+      }
+
+      return $shipping_methods_params;
+    }
+
+    /**
+     * Render the shipping methods mapping as visual cards. Shared between the
+     * initial settings render and the AJAX reload triggered by sender country change.
+     *
+     * @param string|null $sender_country Sender country to resolve services for. Defaults to saved value.
+     * @param array|null  $values         Saved pickup point mapping. Defaults to saved option value.
+     *
+     * @return string
+     */
+    public function render_pickup_points_mapping( $sender_country = null, $values = null ) {
+      $field_key = $this->get_field_key('pickup_points');
+
+      if ( $sender_country === null ) {
+        $sender_country = $this->get_option('sender_country');
+      }
+
+      if ( $values === null ) {
+        $values = $this->get_option('pickup_points');
+        if ( is_string($values) && $values !== '' ) {
+          $values = json_decode($values, true);
+        }
+      }
+      if ( empty($values) || ! is_array($values) ) {
+        $values = array();
+      }
+
+      $all_shipping_methods = $this->get_services_for_country($sender_country);
+      $methods = $this->get_core()->shipment->get_pickup_point_methods();
+
+      $shipping_methods_params = $this->get_shipping_methods_params_for_country($sender_country);
+      $all_additional_services = $this->get_core()->shipment->get_additional_services($shipping_methods_params);
+      if ( empty($all_additional_services) ) {
+        $all_additional_services = array();
+      }
+
+      ob_start();
+      ?>
+      <div class="pk-mapping">
+        <?php foreach ( \WC_Shipping_Zones::get_zones('admin') as $zone_raw ) : ?>
+          <?php $zone = new \WC_Shipping_Zone($zone_raw['zone_id']); ?>
+          <?php
+          $zone_methods = array();
+          foreach ( $zone->get_shipping_methods() as $method_id => $shipping_method ) {
+            if ( $shipping_method->id !== $this->get_core()->shippingmethod && $shipping_method->id !== 'local_pickup' ) {
+              $zone_methods[ $method_id ] = $shipping_method;
+            }
+          }
+          ?>
+          <?php if ( empty($zone_methods) ) : ?>
+            <?php continue; ?>
+          <?php endif; ?>
+          <section class="pk-zone">
+            <header class="pk-zone__header">
+              <span class="pk-zone__name"><?php echo esc_html($zone->get_zone_name()); ?></span>
+              <span class="pk-zone__regions"><?php echo esc_html($zone->get_formatted_location()); ?></span>
+            </header>
+            <div class="pk-zone__methods">
+              <?php foreach ( $zone_methods as $method_id => $shipping_method ) : ?>
                 <?php
                 $selected_service = null;
                 if ( ! empty($values[ $method_id ]['service']) ) {
                   $selected_service = $values[ $method_id ]['service'];
                 }
-                if ( empty($selected_service) && ! empty($methods) && isset($values[$method_id]) ) {
+                if ( empty($selected_service) && ! empty($methods) && isset($values[ $method_id ]) ) {
                   $selected_service = '__PICKUPPOINTS__';
                 }
-                ?>
-            <table style="border-collapse: collapse;" border="0">
-              <th><?php echo $shipping_method->title; ?></th>
-              <td style="vertical-align: top;">
-                <select id="<?php echo $method_id; ?>-select" name="<?php echo esc_html($field_key) . '[' . esc_attr($method_id) . '][service]'; ?>" onchange="pkChangeOptions(this, '<?php echo $method_id; ?>');">
-                  <option value="__NULL__"><?php echo $this->get_core()->text->no_shipping(); ?></option>
-                  <?php if ( ! empty($methods) ) : ?>
-                    <option value="__PICKUPPOINTS__" <?php echo ($selected_service === '__PICKUPPOINTS__' ? 'selected' : ''); ?>>Noutopisteet</option>
-                  <?php endif; ?>
-                  <?php foreach ( $all_shipping_methods as $service_id => $service_name ) : ?>
-                    <?php $has_pp = ($this->get_core()->shipment->service_has_pickup_points($service_id)) ? true : false; ?>
-                    <option value="<?php echo $service_id; ?>" <?php echo (strval($selected_service) === strval($service_id) ? 'selected' : ''); ?> data-haspp="<?php echo ($has_pp) ? 'true' : 'false'; ?>">
-                      <?php echo $service_name; ?>
-                      <?php if ( $has_pp ) : ?>
-                        (<?php echo $this->get_core()->text->includes_pickup_points(); ?>)
-                      <?php endif; ?>
-                    </option>
-                  <?php endforeach; ?>
-                </select>
-              </td>
-              <td style="vertical-align: top;">
-                <div style='display: none;' id="pickuppoints-<?php echo $method_id; ?>">
-                  <?php foreach ( $methods as $method_code => $method_name ) : ?>
-                    <input type="hidden"
-                            name="<?php echo esc_html($field_key) . '[' . esc_attr($method_id) . '][' . $method_code . '][active]'; ?>"
-                            value="no">
-                    <p>
-                      <label>
-                        <input type="checkbox"
-                              name="<?php echo esc_html($field_key) . '[' . esc_attr($method_id) . '][' . $method_code . '][active]'; ?>"
-                              value="yes" <?php echo (! empty($values[ $method_id ][ $method_code ]['active']) && $values[ $method_id ][ $method_code ]['active'] === 'yes') ? 'checked' : ''; ?>>
-                        <?php echo $method_name; ?>
-                      </label>
-                    </p>
-                  <?php endforeach; ?>
-                </div>
+                $service_available = ($selected_service === null
+                  || $selected_service === '__NULL__'
+                  || $selected_service === '__PICKUPPOINTS__'
+                  || isset($all_shipping_methods[ strval($selected_service) ]));
+                $has_service_assigned = ($selected_service !== null && $selected_service !== '__NULL__');
+                $wc_method_enabled = $shipping_method->is_enabled();
+                $is_inactive = ! $has_service_assigned;
 
-                <?php
-                $all_additional_services = $this->get_core()->shipment->get_additional_services();
-                if ( empty($all_additional_services) ) {
-                  $all_additional_services = array();
+                // Determine the status dot colour:
+                // - red:   misconfiguration (service assigned but method disabled in WC, or service unavailable)
+                // - grey:  no service assigned
+                // - green: active and correctly configured
+                if ( ($has_service_assigned && ! $wc_method_enabled) || ! $service_available ) {
+                  $dot_state = 'error';
+                } elseif ( ! $has_service_assigned ) {
+                  $dot_state = 'inactive';
+                } else {
+                  $dot_state = 'active';
+                }
+
+                $card_classes = 'pk-method-card';
+                if ( $is_inactive ) {
+                  $card_classes .= ' pk-method-card--inactive';
+                }
+                if ( ! $service_available ) {
+                  $card_classes .= ' pk-method-card--unavailable';
+                }
+                if ( ! $wc_method_enabled ) {
+                  $card_classes .= ' pk-method-card--wc-disabled';
                 }
                 ?>
-                <?php foreach ( $all_additional_services as $method_code => $additional_services ) : ?>
-                  <div class="pk-services-<?php echo $method_id; ?>" style='display: none;' id="services-<?php echo $method_id; ?>-<?php echo $method_code; ?>">
-                    <?php foreach ( $additional_services as $additional_service ) : ?>
-                      <?php if ( empty($additional_service->specifiers) || in_array($additional_service->service_code, array( '3102' ), true) ) : ?>
+                <div class="<?php echo esc_attr($card_classes); ?>" data-method="<?php echo esc_attr($method_id); ?>" data-wc-enabled="<?php echo $wc_method_enabled ? '1' : '0'; ?>">
+                  <div class="pk-method-card__head">
+                    <span class="pk-method-card__title">
+                      <span class="pk-method-card__dot pk-dot--<?php echo esc_attr($dot_state); ?>"></span>
+                      <span class="pk-method-card__name<?php echo ! $wc_method_enabled ? ' pk-strike' : ''; ?>"<?php echo ! $wc_method_enabled ? ' title="' . esc_attr($this->get_core()->text->shipping_method_inactive_in_zones()) . '"' : ''; ?>><?php echo esc_html($shipping_method->title); ?></span>
+                    </span>
+                    <select id="<?php echo esc_attr($method_id); ?>-select" class="pk-service-select" data-method="<?php echo esc_attr($method_id); ?>" name="<?php echo esc_html($field_key) . '[' . esc_attr($method_id) . '][service]'; ?>" onchange="pkChangeOptions(this, '<?php echo esc_attr($method_id); ?>');">
+                      <option value="__NULL__"><?php echo $this->get_core()->text->no_shipping(); ?></option>
+                      <?php if ( ! empty($methods) ) : ?>
+                        <option value="__PICKUPPOINTS__" <?php echo ($selected_service === '__PICKUPPOINTS__' ? 'selected' : ''); ?>><?php esc_html_e('Pickup points', 'woo-pakettikauppa'); ?></option>
+                      <?php endif; ?>
+                      <?php if ( ! $service_available ) : ?>
+                        <option value="<?php echo esc_attr($selected_service); ?>" selected class="pk-option-unavailable" data-haspp="false">
+                          <?php echo esc_html($this->get_core()->text->selected_unavailable_service_code($selected_service)); ?>
+                        </option>
+                      <?php endif; ?>
+                      <?php foreach ( $all_shipping_methods as $service_id => $service_name ) : ?>
+                        <?php $has_pp = ($this->get_core()->shipment->service_has_pickup_points($service_id)) ? true : false; ?>
+                        <option value="<?php echo esc_attr($service_id); ?>" <?php echo (strval($selected_service) === strval($service_id) ? 'selected' : ''); ?> data-haspp="<?php echo ($has_pp) ? 'true' : 'false'; ?>">
+                          <?php echo esc_html($service_name); ?>
+                          <?php if ( $has_pp ) : ?>
+                            (<?php echo $this->get_core()->text->includes_pickup_points(); ?>)
+                          <?php endif; ?>
+                        </option>
+                      <?php endforeach; ?>
+                    </select>
+                    <?php if ( ! $service_available ) : ?>
+                      <p class="pk-method-card__warning"><?php echo esc_html($this->get_core()->text->service_not_available_for_country()); ?></p>
+                    <?php endif; ?>
+                  </div>
+                  <div class="pk-method-card__body">
+                    <div style='display: none;' id="pickuppoints-<?php echo esc_attr($method_id); ?>">
+                      <?php foreach ( $methods as $method_code => $method_name ) : ?>
                         <input type="hidden"
-                                name="<?php echo esc_html($field_key) . '[' . esc_attr($method_id) . '][' . esc_attr($method_code) . '][additional_services][' . $additional_service->service_code . ']'; ?>"
+                                name="<?php echo esc_html($field_key) . '[' . esc_attr($method_id) . '][' . $method_code . '][active]'; ?>"
                                 value="no">
                         <p>
                           <label>
                             <input type="checkbox"
-                                  name="<?php echo esc_html($field_key) . '[' . esc_attr($method_id) . '][' . esc_attr($method_code) . '][additional_services][' . $additional_service->service_code . ']'; ?>"
-                                  value="yes" <?php echo (! empty($values[ $method_id ][ $method_code ]['additional_services'][ $additional_service->service_code ]) && $values[ $method_id ][ $method_code ]['additional_services'][ $additional_service->service_code ] === 'yes') ? 'checked' : ''; ?>>
-                            <?php echo $additional_service->name; ?>
+                                  name="<?php echo esc_html($field_key) . '[' . esc_attr($method_id) . '][' . $method_code . '][active]'; ?>"
+                                  value="yes" <?php echo (! empty($values[ $method_id ][ $method_code ]['active']) && $values[ $method_id ][ $method_code ]['active'] === 'yes') ? 'checked' : ''; ?>>
+                            <?php echo esc_html($method_name); ?>
                           </label>
                         </p>
+                      <?php endforeach; ?>
+                    </div>
+
+                    <?php foreach ( $all_additional_services as $method_code => $additional_services ) : ?>
+                      <div class="pk-services-<?php echo esc_attr($method_id); ?> pk-service-options" style='display: none;' id="services-<?php echo esc_attr($method_id); ?>-<?php echo esc_attr($method_code); ?>">
+                        <?php foreach ( $additional_services as $additional_service ) : ?>
+                          <?php if ( empty($additional_service->specifiers) || in_array($additional_service->service_code, array( '3102' ), true) ) : ?>
+                            <input type="hidden"
+                                    name="<?php echo esc_html($field_key) . '[' . esc_attr($method_id) . '][' . esc_attr($method_code) . '][additional_services][' . $additional_service->service_code . ']'; ?>"
+                                    value="no">
+                            <p>
+                              <label>
+                                <input type="checkbox"
+                                      name="<?php echo esc_html($field_key) . '[' . esc_attr($method_id) . '][' . esc_attr($method_code) . '][additional_services][' . $additional_service->service_code . ']'; ?>"
+                                      value="yes" <?php echo (! empty($values[ $method_id ][ $method_code ]['additional_services'][ $additional_service->service_code ]) && $values[ $method_id ][ $method_code ]['additional_services'][ $additional_service->service_code ] === 'yes') ? 'checked' : ''; ?>>
+                                <?php echo esc_html($additional_service->name); ?>
+                              </label>
+                            </p>
+                          <?php endif; ?>
+                        <?php endforeach; ?>
+                        <input type="hidden"
+                          name="<?php echo esc_html($field_key) . '[' . esc_attr($method_id) . '][' . esc_attr($method_code) . '][additional_services][return_label]'; ?>"
+                          value="no">
+                        <p>
+                          <label>
+                            <input type="checkbox"
+                                  name="<?php echo esc_html($field_key) . '[' . esc_attr($method_id) . '][' . esc_attr($method_code) . '][additional_services][return_label]'; ?>"
+                                  value="yes" <?php echo (! empty($values[ $method_id ][ $method_code ]['additional_services']['return_label']) && $values[ $method_id ][ $method_code ]['additional_services']['return_label'] === 'yes') ? 'checked' : ''; ?>>
+                            <?php echo esc_html__('Include return label (if available)', 'woo-pakettikauppa'); ?>
+                          </label>
+                        </p>
+                      </div>
+                    <?php endforeach; ?>
+                    <?php foreach ( $all_shipping_methods as $service_id => $service_name ) : ?>
+                      <?php if ( $this->get_core()->shipment->service_has_pickup_points($service_id) ) : ?>
+                        <div id="service-<?php echo esc_attr($method_id); ?>-<?php echo esc_attr($service_id); ?>-pickuppoints" class="pk-services-<?php echo esc_attr($method_id); ?> pk-service-options" style="display: none;">
+                          <input type="hidden"
+                            name="<?php echo esc_html($field_key) . '[' . esc_attr($method_id) . '][' . esc_attr($service_id) . '][pickuppoints]'; ?>" value="no">
+                          <p>
+                            <label>
+                              <input type="checkbox"
+                                name="<?php echo esc_html($field_key) . '[' . esc_attr($method_id) . '][' . esc_attr($service_id) . '][pickuppoints]'; ?>"
+                                value="yes" <?php echo ((! empty($values[ $method_id ][ $service_id ]['pickuppoints']) && $values[ $method_id ][ $service_id ]['pickuppoints'] === 'yes') || empty($values[ $method_id ][ $service_id ]['pickuppoints'])) ? 'checked' : ''; ?>>
+                              <?php echo esc_html__('Pickup points', 'woo-pakettikauppa'); ?>
+                            </label>
+                          </p>
+                        </div>
                       <?php endif; ?>
                     <?php endforeach; ?>
-                    <input type="hidden"
-                      name="<?php echo esc_html($field_key) . '[' . esc_attr($method_id) . '][' . esc_attr($method_code) . '][additional_services][return_label]'; ?>"
-                      value="no">
-                    <p>
-                      <label>
-                        <input type="checkbox"
-                              name="<?php echo esc_html($field_key) . '[' . esc_attr($method_id) . '][' . esc_attr($method_code) . '][additional_services][return_label]'; ?>"
-                              value="yes" <?php echo (! empty($values[ $method_id ][ $method_code ]['additional_services']['return_label']) && $values[ $method_id ][ $method_code ]['additional_services']['return_label'] === 'yes') ? 'checked' : ''; ?>>
-                        <?php echo __('Include return label (if available)', 'woo-pakettikauppa'); ?>
-                      </label>
-                    </p>
                   </div>
-                <?php endforeach; ?>
-                <?php foreach ( $all_shipping_methods as $service_id => $service_name ) : ?>
-                  <?php if ( $this->get_core()->shipment->service_has_pickup_points($service_id) ) : ?>
-                    <div id="service-<?php echo $method_id; ?>-<?php echo $service_id; ?>-pickuppoints" class="pk-services-<?php echo $method_id; ?>" style="display: none;">
-                      <input type="hidden"
-                        name="<?php echo esc_html($field_key) . '[' . esc_attr($method_id) . '][' . esc_attr($service_id) . '][pickuppoints]'; ?>" value="no">
-                      <p>
-                        <label>
-                          <input type="checkbox"
-                            name="<?php echo esc_html($field_key) . '[' . esc_attr($method_id) . '][' . esc_attr($service_id) . '][pickuppoints]'; ?>"
-                            value="yes" <?php echo ((! empty($values[ $method_id ][ $service_id ]['pickuppoints']) && $values[ $method_id ][ $service_id ]['pickuppoints'] === 'yes') || empty($values[ $method_id ][ $service_id ]['pickuppoints'])) ? 'checked' : ''; ?>>
-                          <?php echo __('Pickup points', 'woo-pakettikauppa'); ?>
-                        </label>
-                      </p>
-                    </div>
-                  <?php endif; ?>
-                <?php endforeach; ?>
-              </td>
-            </table>
-            <script>pkChangeOptions(document.getElementById("<?php echo $method_id; ?>-select"), '<?php echo $method_id; ?>');</script>
-          <?php endif; ?>
-          <?php endforeach; ?>
-          <?php endforeach; ?>
-          <hr>
-
-        </td>
-      </tr>
-
+                </div>
+              <?php endforeach; ?>
+            </div>
+          </section>
+        <?php endforeach; ?>
+      </div>
       <?php
       $html = ob_get_contents();
       ob_end_clean();
@@ -467,6 +665,62 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
           'type'     => 'password',
           'default'  => '',
           'desc_tip' => true,
+        ),
+
+        array(
+          'title' => $this->get_core()->text->store_owner_information(),
+          'type'  => 'title',
+        ),
+
+        'sender_name'                => array(
+          'title'   => $this->get_core()->text->sender_name(),
+          'type'    => 'text',
+          'default' => get_bloginfo('name'),
+        ),
+
+        'sender_address'             => array(
+          'title'   => $this->get_core()->text->sender_address(),
+          'type'    => 'text',
+          'default' => WC()->countries->get_base_address(),
+        ),
+
+        'sender_postal_code'         => array(
+          'title'   => $this->get_core()->text->sender_postal_code(),
+          'type'    => 'text',
+          'default' => WC()->countries->get_base_postcode(),
+        ),
+
+        'sender_city'                => array(
+          'title'   => $this->get_core()->text->sender_city(),
+          'type'    => 'text',
+          'default' => WC()->countries->get_base_city(),
+        ),
+
+        'sender_country'                => array(
+          'title'   => $this->get_core()->text->sender_country(),
+          'type'    => 'select',
+          'default' => WC()->countries->get_base_country(),
+          'options'   => $wc_countries->get_countries(),
+        ),
+
+        'sender_phone'                => array(
+          'title'   => $this->get_core()->text->sender_phone(),
+          'type'    => 'text',
+        ),
+
+        'sender_email'                => array(
+          'title'   => $this->get_core()->text->sender_email(),
+          'type'    => 'email',
+        ),
+
+        'info_code'                  => array(
+          'title'   => $this->get_core()->text->info_code(),
+          'type'    => 'text',
+          'default' => '',
+          'description' => $this->get_core()->text->info_code_desc(),
+          'custom_attributes' => array(
+            'maxlength' => 15,
+          ),          
         ),
 
         'order_pickup'              => array(
@@ -665,61 +919,6 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
           'desc_tip'    => true,
         ),
 
-        array(
-          'title' => $this->get_core()->text->store_owner_information(),
-          'type'  => 'title',
-        ),
-
-        'sender_name'                => array(
-          'title'   => $this->get_core()->text->sender_name(),
-          'type'    => 'text',
-          'default' => get_bloginfo('name'),
-        ),
-
-        'sender_address'             => array(
-          'title'   => $this->get_core()->text->sender_address(),
-          'type'    => 'text',
-          'default' => WC()->countries->get_base_address(),
-        ),
-
-        'sender_postal_code'         => array(
-          'title'   => $this->get_core()->text->sender_postal_code(),
-          'type'    => 'text',
-          'default' => WC()->countries->get_base_postcode(),
-        ),
-
-        'sender_city'                => array(
-          'title'   => $this->get_core()->text->sender_city(),
-          'type'    => 'text',
-          'default' => WC()->countries->get_base_city(),
-        ),
-
-        'sender_country'                => array(
-          'title'   => $this->get_core()->text->sender_country(),
-          'type'    => 'select',
-          'default' => WC()->countries->get_base_country(),
-          'options'   => $wc_countries->get_countries(),
-        ),
-
-        'sender_phone'                => array(
-          'title'   => $this->get_core()->text->sender_phone(),
-          'type'    => 'text',
-        ),
-
-        'sender_email'                => array(
-          'title'   => $this->get_core()->text->sender_email(),
-          'type'    => 'email',
-        ),
-
-        'info_code'                  => array(
-          'title'   => $this->get_core()->text->info_code(),
-          'type'    => 'text',
-          'default' => '',
-          'description' => $this->get_core()->text->info_code_desc(),
-          'custom_attributes' => array(
-            'maxlength' => 15,
-          ),          
-        ),
         'cod_title' => array(
           'title' => $this->get_core()->text->cod_settings(),
           'type'  => 'title',
@@ -770,7 +969,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
     }
 
     public function process_admin_options() {
-      delete_transient($this->get_core()->prefix . '_shipping_methods');
+      $this->get_core()->shipment->delete_shipping_methods_cache();
       update_option($this->get_core()->prefix . '_wizard_done', 1);
       //delete token on update, in case settings changed
       delete_transient($this->get_core()->prefix . '_access_token');

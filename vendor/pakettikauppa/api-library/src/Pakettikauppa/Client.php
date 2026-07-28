@@ -412,9 +412,9 @@ class Client
     /**
      * @return array
      */
-    public function listAdditionalServices()
+    public function listAdditionalServices($params = array())
     {
-        return json_decode($this->doPost('/additional-services/list', array()));
+        return json_decode($this->doPost('/additional-services/list', $params));
     }
 
     /**
@@ -429,15 +429,15 @@ class Client
     /**
      * @return array
      */
-    public function listShippingMethods()
+    public function listShippingMethods($params = array())
     {
-        return json_decode($this->doPost('/shipping-methods/list', array()));
+        return json_decode($this->doPost('/shipping-methods/list', $params));
     }
 
     /**
      * Search pickup points.
      *
-     * @param int $postcode
+     * @param string $postcode
      * @param string $street_address
      * @param string $country
      * @param string $service_provider Limits results for to certain providers possible values are packet service codes (like 2103 for Postipaketti. Use listShippingMethods to get service codes).

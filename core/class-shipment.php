@@ -1587,14 +1587,14 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
     /**
      * Get all available shipping services.
      *
-     * @param bool $admin_page
+     * @param array $params Parameters to pass to the API request
      *
      * @return array Available shipping services
      */
-    public function services() {
+    public function services($params = array()) {
       $services = array();
 
-      $all_shipping_methods = $this->get_shipping_methods();
+      $all_shipping_methods = $this->get_shipping_methods($params);
 
       // List all available methods as shipping options on checkout page
       if ( $all_shipping_methods === null ) {
@@ -1692,8 +1692,8 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
     }
 
 
-    public function get_additional_services() {
-      $all_shipping_methods = $this->get_shipping_methods();
+    public function get_additional_services( $params = array() ) {
+      $all_shipping_methods = $this->get_shipping_methods($params);
 
       if ( $all_shipping_methods === null ) {
         return null;
@@ -1710,25 +1710,26 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
     /**
      * Fetch shipping methods from the Pakettikauppa and returns it as objects
      *
-     * @param boolean $fromCache should we try to fetch results from cache?
+     * @param array $params Parameters to pass to the API request
      *
      * @return mixed
      */
-    private function get_shipping_methods() {
-      $transient_name = $this->core->prefix . '_shipping_methods';
+    private function get_shipping_methods($params = array()) {
+      $transient_name = $this->get_shipping_methods_transient_name($params);
       $transient_time = 86400; // 24 hours
 
       $all_shipping_methods = get_transient($transient_name);
 
       if ( empty($all_shipping_methods) ) {
         try {
-          $all_shipping_methods = $this->client->listShippingMethods();
+          $all_shipping_methods = $this->client->listShippingMethods($params);
         } catch ( \Exception $ex ) {
           $all_shipping_methods = null;
         }
 
         if ( ! empty($all_shipping_methods) ) {
           set_transient($transient_name, $all_shipping_methods, $transient_time);
+          $this->register_shipping_methods_transient($transient_name);
         }
       }
 
@@ -1737,6 +1738,74 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
       }
 
       return $all_shipping_methods;
+    }
+
+    /**
+     * Build the transient name for cached shipping methods, varying by sender
+     * country and language so different combinations are cached separately.
+     *
+     * @param array $params Parameters passed to the API request
+     *
+     * @return string
+     */
+    private function get_shipping_methods_transient_name($params = array()) {
+      $base = $this->core->prefix . '_shipping_methods';
+
+      $key_parts = array();
+      if ( ! empty($params['sender_country']) ) {
+        $key_parts[] = 'c' . sanitize_key($params['sender_country']);
+      }
+      if ( ! empty($params['language']) ) {
+        $key_parts[] = 'l' . sanitize_key($params['language']);
+      }
+
+      if ( empty($key_parts) ) {
+        return $base;
+      }
+
+      return $base . '_' . implode('_', $key_parts);
+    }
+
+    /**
+     * Keep track of every shipping methods transient that gets created so all
+     * cached variants (per country/language) can be purged at once later.
+     *
+     * @param string $transient_name
+     *
+     * @return void
+     */
+    private function register_shipping_methods_transient( $transient_name ) {
+      $index_key = $this->core->prefix . '_shipping_methods_index';
+
+      $index = get_option($index_key, array());
+      if ( ! is_array($index) ) {
+        $index = array();
+      }
+
+      if ( ! in_array($transient_name, $index, true) ) {
+        $index[] = $transient_name;
+        update_option($index_key, $index, false);
+      }
+    }
+
+    /**
+     * Delete every cached shipping methods variant (all countries/languages).
+     *
+     * @return void
+     */
+    public function delete_shipping_methods_cache() {
+      $index_key = $this->core->prefix . '_shipping_methods_index';
+
+      $index = get_option($index_key, array());
+      if ( is_array($index) ) {
+        foreach ( $index as $transient_name ) {
+          delete_transient($transient_name);
+        }
+      }
+
+      // Also delete the base transient in case of legacy cache without an index entry.
+      delete_transient($this->core->prefix . '_shipping_methods');
+      delete_option($index_key);
     }
 
     /**

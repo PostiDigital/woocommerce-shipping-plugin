@@ -67,6 +67,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
       add_action('wp_ajax_pakettikauppa_meta_box_bulk', array( $this, 'ajax_meta_box_bulk' ));
       add_action('admin_menu', array( $this, 'add_submenu' ));
       add_action('wp_ajax_pakettikauppa_get_pickup_points', array( $this, 'ajax_get_pickup_points' ));
+      add_action('wp_ajax_pakettikauppa_get_mapping', array( $this, 'ajax_get_pickup_points_mapping' ));
 
       $this->shipment = $this->core->shipment;
 
@@ -737,6 +738,9 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
       wp_enqueue_script($this->core->prefix . '_admin_js', $this->core->dir_url . 'assets/js/admin.js', array( 'jquery' ), $this->core->version, true);
       wp_localize_script($this->core->prefix . '_admin_js', 'pakettikauppa_params', array(
         'express_freight_services' => Shipment::get_express_freight_services(),
+        'mapping_nonce'            => wp_create_nonce($this->core->prefix . '_nonce'),
+        'sender_country_field'     => 'woocommerce_' . $this->core->shippingmethod . '_sender_country',
+        'mapping_loading_text'     => esc_html__('Loading shipping methods…', 'woo-pakettikauppa'),
       ));
     }
 
@@ -1558,6 +1562,35 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
       $api_check = $this->shipment->check_api_credentials($account_number, $secret_key);
       echo json_encode($api_check);
       wp_die();
+    }
+
+    /**
+     * Re-render the shipping methods mapping for a given sender country.
+     * Triggered when the sender country select changes in the settings page,
+     * so available carrier services update without saving and reloading.
+     */
+    public function ajax_get_pickup_points_mapping() {
+      if ( ! wp_verify_nonce(sanitize_key($_POST['_wpnonce'] ?? ''), $this->core->prefix . '_nonce') ) {
+        wp_send_json_error(array( 'msg' => 'Unauthorized request' ));
+      }
+
+      if ( ! current_user_can('manage_woocommerce') ) {
+        wp_send_json_error(array( 'msg' => 'Forbidden' ));
+      }
+
+      $sender_country = isset($_POST['sender_country']) ? sanitize_text_field(wp_unslash($_POST['sender_country'])) : '';
+
+      $method = $this->core->shipping_method_instance;
+      if ( ! $method ) {
+        if ( ! class_exists('\Woo_Pakettikauppa_Core\Shipping_Method') ) {
+          require_once __DIR__ . '/class-shipping-method.php';
+        }
+        $method = new \Woo_Pakettikauppa_Core\Shipping_Method();
+      }
+
+      $html = $method->render_pickup_points_mapping($sender_country);
+
+      wp_send_json_success(array( 'html' => $html ));
     }
 
     /**
