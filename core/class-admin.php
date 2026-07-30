@@ -1452,7 +1452,13 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
       $method_code = sanitize_text_field($_POST['method']);
       $custom_address = sanitize_text_field($_POST['address']);
       $type = (isset($_POST['type'])) ? sanitize_text_field($_POST['type']) : null;
-      $pickup_points = $this->get_pickup_points_for_method($method_code, null, null, null, $custom_address, $type);
+      try {
+        // Admin-only search, unlike checkout, so it always searches by
+        // custom address regardless of show_pickup_point_override_query.
+        $pickup_points = $this->shipment->get_pickup_points_by_free_input($custom_address, $method_code, $type);
+      } catch ( \Exception $e ) {
+        $pickup_points = 'error-zip';
+      }
       if ( $pickup_points == 'error-zip' ) {
         echo $pickup_points;
       } else {
