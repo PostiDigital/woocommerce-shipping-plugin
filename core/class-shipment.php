@@ -1585,6 +1585,32 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
     }
 
     /**
+     * Resolve language for services list based on current admin locale.
+     *
+     * @return string Two-letter language code supported by API.
+     */
+    public function get_services_language() {
+      $locale = get_locale();
+
+      // In admin-ajax context determine_locale() can resolve to site locale,
+      // so prefer current user's admin locale for settings UI language.
+      if ( function_exists('get_user_locale') ) {
+        $locale = get_user_locale();
+      } elseif ( function_exists('determine_locale') ) {
+        $locale = determine_locale();
+      }
+
+      $language = strtolower(substr(strval($locale), 0, 2));
+      $supported_languages = array( 'fi', 'en' );
+
+      if ( ! in_array($language, $supported_languages, true) ) {
+        $language = 'en';
+      }
+
+      return $language;
+    }
+
+    /**
      * Get all available shipping services.
      *
      * @param array $params Parameters to pass to the API request
@@ -1592,6 +1618,10 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
      * @return array Available shipping services
      */
     public function services($params = array()) {
+      if ( empty($params['language']) ) {
+        $params['language'] = $this->get_services_language();
+      }
+
       $services = array();
 
       $all_shipping_methods = $this->get_shipping_methods($params);
@@ -1693,6 +1723,10 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
 
 
     public function get_additional_services( $params = array() ) {
+      if ( empty($params['language']) ) {
+        $params['language'] = $this->get_services_language();
+      }
+
       $all_shipping_methods = $this->get_shipping_methods($params);
 
       if ( $all_shipping_methods === null ) {

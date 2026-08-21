@@ -930,8 +930,12 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
      * Template for shipping label in Order metabox.
      *
      * @param array $label Label information
+     * @param int $post_id Order id
+     * @param array $all_additional_services Additional services available for all methods, keyed by
+     *                                        service_id, used to re-resolve names in the current admin
+     *                                        user's language instead of the names stored at label creation time.
      */
-    private function tpl_shipping_label( $label, $post_id ) {
+    private function tpl_shipping_label( $label, $post_id, $all_additional_services = array() ) {
       ?>
       <?php if ( ! empty($label['tracking_code']) ) : ?>
         <?php $order = wc_get_order($post_id); ?>
@@ -964,12 +968,20 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
               <?php
               $services = '';
               $exclude = array( '2106', '3102' );
+              $current_service_names = array();
+              if ( ! empty($all_additional_services[ $label['service_id'] ]) ) {
+                foreach ( $all_additional_services[ $label['service_id'] ] as $serv_obj ) {
+                  $current_service_names[ (string) $serv_obj->service_code ] = $serv_obj->name;
+                }
+              }
               foreach ( $label['additional_services'] as $serv_key => $serv_content ) {
                 if ( ! in_array($serv_key, $exclude) && isset($serv_content['name']) ) {
                   if ( ! empty($services) ) {
                     $services .= ', ';
                   }
-                  $services .= $serv_content['name'];
+                  // Re-resolve the name in the admin's current language when possible,
+                  // falling back to the name stored when the label was created.
+                  $services .= isset($current_service_names[ (string) $serv_key ]) ? $current_service_names[ (string) $serv_key ] : $serv_content['name'];
                 }
               }
               ?>
@@ -1205,7 +1217,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
         if ( ! empty($labels) ) {
           $this->tpl_section_title(__('Shipping labels', 'woo-pakettikauppa'));
           foreach ( $labels as $label ) {
-            $this->tpl_shipping_label($label, $order->get_id());
+            $this->tpl_shipping_label($label, $order->get_id(), $all_additional_services);
           }
         }
         if ( (! empty($labels) || ! empty($return_shipments)) && ! empty($service_id) ) {
