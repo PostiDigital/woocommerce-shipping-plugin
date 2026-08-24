@@ -839,6 +839,11 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
       $this->client->setComment($this->core->api_comment);
       $this->client->setSenderSystemName('Woocommerce');
 
+      // If we don't have an account number or secret key, we can't load the API client
+      if ($account_number === '' || $secret_key === '') {
+        return;
+      }
+
       if ( $configs[$mode]['use_posti_auth'] ) {
         $transient_name = $this->core->prefix . '_access_token';
         $lock_name      = $this->core->prefix . '_access_token_lock';
