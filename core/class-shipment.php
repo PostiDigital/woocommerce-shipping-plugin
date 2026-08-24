@@ -195,7 +195,6 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
     }
 
     public function check_api_credentials( $account_number, $secret_key ) {
-      $api_good = true;
       $status = array(
         'api_good' => true,
         'msg' => __('API is good', 'woo-pakettikauppa'),
@@ -206,42 +205,75 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
       if ( empty($account_number) || empty($secret_key) ) {
         $status['api_good'] = false;
         $status['msg'] = __('Bad API key or API secret', 'woo-pakettikauppa');
-      } else {
-        try {
-          $configs = $this->core->api_config;
-          $mode = $this->core->api_mode;
-          if ( ! empty($configs[$mode]['use_posti_auth']) ) {
-            $token = $this->client->getToken();
-            if ( empty($token) ) {
-              $status['api_good'] = false;
-              $status['msg'] = __('Failed to connect with server', 'woo-pakettikauppa');
-              $status['error'] = (! empty($this->client->http_error)) ? $this->client->http_error : '';
-            } elseif ( isset($token->error) ) {
-              $status['api_good'] = false;
-              $status['msg'] = $token->error . ': ' . $token->message;
-            } else {
-              $this->client->setAccessToken($token->access_token);
-              $checker = $this->client->listShippingMethods();
-              if ( empty($checker) ) {
-                $status['api_good'] = false;
-                $status['msg'] = __('Failed to check API credentials or them are bad', 'woo-pakettikauppa');
-                $status['error'] = (! empty($this->client->http_error)) ? $this->client->http_error : '';
-              }
-            }
-          } else {
-            $checker = $this->client->listShippingMethods();
-            if ( empty($checker) ) {
-              $status['api_good'] = false;
-              $status['msg'] = __('Failed to check API credentials or them are bad', 'woo-pakettikauppa');
-              $status['error'] = (! empty($this->client->http_error)) ? $this->client->http_error : '';
-            }
-          }
-        } catch ( \Exception $e ) {
-          $status['api_good'] = false;
-          $status['msg'] = __('An error occurred while checking API credentials', 'woo-pakettikauppa');
-        }
-        $status['code'] = (isset($this->client->http_response_code)) ? $this->client->http_response_code : '';
+
+        return $status;
       }
+
+      // Build a dedicated client for the credentials being checked, instead of the one loaded from saved settings
+      $mode = $this->core->api_mode;
+      $configs = $this->core->api_config;
+      $configs[$mode] = array_merge(
+        $configs[$mode] ?? array(),
+        array(
+          'api_key' => $account_number,
+          'secret' => $secret_key,
+        )
+      );
+
+      $client = new \Pakettikauppa\Client($configs, $mode);
+      $client->setComment($this->core->api_comment);
+      $client->setSenderSystemName('Woocommerce');
+
+      // Posti OAuth is always used, so remember this exact api_key/secret pair by hash to
+      // avoid re-requesting a token when it's already known to work or known to fail.
+      $credentials_hash = md5($account_number . $secret_key);
+      $token_transient_name = $this->core->prefix . '_access_token_' . $credentials_hash;
+      $failed_transient_name = $this->core->prefix . '_access_token_failed_' . $credentials_hash;
+
+      $failed_token = get_transient($failed_transient_name);
+      if ( $failed_token !== false ) {
+        $status['api_good'] = false;
+        $status['msg'] = isset($failed_token->error) ? $failed_token->error . ': ' . $failed_token->message : $failed_token->message;
+
+        return $status;
+      }
+
+      try {
+        $token = get_transient($token_transient_name);
+
+        if ( empty($token) || (isset($token->timestamp) && ($token->timestamp + $token->expires_in - 100) < time()) ) {
+          $token = $client->getToken();
+
+          if ( empty($token) || ! isset($token->expires_in) || isset($token->error) ) {
+            $failed_token = ! empty($token) ? $token : (object) array(
+              'message' => __('Failed to connect with server', 'woo-pakettikauppa'),
+            );
+            set_transient($failed_transient_name, $failed_token, 300);
+
+            $status['api_good'] = false;
+            $status['msg'] = isset($token->error) ? $token->error . ': ' . $token->message : __('Failed to connect with server', 'woo-pakettikauppa');
+            $status['error'] = (! empty($client->http_error)) ? $client->http_error : '';
+            $status['code'] = (isset($client->http_response_code)) ? $client->http_response_code : '';
+
+            return $status;
+          }
+
+          $token->timestamp = time();
+          set_transient($token_transient_name, $token, $token->expires_in - 100);
+        }
+
+        $client->setAccessToken($token->access_token);
+        $checker = $client->listShippingMethods();
+        if ( empty($checker) ) {
+          $status['api_good'] = false;
+          $status['msg'] = __('Failed to check API credentials or them are bad', 'woo-pakettikauppa');
+          $status['error'] = (! empty($client->http_error)) ? $client->http_error : '';
+        }
+      } catch ( \Exception $e ) {
+        $status['api_good'] = false;
+        $status['msg'] = __('An error occurred while checking API credentials', 'woo-pakettikauppa');
+      }
+      $status['code'] = (isset($client->http_response_code)) ? $client->http_response_code : '';
 
       return $status;
     }
@@ -870,7 +902,6 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
 
         // check if we hame timestamp saved and check if token is not expired
         if ( empty($token) || (isset($token->timestamp) && ($token->timestamp + $token->expires_in - 100) < time()) ) {
-          
           // check the lock for this request
           if ( get_transient($lock_name) === false ) {
             // lock execution from other requests
