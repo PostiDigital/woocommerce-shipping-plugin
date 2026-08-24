@@ -848,15 +848,29 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
         $transient_name = $this->core->prefix . '_access_token';
         $lock_name      = $this->core->prefix . '_access_token_lock';
 
+        // Hash the credentials so we can remember if this exact api_key/secret pair already failed,
+        // without ever storing the raw secret in the transient name.
+        $credentials_hash      = md5($account_number . $secret_key);
+        $failed_transient_name = $this->core->prefix . '_access_token_failed_' . $credentials_hash;
+        $failed_ttl            = 300; // seconds - how long to skip retrying known-bad credentials
+
         $lock_ttl = 30; // seconds
         $loop_wait = 200000; // 200ms in microseconds
         $max_wait = 10; // seconds
         $max_loops = (int) (($max_wait * 1000000) / $loop_wait); // calculate how many loops fit into max wait
 
+        // Bail out early if we already know these credentials do not work, instead of hitting the API again
+        $failed_token = get_transient($failed_transient_name);
+        if ( $failed_token !== false ) {
+          $this->showTokenError($failed_token);
+          return;
+        }
+
         $token = get_transient($transient_name);
 
         // check if we hame timestamp saved and check if token is not expired
         if ( empty($token) || (isset($token->timestamp) && ($token->timestamp + $token->expires_in - 100) < time()) ) {
+          
           // check the lock for this request
           if ( get_transient($lock_name) === false ) {
             // lock execution from other requests
@@ -867,9 +881,19 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
             if ( empty($token) || ! isset($token->expires_in) || isset($token->error) ) {
               // remove lock if failed to get token
               delete_transient($lock_name);
+
+              // remember that these credentials failed so we don't keep retrying them right away
+              $failed_token = ! empty($token) ? $token : (object) array(
+                'message' => __('Failed to connect with server', 'woo-pakettikauppa'),
+              );
+              set_transient($failed_transient_name, $failed_token, $failed_ttl);
+
               $this->showTokenError($token);
               return;
             }
+
+            // credentials worked - clear any previous failure marker for this hash
+            delete_transient($failed_transient_name);
 
             // add timestamp to token for validating expiration
             $token->timestamp = time();
