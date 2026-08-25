@@ -744,6 +744,13 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
           'class'   => 'mode_react',
         ),
 
+        'show_pickup_point_on_thankyou' => array(
+          'title'       => $this->get_core()->text->show_pickup_point_on_thankyou_title(),
+          'type'        => 'checkbox',
+          'label'       => $this->get_core()->text->show_pickup_point_on_thankyou_desc(),
+          'default'     => 'yes',
+        ),
+
         'ignore_product_weight'      => array(
           'title'   => $this->get_core()->text->ignore_product_weight(),
           'type'    => 'checkbox',
