@@ -1,5 +1,5 @@
 <?php
-namespace Woo_Pakettikauppa_Core;
+namespace Woo_Posti_Core;
 
 // Prevent direct access to this script
 if ( ! defined('ABSPATH') ) {
@@ -9,7 +9,7 @@ if ( ! defined('ABSPATH') ) {
 if ( ! class_exists(__NAMESPACE__ . '\Shortcode') ) {
   class Shortcode {
     /**
-     * @var Core
+     * @var \Woo_Posti_Shipping
      */
     public $core = null;
 
@@ -21,7 +21,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shortcode') ) {
     /**
      * Constructor
      */
-    public function __construct( Core $plugin ) {
+    public function __construct( \Woo_Posti_Shipping $plugin ) {
       $this->core = $plugin;
     }
 

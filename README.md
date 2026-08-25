@@ -74,7 +74,7 @@ Very small bugfixes that don't need any reviews (e.g. fixing spelling errors) ca
 
 As this is a WordPress plugin, there can only be one version released. Thus there are no separate maintenance release branches (once 2.1.x has been released, the next release must be 2.1.y or higher, there cannot be any maintenance releases for 2.0.x).
 
-`Text` is bit of a special case, it's only real purpose is to serve as a key-value store for strings that require translation. Currently the plugin has `__` and `_e` calls scattered all over it – in the future, all of them should live in `Text`. The advantage of doing so is being able to replace any text in the whitelabel forks.
+The `Text` class was removed since it only ever existed to support whitelabel forks; all translation strings now live inline at their call sites using `__`/`_e`/`esc_html__` etc.
 
 ### Templates
 

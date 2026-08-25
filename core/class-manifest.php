@@ -1,6 +1,6 @@
 <?php
 
-namespace Woo_Pakettikauppa_Core;
+namespace Woo_Posti_Core;
 
 // Prevent direct access to this script
 if ( ! defined('ABSPATH') ) {
@@ -12,7 +12,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Manifest') ) {
     class Manifest {
 
         /**
-         * @var Core
+         * @var \Woo_Posti_Shipping
          */
         private $core = null;
 
@@ -21,7 +21,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Manifest') ) {
          */
         private $admin = null;
 
-        public function __construct( Core $plugin ) {
+        public function __construct( \Woo_Posti_Shipping $plugin ) {
             $this->core = $plugin;
             $this->admin = $this->core->admin;
 
