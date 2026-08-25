@@ -1,5 +1,5 @@
 <?php
-namespace Woo_Pakettikauppa_Core;
+namespace Woo_Posti_Core;
 
 use \Automattic\WooCommerce\Blocks\Integrations\IntegrationInterface;
 
@@ -31,7 +31,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Wc_Blocks_Integration') ) {
     private $blocks_instance = null;
 
     /**
-     * @var Core
+     * @var \Woo_Posti_Shipping
      */
     private $core = null;
 

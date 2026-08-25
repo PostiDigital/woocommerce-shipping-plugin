@@ -1,5 +1,5 @@
 <?php
-namespace Woo_Pakettikauppa_Core;
+namespace Woo_Posti_Core;
 
 // Prevent direct access to this script
 if ( ! defined('ABSPATH') ) {
@@ -9,14 +9,14 @@ if ( ! defined('ABSPATH') ) {
 if ( ! class_exists(__NAMESPACE__ . '\Setup_Wizard') ) {
   class Setup_Wizard {
     /**
-     * @var Core
+     * @var \Woo_Posti_Shipping
      */
     private $core = null;
 
     private $steps = array();
     private $step = '';
     private $shipping_method = null;
-    public function __construct( Core $plugin ) {
+    public function __construct( \Woo_Posti_Shipping $plugin ) {
       $this->core = $plugin;
 
       if ( apply_filters($this->core->prefix . '_enable_setup_wizard', true) && current_user_can('manage_woocommerce') ) {
@@ -33,7 +33,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Setup_Wizard') ) {
     public function setup_wizard() {
       $this->steps = array(
         str_replace('wc_', '', $this->core->prefix) . '_credentials' => array(
-          'name' => $this->core->text->setup_credentials(),
+          'name' => __('Credentials', 'woo-pakettikauppa'),
           'view' => array( $this, 'credentials_setup' ),
           'handler' => array( $this, 'save_options' ),
           'fields' => array(
@@ -43,7 +43,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Setup_Wizard') ) {
           ),
         ),
         str_replace('wc_', '', $this->core->prefix) . '_merchant_details' => array(
-          'name' => $this->core->text->setup_merchant(),
+          'name' => __('Merchant', 'woo-pakettikauppa'),
           'view' => array( $this, 'merchant_details_setup' ),
           'handler' => array( $this, 'save_options' ),
           'fields' => array(
@@ -57,7 +57,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Setup_Wizard') ) {
           ),
         ),
         str_replace('wc_', '', $this->core->prefix) . '_shipping_details' => array(
-          'name' => $this->core->text->setup_shipping(),
+          'name' => __('Shipping', 'woo-pakettikauppa'),
           'view' => array( $this, 'shipping_details_setup' ),
           'handler' => array( $this, 'save_options' ),
           'fields' => array(
@@ -68,7 +68,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Setup_Wizard') ) {
           ),
         ),
         str_replace('wc_', '', $this->core->prefix) . '_order_processing' => array(
-          'name' => $this->core->text->setup_order_processing(),
+          'name' => __('Order Processing', 'woo-pakettikauppa'),
           'view' => array( $this, 'order_processing_setup' ),
           'handler' => array( $this, 'save_options' ),
           'fields' => array(
@@ -77,7 +77,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Setup_Wizard') ) {
           ),
         ),
         str_replace('wc_', '', $this->core->prefix) . '_ready' => array(
-          'name' => $this->core->text->setup_ready(),
+          'name' => __('Ready!', 'woo-pakettikauppa'),
           'view' => array( $this, 'setup_ready' ),
           'handler' => '',
         ),
@@ -130,7 +130,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Setup_Wizard') ) {
       <head>
         <meta name="viewport" content="width=device-width" />
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title><?php echo $this->core->text->setup_title(); ?></title>
+        <title><?php echo sprintf(esc_html__('%s Setup Wizard', 'woo-pakettikauppa'), $this->core->vendor_fullname); ?></title>
         <?php do_action('admin_enqueue_scripts'); ?>
         <?php do_action('admin_print_styles'); ?>
         <?php do_action('admin_head'); ?>
@@ -141,7 +141,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Setup_Wizard') ) {
             <a
               href="<?php echo esc_html($this->core->vendor_url); ?>"
               target="_blank" rel="noreferrer noopener"
-              aria-label="<?php echo $this->core->text->vendor_website_link_label(); ?>"
+              aria-label="<?php echo sprintf(esc_html__('Link to %s website', 'woo-pakettikauppa'), $this->core->vendor_name); ?>"
             >
               <img
                 src="<?php echo esc_attr($this->core->vendor_logo); ?>"
@@ -175,12 +175,12 @@ if ( ! class_exists(__NAMESPACE__ . '\Setup_Wizard') ) {
       // Provide an option to skip the whole wizard on the first step
       if ( $this->step === array_keys($this->steps)[0] ) {
         echo '<a href="' . esc_url(admin_url()) . '">';
-        echo $this->core->text->not_now();
+        echo esc_html__('Not now', 'woo-pakettikauppa');
         echo '</a>';
       } elseif ( $this->step !== array_keys($this->steps)[count($this->steps) - 1] ) {
         // For skipping individual steps
         echo '<a href="' . esc_url($this->get_next_step_link()) . '">';
-        echo $this->core->text->skip_this_step();
+        echo esc_html__('Skip this step', 'woo-pakettikauppa');
         echo '</a>';
       }
 
@@ -200,11 +200,27 @@ if ( ! class_exists(__NAMESPACE__ . '\Setup_Wizard') ) {
       ?>
       <p class="wcpk-setup-welcome">
         <?php
-          echo $this->core->text->setup_intro();
+          echo esc_html__('Thank you for installing Posti Shipping! This wizard will guide you through the setup process to get you started.', 'woo-pakettikauppa');
         ?>
       </p>
       <p class="wcpk-setup-info">
-        <?php echo $this->core->text->setup_credential_info(null, $this->core->text->setup_become_customer_url()); ?>
+        <?php
+          $vendor_name = \esc_html($this->core->vendor_name);
+          $vendor_url = esc_url(__('https://www.posti.fi/en/for-businesses', 'woo-pakettikauppa'));
+          echo sprintf(
+            /*
+             * translators:
+             * %1$s: Vendor name, not translateable
+             * %2$s: Vendor url, not translateable
+             */
+            __(
+              'If you have already registered with %1$s, enter the credentials you have received from %1$s. If you have not yet registered, please register at %2$s.',
+              'woo-pakettikauppa'
+            ),
+            $vendor_name,
+            '<a target="_blank" rel="noopener noreferrer" href="' . $vendor_url . '">' . $vendor_url . '</a>'
+          );
+        ?>
       </p>
       <div class="wcpk-setup-settings-wrapper">
         <form method="post">
@@ -214,7 +230,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Setup_Wizard') ) {
           ?>
           <p class="wcpk-setup-actions step">
             <button type="submit" class="button-primary button button-large button-next" value="pakettikauppa_credentials" name="save_step">
-              <?php echo $this->core->text->lets_start(); ?>
+              <?php echo esc_html__('Let\'s start!', 'woo-pakettikauppa'); ?>
             </button>
           </p>
         </form>
@@ -225,7 +241,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Setup_Wizard') ) {
     public function merchant_details_setup() {
       ?>
       <p class="wcpk-setup-info">
-        <?php echo $this->core->text->setup_merchant_info(); ?>
+        <?php echo esc_html__('Please fill the details of the merchant below. The information provided here will be used as the sender in shipping labels.', 'woo-pakettikauppa'); ?>
 
       </p>
       <div class="wcpk-setup-settings-wrapper">
@@ -236,7 +252,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Setup_Wizard') ) {
           ?>
           <p class="wcpk-setup-actions step">
             <button type="submit" class="button-primary button button-large button-next" value="pakettikauppa_merchant_details" name="save_step">
-              <?php echo $this->core->text->btn_continue(); ?>
+              <?php echo esc_html__('Continue', 'woo-pakettikauppa'); ?>
             </button>
           </p>
         </form>
@@ -247,7 +263,21 @@ if ( ! class_exists(__NAMESPACE__ . '\Setup_Wizard') ) {
     public function shipping_details_setup() {
       ?>
       <p class="wcpk-setup-info">
-        <?php echo $this->core->text->setup_shipping_info(); ?>
+        <?php
+          $docs_url = esc_attr('https://docs.woocommerce.com/document/setting-up-shipping-zones/');
+          echo sprintf(
+            /*
+             * translators:
+             * %1$s: vendor name
+             * %2$s: link to WooCommerce shipping zone setting page
+             * %3$s: link to external WooCommerce documentation
+             */
+            __('Please configure the shipping methods of the currently active shipping zones to use %1$s shipping. Note that this plugin requires WooCommerce shipping zones and methods to be preconfigured in %2$s. For more information, visit %3$s.', 'woo-pakettikauppa'),
+            $this->core->vendor_name,
+            '<a href="' . esc_url(admin_url('admin.php?page=wc-settings&tab=shipping')) . '">' . __('WooCommerce > Settings > Shipping > Shipping zones', 'woo-pakettikauppa') . '</a>',
+            '<a target="_blank" href="' . $docs_url . '">' . $docs_url . '</a>'
+          );
+        ?>
       </p>
       <div class="wcpk-setup-settings-wrapper wcpk-shipping-setup">
         <form method="post">
@@ -259,7 +289,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Setup_Wizard') ) {
           </table>
           <p class="wcpk-setup-actions step">
             <button type="submit" class="button-primary button button-large button-next" value="pakettikauppa_shipping_details" name="save_step">
-              <?php echo $this->core->text->btn_continue(); ?>
+              <?php echo esc_html__('Continue', 'woo-pakettikauppa'); ?>
             </button>
           </p>
         </form>
@@ -270,7 +300,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Setup_Wizard') ) {
     public function order_processing_setup() {
       ?>
       <p class="wcpk-setup-info">
-      <?php echo $this->core->text->setup_processing_info(); ?>
+      <?php echo esc_html__('Customize the order processing phase.', 'woo-pakettikauppa'); ?>
       </p>
       <div class="wcpk-setup-settings-wrapper">
         <form method="post">
@@ -280,7 +310,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Setup_Wizard') ) {
           ?>
           <p class="wcpk-setup-actions step">
             <button type="submit" class="button-primary button button-large button-next" value="pakettikauppa_order_processing" name="save_step">
-              <?php echo $this->core->text->btn_continue(); ?>
+              <?php echo esc_html__('Continue', 'woo-pakettikauppa'); ?>
             </button>
           </p>
         </form>
@@ -292,12 +322,12 @@ if ( ! class_exists(__NAMESPACE__ . '\Setup_Wizard') ) {
       update_option($this->core->prefix . '_wizard_done', 1);
       ?>
       <p class="wcpk-setup-info">
-        <?php echo $this->core->text->setup_ready_info(); ?>
+        <?php echo esc_html__('Congratulations, everything is now set up and you are now ready to start using the plugin!', 'woo-pakettikauppa'); ?>
       </p>
       <p class="wcpk-setup-actions step">
         <a href="<?php echo esc_url(admin_url()); ?>">
           <button class="button-primary button button-large button-next">
-            <?php echo $this->core->text->btn_exit(); ?>
+            <?php echo esc_html__('Exit', 'woo-pakettikauppa'); ?>
           </button>
         </a>
       </p>
