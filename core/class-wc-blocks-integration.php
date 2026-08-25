@@ -1,5 +1,5 @@
 <?php
-namespace Woo_Pakettikauppa_Core;
+namespace Woo_Posti_Core;
 
 use \Automattic\WooCommerce\Blocks\Integrations\IntegrationInterface;
 
@@ -24,7 +24,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Wc_Blocks_Integration') ) {
     private $version = '0.0.1';
 
     /**
-     * @var Core
+     * @var \Woo_Posti_Shipping
      */
     private $core = null;
 
@@ -41,7 +41,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Wc_Blocks_Integration') ) {
     /**
      * Constructor
      */
-    public function __construct( Core $plugin ) {
+    public function __construct( \Woo_Posti_Shipping $plugin ) {
       $this->core = $plugin;
       $this->shipment = $this->core->shipment;
       $this->prefix = str_replace('_', '-', $this->core->prefix) . '-';

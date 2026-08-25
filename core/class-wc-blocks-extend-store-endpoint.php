@@ -1,5 +1,5 @@
 <?php
-namespace Woo_Pakettikauppa_Core;
+namespace Woo_Posti_Core;
 
 use \Automattic\WooCommerce\Blocks\Package;
 use \Automattic\WooCommerce\Blocks\StoreApi\Schemas\CartSchema;
