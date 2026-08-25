@@ -1,6 +1,6 @@
 <?php
 
-namespace Woo_Pakettikauppa_Core;
+namespace Woo_Posti_Core;
 
 // Prevent direct access to this script
 if ( ! defined('ABSPATH') ) {
@@ -12,7 +12,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Check_Tool') ) {
     class Check_Tool {
 
         /**
-         * @var Core
+         * @var \Woo_Posti_Shipping
          */
         private $core = null;
 
@@ -20,6 +20,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Check_Tool') ) {
          * @var Shipment
          */
         private $shipment = null;
+
         private $vendor_type = 'pakettikauppa';
         private $page_title = '';
         private $check_urls = array(
@@ -36,10 +37,10 @@ if ( ! class_exists(__NAMESPACE__ . '\Check_Tool') ) {
           ),
         );
 
-        public function __construct( Core $plugin ) {
+        public function __construct( \Woo_Posti_Shipping $plugin ) {
             $this->core = $plugin;
 
-            $this->shipment = $this->core->shipment;
+            $this->shipment = new Shipment($this->core);
 
             if ( strtolower($this->core->vendor_name) != $this->vendor_type ) {
                 $this->vendor_type = strtolower($this->core->vendor_name);

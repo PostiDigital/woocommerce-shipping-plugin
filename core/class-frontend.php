@@ -1,6 +1,6 @@
 <?php
 
-namespace Woo_Pakettikauppa_Core;
+namespace Woo_Posti_Core;
 
 // Prevent direct access to this script
 if ( ! defined('ABSPATH') ) {
@@ -19,7 +19,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Frontend') ) {
    */
   class Frontend {
     /**
-     * @var Core
+     * @var \Woo_Posti_Shipping
      */
     public $core = null;
 
@@ -29,9 +29,16 @@ if ( ! class_exists(__NAMESPACE__ . '\Frontend') ) {
     private $shipment = null;
     private $errors = array();
 
-    public function __construct( Core $plugin ) {
+    public function __construct( \Woo_Posti_Shipping $plugin ) {
       // $this->id = 'woo-pakettikauppa'; // not used for anything
       $this->core = $plugin;
+
+      try {
+        $this->shipment = new Shipment($this->core);
+      } catch ( \Exception $e ) {
+        $this->add_error($e->getMessage());
+        $this->display_error();
+      }
     }
 
     public function load() {
@@ -49,8 +56,6 @@ if ( ! class_exists(__NAMESPACE__ . '\Frontend') ) {
       add_action('wp_ajax_nopriv_pakettikauppa_use_custom_address_for_pickup_point', array( $this, 'use_custom_address_for_pickup_point' ), 10);
 
       add_filter('woocommerce_checkout_fields', array( $this, 'add_checkout_fields' ));
-
-      $this->shipment = $this->core->shipment;
 
       $settings = $this->shipment->get_settings();
       if ( ! empty($settings['create_shipments_automatically']) && $settings['create_shipments_automatically'] !== 'no' ) {

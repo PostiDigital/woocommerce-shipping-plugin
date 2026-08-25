@@ -1,5 +1,5 @@
 <?php
-namespace Woo_Pakettikauppa_Core;
+namespace Woo_Posti_Core;
 
 // Prevent direct access to this script
 if ( ! defined('ABSPATH') ) {
@@ -19,19 +19,26 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
   class Admin {
 
     /**
+     * @var \Woo_Posti_Shipping
+     */
+    public $core = null;
+
+    /**
      * @var Shipment
      */
     private $shipment = null;
-
-    /**
-     * @var Core
-     */
-    public $core = null;
     private $errors = array();
 
-    public function __construct( Core $plugin ) {
+    public function __construct( \Woo_Posti_Shipping $plugin ) {
       // $this->id = self::$module_config['admin']; // Doesn't do anything
       $this->core = $plugin;
+
+      try {
+        $this->shipment = new Shipment($this->core);
+      } catch ( \Exception $e ) {
+        $this->add_error($e->getMessage());
+        $this->add_error_notice($e->getMessage());
+      }
     }
 
     public function load() {
@@ -67,8 +74,6 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
       add_action('wp_ajax_pakettikauppa_meta_box_bulk', array( $this, 'ajax_meta_box_bulk' ));
       add_action('admin_menu', array( $this, 'add_submenu' ));
       add_action('wp_ajax_pakettikauppa_get_pickup_points', array( $this, 'ajax_get_pickup_points' ));
-
-      $this->shipment = $this->core->shipment;
 
       $settings = $this->shipment->get_settings();
       if ( ! empty($settings['create_shipments_automatically']) && $settings['create_shipments_automatically'] !== 'no' ) {
@@ -1420,7 +1425,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
                   <?php echo esc_html__('Estimated shipping price', 'woo-pakettikauppa'); ?>:
                 </span>
                 <span id="estimated-shipping-price" class="value" data-service="<?php echo esc_html($service_id); ?>">
-                  <?php $estimated_price = $this->core->shipment->get_estimated_shipping_price($order, $service_id); ?>
+                  <?php $estimated_price = $this->shipment->get_estimated_shipping_price($order, $service_id); ?>
                   <?php echo ($estimated_price) ? wc_price($estimated_price / 100) : str_replace('0', '-', wc_price(0)); ?>
                 </span>
               </div>

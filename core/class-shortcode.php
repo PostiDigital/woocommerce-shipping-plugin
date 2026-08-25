@@ -1,5 +1,5 @@
 <?php
-namespace Woo_Pakettikauppa_Core;
+namespace Woo_Posti_Core;
 
 // Prevent direct access to this script
 if ( ! defined('ABSPATH') ) {
@@ -9,20 +9,22 @@ if ( ! defined('ABSPATH') ) {
 if ( ! class_exists(__NAMESPACE__ . '\Shortcode') ) {
   class Shortcode {
     /**
-     * @var Core
+     * @var \Woo_Posti_Shipping
      */
     public $core = null;
 
     /**
-     * Internal variables
+     * @var Shipment
      */
     private $shipment = null;
 
     /**
      * Constructor
      */
-    public function __construct( Core $plugin ) {
+    public function __construct( \Woo_Posti_Shipping $plugin ) {
       $this->core = $plugin;
+
+      $this->shipment = new Shipment($this->core);
     }
 
     /**
@@ -30,8 +32,6 @@ if ( ! class_exists(__NAMESPACE__ . '\Shortcode') ) {
      */
     public function load() {
       add_shortcode($this->core->params_prefix . 'tracking', array( $this, 'tracking_info' ));
-
-      $this->shipment = $this->core->shipment;
     }
 
     /**

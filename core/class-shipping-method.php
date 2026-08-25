@@ -1,5 +1,5 @@
 <?php
-namespace Woo_Pakettikauppa_Core;
+namespace Woo_Posti_Core;
 
 // Prevent direct access to the script
 use WC_Countries;
@@ -19,13 +19,12 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
    * @author Seravo
    */
   class Shipping_Method extends \WC_Shipping_Method {
+    public $is_loaded = false;
+
     /**
-     * Required to access Pakettikauppa client
-     * @var Shipment $shipment
+     * @var Shipment
      */
     private $shipment = null;
-
-    public $is_loaded = false;
 
     /**
      * Constructor for Pakettikauppa shipping class
@@ -47,6 +46,8 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
       if ( $this->is_loaded ) {
         return;
       }
+
+      $this->shipment = new Shipment($this->get_core());
 
       $this->id = $this->get_core()->shippingmethod; // ID for your shipping method. Should be unique.
       $this->method_title = $this->get_core()->text->shipping_method_name();
@@ -78,7 +79,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
     }
 
     public function generate_notices_html( $key, $value ) {
-      $settings = $this->get_core()->shipment->get_settings();
+      $settings = $this->shipment->get_settings();
       $shipping_method = $this->get_core()->shippingmethod;
       $field_pref = 'woocommerce_' . $shipping_method . '_';
       $configs = $this->get_core()->api_config;
@@ -178,12 +179,12 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
         $values = array();
       }
 
-      $all_shipping_methods = $this->get_core()->shipment->services();
+      $all_shipping_methods = $this->shipment->services();
       if ( empty($all_shipping_methods) ) {
         $all_shipping_methods = array();
       }
 
-      $methods = $this->get_core()->shipment->get_pickup_point_methods();
+      $methods = $this->shipment->get_pickup_point_methods();
 
       ob_start();
     ?>
@@ -275,7 +276,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
                     <option value="__PICKUPPOINTS__" <?php echo ($selected_service === '__PICKUPPOINTS__' ? 'selected' : ''); ?>>Noutopisteet</option>
                   <?php endif; ?>
                   <?php foreach ( $all_shipping_methods as $service_id => $service_name ) : ?>
-                    <?php $has_pp = ($this->get_core()->shipment->service_has_pickup_points($service_id)) ? true : false; ?>
+                    <?php $has_pp = ($this->shipment->service_has_pickup_points($service_id)) ? true : false; ?>
                     <option value="<?php echo $service_id; ?>" <?php echo (strval($selected_service) === strval($service_id) ? 'selected' : ''); ?> data-haspp="<?php echo ($has_pp) ? 'true' : 'false'; ?>">
                       <?php echo $service_name; ?>
                       <?php if ( $has_pp ) : ?>
@@ -303,7 +304,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
                 </div>
 
                 <?php
-                $all_additional_services = $this->get_core()->shipment->get_additional_services();
+                $all_additional_services = $this->shipment->get_additional_services();
                 if ( empty($all_additional_services) ) {
                   $all_additional_services = array();
                 }
@@ -339,7 +340,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
                   </div>
                 <?php endforeach; ?>
                 <?php foreach ( $all_shipping_methods as $service_id => $service_name ) : ?>
-                  <?php if ( $this->get_core()->shipment->service_has_pickup_points($service_id) ) : ?>
+                  <?php if ( $this->shipment->service_has_pickup_points($service_id) ) : ?>
                     <div id="service-<?php echo $method_id; ?>-<?php echo $service_id; ?>-pickuppoints" class="pk-services-<?php echo $method_id; ?>" style="display: none;">
                       <input type="hidden"
                         name="<?php echo esc_html($field_key) . '[' . esc_attr($method_id) . '][' . esc_attr($service_id) . '][pickuppoints]'; ?>" value="no">
@@ -436,10 +437,6 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
     }
 
     private function my_global_form_fields() {
-      if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
-        require_once 'class-shipment.php';
-      }
-
       $wc_countries = new WC_Countries();
 
       $fields = array(

@@ -1,5 +1,5 @@
 <?php
-namespace Woo_Pakettikauppa_Core;
+namespace Woo_Posti_Core;
 
 // Prevent direct access to this script
 if ( ! defined('ABSPATH') ) {
@@ -9,14 +9,14 @@ if ( ! defined('ABSPATH') ) {
 if ( ! class_exists(__NAMESPACE__ . '\Setup_Wizard') ) {
   class Setup_Wizard {
     /**
-     * @var Core
+     * @var \Woo_Posti_Shipping
      */
     private $core = null;
 
     private $steps = array();
     private $step = '';
     private $shipping_method = null;
-    public function __construct( Core $plugin ) {
+    public function __construct( \Woo_Posti_Shipping $plugin ) {
       $this->core = $plugin;
 
       if ( apply_filters($this->core->prefix . '_enable_setup_wizard', true) && current_user_can('manage_woocommerce') ) {

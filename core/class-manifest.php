@@ -1,6 +1,6 @@
 <?php
 
-namespace Woo_Pakettikauppa_Core;
+namespace Woo_Posti_Core;
 
 // Prevent direct access to this script
 if ( ! defined('ABSPATH') ) {
@@ -12,7 +12,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Manifest') ) {
     class Manifest {
 
         /**
-         * @var Core
+         * @var \Woo_Posti_Shipping
          */
         private $core = null;
 
@@ -21,9 +21,16 @@ if ( ! class_exists(__NAMESPACE__ . '\Manifest') ) {
          */
         private $admin = null;
 
-        public function __construct( Core $plugin ) {
+        /**
+         * @var Shipment
+         */
+        private $shipment = null;
+
+        public function __construct( \Woo_Posti_Shipping $plugin ) {
             $this->core = $plugin;
             $this->admin = $this->core->admin;
+
+            $this->shipment = new Shipment($this->core);
 
             if ( current_user_can('manage_woocommerce') ) {
                 add_action('init', array( $this, 'manifest_post_type' ));
@@ -410,7 +417,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Manifest') ) {
         }
 
         private function make_call( $date, $time_from, $time_to, $manifest, $order_ids, $additional_info ) {
-            $settings = $this->core->shipment->get_settings();
+            $settings = $this->shipment->get_settings();
 
             $xml = new \SimpleXMLElement('<Postra/>');
             $xml->addAttribute('xmlns', 'http://api.posti.fi/xml/POSTRA/1');

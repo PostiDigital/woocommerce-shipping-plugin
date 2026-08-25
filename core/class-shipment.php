@@ -1,6 +1,6 @@
 <?php
 
-namespace Woo_Pakettikauppa_Core;
+namespace Woo_Posti_Core;
 
 /**
  * Shipment module.
@@ -32,7 +32,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
    */
   class Shipment {
     /**
-     * @var Core
+     * @var \Woo_Posti_Shipping
      */
     public $core = null;
 
@@ -45,10 +45,12 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
     public $config;
     private $errors = array();
 
-    public function __construct( Core $plugin ) {
+    public function __construct( \Woo_Posti_Shipping $plugin ) {
       $this->core = $plugin;
 
       $this->id = $this->core->prefix . '_shipment';
+
+      $this->load();
     }
 
     /**
@@ -689,7 +691,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
      * @return string|bool
      */
     private function post_label_to_url( $url, $tracking_code ) {
-      $contents = $this->shipment->fetch_shipping_label($tracking_code);
+      $contents = $this->fetch_shipping_label($tracking_code);
 
       $label = base64_decode( $contents->{'response.file'} ); // @codingStandardsIgnoreLine
 
@@ -782,7 +784,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
 
           $service_id = null;
           if ( ! empty($provider) ) {
-              $methods = array_flip($this->core->shipment->get_pickup_point_methods());
+              $methods = array_flip($this->get_pickup_point_methods());
               if ( isset($provider[0]) && isset($methods[$provider[0]]) ) {
                 $service_id = $methods[$provider[0]];
               }
@@ -1663,7 +1665,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
       }
 
       foreach ( $all_shipping_methods as $shipping_method ) {
-        $services[ strval($shipping_method->shipping_method_code) ] = sprintf('%1$s: %2$s', $shipping_method->service_provider, $shipping_method->name);
+        $services[ strval($shipping_method->shipping_method_code) ] = $shipping_method->name;
       }
 
       ksort($services);
