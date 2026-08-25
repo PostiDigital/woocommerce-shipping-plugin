@@ -330,7 +330,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipping_Method') ) {
      * @return array
      */
     public function get_shipping_methods_params_for_country( $sender_country ) {
-      $services_lang = $this->get_core()->shipment->get_services_language();
+      $services_lang = $this->shipment->get_services_language();
       $shipping_methods_params = array(
         'language' => $services_lang,
       );
