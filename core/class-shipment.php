@@ -226,7 +226,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
 
       // Posti OAuth is always used, so remember this exact api_key/secret pair by hash to
       // avoid re-requesting a token when it's already known to work or known to fail.
-      $credentials_hash = md5($account_number . $secret_key);
+      $credentials_hash = md5($account_number . ':' . $secret_key);
       $token_transient_name = $this->core->prefix . '_access_token_' . $credentials_hash;
       $failed_transient_name = $this->core->prefix . '_access_token_failed_' . $credentials_hash;
 
@@ -882,7 +882,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
 
         // Hash the credentials so we can remember if this exact api_key/secret pair already failed,
         // without ever storing the raw secret in the transient name.
-        $credentials_hash      = md5($account_number . $secret_key);
+        $credentials_hash      = md5($account_number . ':' . $secret_key);
         $failed_transient_name = $this->core->prefix . '_access_token_failed_' . $credentials_hash;
         $failed_ttl            = 300; // seconds - how long to skip retrying known-bad credentials
 
