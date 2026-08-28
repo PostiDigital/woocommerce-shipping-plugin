@@ -540,6 +540,14 @@ if ( ! class_exists(__NAMESPACE__ . '\Text') ) {
       return __('Show pickup point override in checkout', 'woo-pakettikauppa');
     }
 
+    public function show_pickup_point_on_thankyou_title() {
+      return __('Show pickup point on thank you page', 'woo-pakettikauppa');
+    }
+
+    public function show_pickup_point_on_thankyou_desc() {
+      return __('Display the selected pickup point information on the order thank you page.', 'woo-pakettikauppa');
+    }
+
     public function restart_setup_wizard() {
       return __('Restart setup wzard', 'woo-pakettikauppa');
     }

@@ -1983,6 +1983,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
             'sender_phone' => '',
             'sender_postal_code' => get_option('woocommerce_store_postcode'),
             'show_pickup_point_override_query' => '',
+            'show_pickup_point_on_thankyou' => 'yes',
             'label_additional_info' => '',
             'download_type_of_labels' => '',
           );

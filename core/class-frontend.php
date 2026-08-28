@@ -38,6 +38,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Frontend') ) {
       add_action('wp_enqueue_scripts', array( $this, 'enqueue_scripts' ));
       add_action('woocommerce_review_order_after_shipping', array( $this, 'pickup_point_field_html' ));
       add_action('woocommerce_order_details_after_order_table', array( $this, 'display_order_data' ));
+      add_action('woocommerce_order_details_after_order_table', array( $this, 'display_pickup_point_on_thankyou_page' ));
       add_action('woocommerce_checkout_update_order_meta', array( $this, 'update_order_meta_pickup_point_field' ));
       add_action('woocommerce_checkout_process', array( $this, 'validate_checkout' ));
       add_action('woocommerce_order_status_changed', array( $this, 'restore_order_params_after_status_change' ), 9999);
@@ -600,11 +601,41 @@ if ( ! class_exists(__NAMESPACE__ . '\Frontend') ) {
      * @param WC_Order $order the order that was placed
      */
     public function display_order_data( $order ) {
+      // The thank you page has its own dedicated renderer, see display_pickup_point_on_thankyou_page()
+      if ( is_order_received_page() ) {
+        return;
+      }
+
       $pickup_point = $order->get_meta('_' . str_replace('wc_', '', $this->core->prefix) . '_pickup_point');
 
       if ( ! empty($pickup_point) ) {
         wc_get_template($this->core->templates->account_order, array( 'pickup_point' => esc_attr($pickup_point) ), '', $this->core->templates_dir);
       }
+    }
+
+    /**
+     * Display pickup point information on the WooCommerce thank you (order received) page,
+     * unless disabled in the settings.
+     *
+     * @param WC_Order $order the order that was placed
+     */
+    public function display_pickup_point_on_thankyou_page( $order ) {
+      if ( ! is_order_received_page() ) {
+        return;
+      }
+
+      $settings = $this->shipment->get_settings();
+      if ( isset($settings['show_pickup_point_on_thankyou']) && $settings['show_pickup_point_on_thankyou'] === 'no' ) {
+        return;
+      }
+
+      $pickup_point = $order->get_meta('_' . str_replace('wc_', '', $this->core->prefix) . '_pickup_point');
+
+      if ( empty($pickup_point) ) {
+        return;
+      }
+
+      wc_get_template($this->core->templates->thank_you_pickup_point, array( 'pickup_point' => esc_attr($pickup_point) ), '', $this->core->templates_dir);
     }
 
     public function validate_checkout() {
