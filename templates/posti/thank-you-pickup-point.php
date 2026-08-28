@@ -13,5 +13,7 @@ if ( ! defined('ABSPATH') ) {
 }
 ?>
 
-<h2><?php esc_html_e('Pickup point', 'woo-pakettikauppa'); ?></h2>
-<p><?php echo esc_html($pickup_point); ?></p>
+<div class="woocommerce-order-details__pickup-point posti-thank-you-pickup-point">
+  <h2 class="wp-block-heading"><?php esc_html_e('Pickup point', 'woo-pakettikauppa'); ?></h2>
+  <p><?php echo $pickup_point; ?></p>
+</div>
