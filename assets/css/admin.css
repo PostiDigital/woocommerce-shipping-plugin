@@ -269,6 +269,7 @@ table .pakettikauppa-notice p {
   min-width: 200px;
   width: 100%;
   width: calc(100% - 2px);
+  max-height: 130px;
   overflow: auto;
   margin-top: -3px;
   border: 1px solid #7e8993;
