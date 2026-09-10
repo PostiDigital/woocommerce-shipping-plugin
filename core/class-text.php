@@ -55,6 +55,22 @@ if ( ! class_exists(__NAMESPACE__ . '\Text') ) {
       return esc_html__('includes pickup points', 'woo-pakettikauppa');
     }
 
+    public function service_not_available_for_country() {
+      return esc_html__('Service not available in sender\'s country', 'woo-pakettikauppa');
+    }
+
+    public function selected_unavailable_service_code( $code ) {
+      return sprintf(
+        /* translators: %s: service code */
+        esc_html__('Selected unavailable service code: %s', 'woo-pakettikauppa'),
+        $code
+      );
+    }
+
+    public function shipping_method_inactive_in_zones() {
+      return esc_html__('This shipping method is inactive in WooCommerce shipping zones', 'woo-pakettikauppa');
+    }
+
     public function select_one_shipping_method() {
       return __('Select one shipping method', 'woo-pakettikauppa');
     }
@@ -522,6 +538,14 @@ if ( ! class_exists(__NAMESPACE__ . '\Text') ) {
 
     public function show_pickup_point_override_query() {
       return __('Show pickup point override in checkout', 'woo-pakettikauppa');
+    }
+
+    public function show_pickup_point_on_thankyou_title() {
+      return __('Show pickup point on thank you page', 'woo-pakettikauppa');
+    }
+
+    public function show_pickup_point_on_thankyou_desc() {
+      return __('Display the selected pickup point information on the order thank you page.', 'woo-pakettikauppa');
     }
 
     public function restart_setup_wizard() {

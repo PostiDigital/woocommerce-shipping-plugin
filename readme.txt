@@ -2,7 +2,7 @@
 Contributors: joosev, ottok, leotoikka, serter, k1sul1
 Tags: woocommerce, shipping, toimitustavat, smartship, posti
 Requires at least: 5.0
-Tested up to: 7.0
+Tested up to: 7.1
 Requires PHP: 7.1
 Stable tag: trunk
 License: GPLv3 or later
@@ -51,6 +51,12 @@ Yes! If you encounter any issues related to this plugin, please report at [Posti
 4. Settings screen in admin
 
 == Changelog ==
+
+= 3.11.0 =
+* Bug fix for Woocommerce 11.1 with block checkout and pickup point search
+* Baltic support with Posti product translations and service routes based on sender country
+* Showing the selected pickup point in the thank you page
+* Tested against WordPress 7.1 and WooCommerce 11.1
 
 = 3.10.13 =
 * Bug fix for missing LQ dangerous goods weight with variable products

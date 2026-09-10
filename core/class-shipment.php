@@ -195,7 +195,6 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
     }
 
     public function check_api_credentials( $account_number, $secret_key ) {
-      $api_good = true;
       $status = array(
         'api_good' => true,
         'msg' => __('API is good', 'woo-pakettikauppa'),
@@ -206,42 +205,75 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
       if ( empty($account_number) || empty($secret_key) ) {
         $status['api_good'] = false;
         $status['msg'] = __('Bad API key or API secret', 'woo-pakettikauppa');
-      } else {
-        try {
-          $configs = $this->core->api_config;
-          $mode = $this->core->api_mode;
-          if ( ! empty($configs[$mode]['use_posti_auth']) ) {
-            $token = $this->client->getToken();
-            if ( empty($token) ) {
-              $status['api_good'] = false;
-              $status['msg'] = __('Failed to connect with server', 'woo-pakettikauppa');
-              $status['error'] = (! empty($this->client->http_error)) ? $this->client->http_error : '';
-            } elseif ( isset($token->error) ) {
-              $status['api_good'] = false;
-              $status['msg'] = $token->error . ': ' . $token->message;
-            } else {
-              $this->client->setAccessToken($token->access_token);
-              $checker = $this->client->listShippingMethods();
-              if ( empty($checker) ) {
-                $status['api_good'] = false;
-                $status['msg'] = __('Failed to check API credentials or them are bad', 'woo-pakettikauppa');
-                $status['error'] = (! empty($this->client->http_error)) ? $this->client->http_error : '';
-              }
-            }
-          } else {
-            $checker = $this->client->listShippingMethods();
-            if ( empty($checker) ) {
-              $status['api_good'] = false;
-              $status['msg'] = __('Failed to check API credentials or them are bad', 'woo-pakettikauppa');
-              $status['error'] = (! empty($this->client->http_error)) ? $this->client->http_error : '';
-            }
-          }
-        } catch ( \Exception $e ) {
-          $status['api_good'] = false;
-          $status['msg'] = __('An error occurred while checking API credentials', 'woo-pakettikauppa');
-        }
-        $status['code'] = (isset($this->client->http_response_code)) ? $this->client->http_response_code : '';
+
+        return $status;
       }
+
+      // Build a dedicated client for the credentials being checked, instead of the one loaded from saved settings
+      $mode = $this->core->api_mode;
+      $configs = $this->core->api_config;
+      $configs[$mode] = array_merge(
+        $configs[$mode] ?? array(),
+        array(
+          'api_key' => $account_number,
+          'secret' => $secret_key,
+        )
+      );
+
+      $client = new \Pakettikauppa\Client($configs, $mode);
+      $client->setComment($this->core->api_comment);
+      $client->setSenderSystemName('Woocommerce');
+
+      // Posti OAuth is always used, so remember this exact api_key/secret pair by hash to
+      // avoid re-requesting a token when it's already known to work or known to fail.
+      $credentials_hash = md5($account_number . ':' . $secret_key);
+      $token_transient_name = $this->core->prefix . '_access_token_' . $credentials_hash;
+      $failed_transient_name = $this->core->prefix . '_access_token_failed_' . $credentials_hash;
+
+      $failed_token = get_transient($failed_transient_name);
+      if ( $failed_token !== false ) {
+        $status['api_good'] = false;
+        $status['msg'] = isset($failed_token->error) ? $failed_token->error . ': ' . $failed_token->message : $failed_token->message;
+
+        return $status;
+      }
+
+      try {
+        $token = get_transient($token_transient_name);
+
+        if ( empty($token) || (isset($token->timestamp) && ($token->timestamp + $token->expires_in - 100) < time()) ) {
+          $token = $client->getToken();
+
+          if ( empty($token) || ! isset($token->expires_in) || isset($token->error) ) {
+            $failed_token = ! empty($token) ? $token : (object) array(
+              'message' => __('Failed to connect with server', 'woo-pakettikauppa'),
+            );
+            set_transient($failed_transient_name, $failed_token, 300);
+
+            $status['api_good'] = false;
+            $status['msg'] = isset($token->error) ? $token->error . ': ' . $token->message : __('Failed to connect with server', 'woo-pakettikauppa');
+            $status['error'] = (! empty($client->http_error)) ? $client->http_error : '';
+            $status['code'] = (isset($client->http_response_code)) ? $client->http_response_code : '';
+
+            return $status;
+          }
+
+          $token->timestamp = time();
+          set_transient($token_transient_name, $token, $token->expires_in - 100);
+        }
+
+        $client->setAccessToken($token->access_token);
+        $checker = $client->listShippingMethods();
+        if ( empty($checker) ) {
+          $status['api_good'] = false;
+          $status['msg'] = __('Failed to check API credentials or them are bad', 'woo-pakettikauppa');
+          $status['error'] = (! empty($client->http_error)) ? $client->http_error : '';
+        }
+      } catch ( \Exception $e ) {
+        $status['api_good'] = false;
+        $status['msg'] = __('An error occurred while checking API credentials', 'woo-pakettikauppa');
+      }
+      $status['code'] = (isset($client->http_response_code)) ? $client->http_response_code : '';
 
       return $status;
     }
@@ -839,14 +871,32 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
       $this->client->setComment($this->core->api_comment);
       $this->client->setSenderSystemName('Woocommerce');
 
+      // If we don't have an account number or secret key, we can't load the API client
+      if ($account_number === '' || $secret_key === '') {
+        return;
+      }
+
       if ( $configs[$mode]['use_posti_auth'] ) {
         $transient_name = $this->core->prefix . '_access_token';
         $lock_name      = $this->core->prefix . '_access_token_lock';
+
+        // Hash the credentials so we can remember if this exact api_key/secret pair already failed,
+        // without ever storing the raw secret in the transient name.
+        $credentials_hash      = md5($account_number . ':' . $secret_key);
+        $failed_transient_name = $this->core->prefix . '_access_token_failed_' . $credentials_hash;
+        $failed_ttl            = 300; // seconds - how long to skip retrying known-bad credentials
 
         $lock_ttl = 30; // seconds
         $loop_wait = 200000; // 200ms in microseconds
         $max_wait = 10; // seconds
         $max_loops = (int) (($max_wait * 1000000) / $loop_wait); // calculate how many loops fit into max wait
+
+        // Bail out early if we already know these credentials do not work, instead of hitting the API again
+        $failed_token = get_transient($failed_transient_name);
+        if ( $failed_token !== false ) {
+          $this->showTokenError($failed_token);
+          return;
+        }
 
         $token = get_transient($transient_name);
 
@@ -862,9 +912,19 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
             if ( empty($token) || ! isset($token->expires_in) || isset($token->error) ) {
               // remove lock if failed to get token
               delete_transient($lock_name);
+
+              // remember that these credentials failed so we don't keep retrying them right away
+              $failed_token = ! empty($token) ? $token : (object) array(
+                'message' => __('Failed to connect with server', 'woo-pakettikauppa'),
+              );
+              set_transient($failed_transient_name, $failed_token, $failed_ttl);
+
               $this->showTokenError($token);
               return;
             }
+
+            // credentials worked - clear any previous failure marker for this hash
+            delete_transient($failed_transient_name);
 
             // add timestamp to token for validating expiration
             $token->timestamp = time();
@@ -912,7 +972,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
       add_action('admin_notices', function () use ($token) {
         if ( isset($_GET['page'], $_GET['tab']) && $_GET['page'] === 'wc-settings' && $_GET['tab'] === 'shipping' ) {
             $message = (isset($token->message)) ? $token->message : __('Unknown error', 'woo-pakettikauppa');
-            echo '<div class="notice notice-error"><p><b>TEST'
+            echo '<div class="notice notice-error"><p><b>'
               . esc_html($this->core->vendor_fullname)
               . ' error:</b> '
               . esc_html($message)
@@ -1585,16 +1645,46 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
     }
 
     /**
+     * Resolve language for services list based on current admin locale.
+     *
+     * @return string Two-letter language code supported by API.
+     */
+    public function get_services_language() {
+      $locale = get_locale();
+
+      // In admin-ajax context determine_locale() can resolve to site locale,
+      // so prefer current user's admin locale for settings UI language.
+      if ( function_exists('get_user_locale') ) {
+        $locale = get_user_locale();
+      } elseif ( function_exists('determine_locale') ) {
+        $locale = determine_locale();
+      }
+
+      $language = strtolower(substr(strval($locale), 0, 2));
+      $supported_languages = array( 'fi', 'en' );
+
+      if ( ! in_array($language, $supported_languages, true) ) {
+        $language = 'en';
+      }
+
+      return $language;
+    }
+
+    /**
      * Get all available shipping services.
      *
-     * @param bool $admin_page
+     * @param array $params Parameters to pass to the API request
      *
      * @return array Available shipping services
      */
-    public function services() {
+    public function services($params = array()) {
+      if ( empty($params['language']) ) {
+        $params['language'] = $this->get_services_language();
+      }
+
       $services = array();
 
-      $all_shipping_methods = $this->get_shipping_methods();
+      $all_shipping_methods = $this->get_shipping_methods($params);
 
       // List all available methods as shipping options on checkout page
       if ( $all_shipping_methods === null ) {
@@ -1692,8 +1782,12 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
     }
 
 
-    public function get_additional_services() {
-      $all_shipping_methods = $this->get_shipping_methods();
+    public function get_additional_services( $params = array() ) {
+      if ( empty($params['language']) ) {
+        $params['language'] = $this->get_services_language();
+      }
+
+      $all_shipping_methods = $this->get_shipping_methods($params);
 
       if ( $all_shipping_methods === null ) {
         return null;
@@ -1710,25 +1804,26 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
     /**
      * Fetch shipping methods from the Pakettikauppa and returns it as objects
      *
-     * @param boolean $fromCache should we try to fetch results from cache?
+     * @param array $params Parameters to pass to the API request
      *
      * @return mixed
      */
-    private function get_shipping_methods() {
-      $transient_name = $this->core->prefix . '_shipping_methods';
+    private function get_shipping_methods($params = array()) {
+      $transient_name = $this->get_shipping_methods_transient_name($params);
       $transient_time = 86400; // 24 hours
 
       $all_shipping_methods = get_transient($transient_name);
 
       if ( empty($all_shipping_methods) ) {
         try {
-          $all_shipping_methods = $this->client->listShippingMethods();
+          $all_shipping_methods = $this->client->listShippingMethods($params);
         } catch ( \Exception $ex ) {
           $all_shipping_methods = null;
         }
 
         if ( ! empty($all_shipping_methods) ) {
           set_transient($transient_name, $all_shipping_methods, $transient_time);
+          $this->register_shipping_methods_transient($transient_name);
         }
       }
 
@@ -1737,6 +1832,74 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
       }
 
       return $all_shipping_methods;
+    }
+
+    /**
+     * Build the transient name for cached shipping methods, varying by sender
+     * country and language so different combinations are cached separately.
+     *
+     * @param array $params Parameters passed to the API request
+     *
+     * @return string
+     */
+    private function get_shipping_methods_transient_name($params = array()) {
+      $base = $this->core->prefix . '_shipping_methods';
+
+      $key_parts = array();
+      if ( ! empty($params['sender_country']) ) {
+        $key_parts[] = 'c' . sanitize_key($params['sender_country']);
+      }
+      if ( ! empty($params['language']) ) {
+        $key_parts[] = 'l' . sanitize_key($params['language']);
+      }
+
+      if ( empty($key_parts) ) {
+        return $base;
+      }
+
+      return $base . '_' . implode('_', $key_parts);
+    }
+
+    /**
+     * Keep track of every shipping methods transient that gets created so all
+     * cached variants (per country/language) can be purged at once later.
+     *
+     * @param string $transient_name
+     *
+     * @return void
+     */
+    private function register_shipping_methods_transient( $transient_name ) {
+      $index_key = $this->core->prefix . '_shipping_methods_index';
+
+      $index = get_option($index_key, array());
+      if ( ! is_array($index) ) {
+        $index = array();
+      }
+
+      if ( ! in_array($transient_name, $index, true) ) {
+        $index[] = $transient_name;
+        update_option($index_key, $index, false);
+      }
+    }
+
+    /**
+     * Delete every cached shipping methods variant (all countries/languages).
+     *
+     * @return void
+     */
+    public function delete_shipping_methods_cache() {
+      $index_key = $this->core->prefix . '_shipping_methods_index';
+
+      $index = get_option($index_key, array());
+      if ( is_array($index) ) {
+        foreach ( $index as $transient_name ) {
+          delete_transient($transient_name);
+        }
+      }
+
+      // Also delete the base transient in case of legacy cache without an index entry.
+      delete_transient($this->core->prefix . '_shipping_methods');
+      delete_option($index_key);
     }
 
     /**
@@ -1820,6 +1983,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
             'sender_phone' => '',
             'sender_postal_code' => get_option('woocommerce_store_postcode'),
             'show_pickup_point_override_query' => '',
+            'show_pickup_point_on_thankyou' => 'yes',
             'label_additional_info' => '',
             'download_type_of_labels' => '',
           );

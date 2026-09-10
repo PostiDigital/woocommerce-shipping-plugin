@@ -6,16 +6,16 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/woo-"
 "pakettikauppa\n"
 "POT-Creation-Date: 2020-09-29 13:55+0000\n"
-"Language: fi\n"
-"Language-Team: Suomi\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"PO-Revision-Date: 2026-05-14 10:25+0000\n"
-"X-Generator: Loco https://localise.biz/\n"
+"PO-Revision-Date: 2026-08-24 12:35+0300\n"
 "Last-Translator: \n"
+"Language-Team: Suomi\n"
+"Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Loco-Version: 2.8.4; wp-6.9.4; php-8.0.30"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Poedit 3.9\n"
+"X-Loco-Version: 2.8.4; wp-6.9.4; php-8.0.30\n"
 
 #. %s: Vendor full name
 #: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:615
@@ -223,7 +223,7 @@ msgstr "Postiennakkoasetukset"
 
 #: ../../../../modules/wordpress/posti-shipping/core/class-check-tool.php:98
 msgid "Checking URL "
-msgstr "Tarkistetaan osoitetta"
+msgstr "Tarkistetaan osoitetta "
 
 #: ../../../../modules/wordpress/posti-shipping/core/class-text.php:370
 msgid "Checkout options"
@@ -245,7 +245,7 @@ msgstr "Valitse noutopistetyypit, jotka näytetään noutopistevalikossa"
 
 #: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:118
 msgid "Closed "
-msgstr "Suljettu"
+msgstr "Suljettu "
 
 #. %s: label_count
 #: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:121
@@ -468,7 +468,7 @@ msgstr "Yhteyttä palvelimeen ei saatu"
 #: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:336
 #: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:341
 msgid "Failed to create shipment."
-msgstr "Lähetyksen luominen epäonnistui"
+msgstr "Lähetyksen luominen epäonnistui."
 
 #. %s: Error message
 #: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:322
@@ -478,7 +478,7 @@ msgstr "Lähetyksen luominen epäonnistui. Errors: %s"
 
 #: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:1954
 msgid "Failed to get shipment label."
-msgstr "Pakettikortin hakeminen epäonnistui"
+msgstr "Pakettikortin hakeminen epäonnistui."
 
 #: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:890
 #: ../../../../modules/wordpress/posti-shipping/core/class-shipment.php:899
@@ -488,7 +488,7 @@ msgstr ""
 
 #: ../../../../modules/wordpress/posti-shipping/core/class-check-tool.php:235
 msgid "Found and works."
-msgstr "Löytyi ja toimii"
+msgstr "Löytyi ja toimii."
 
 #: ../../../../modules/wordpress/posti-shipping/core/class-check-tool.php:233
 msgid "Found, but does not work. Deleted."
@@ -786,7 +786,7 @@ msgstr ""
 
 #: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:102
 msgid "Open "
-msgstr "Avoin"
+msgstr "Avoin "
 
 #. %s: label_count
 #: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:105
@@ -822,7 +822,7 @@ msgstr "Tilaa nouto"
 
 #: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:480
 msgid "Order pickup URL not set."
-msgstr "Noutotilauksen URLia ei ole asetettu"
+msgstr "Noutotilauksen URLia ei ole asetettu."
 
 #: ../../../../modules/wordpress/posti-shipping/core/class-text.php:216
 msgid "Order Processing"
@@ -973,9 +973,7 @@ msgstr "Tee noutotilaus"
 #| msgid ""
 #| "Please add shipping info to the order to manage Pakettikauppa shipments."
 msgid "Please add shipping info to the order to manage shipments."
-msgstr ""
-"Lisää tilaukselle vastaanottaja hallinnoidaksesi Pakettikauppa-"
-"toimitustapoja."
+msgstr "Lisää tilaukselle vastaanottaja hallinnoidaksesi toimitustapoja."
 
 #: ../../../../modules/wordpress/posti-shipping/core/class-wc-blocks-integration.php:111
 msgid "Please choose a pickup point"
@@ -996,8 +994,8 @@ msgid ""
 "zones and methods to be preconfigured in %2$s. For more information, visit "
 "%3$s."
 msgstr ""
-"Voit kytkeä päälle toimitustapoja kassalle toimitusluokan asetuksista: %2$s. "
-"Lisätietoja, katso %3$s."
+"Voit kytkeä päälle %1$s -toimitustapoja kassalle toimitusluokan asetuksista: "
+"%2$s. Lisätietoja, katso %3$s."
 
 #: ../../../../modules/wordpress/posti-shipping/core/class-text.php:173
 msgid ""
@@ -1386,7 +1384,7 @@ msgstr ""
 
 #: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:488
 msgid "Token not found. Please check credentials"
-msgstr "Tokenia ei löydy. Tarkasta tunnukset."
+msgstr "Tokenia ei löydy. Tarkasta tunnukset"
 
 #: ../../../../modules/wordpress/posti-shipping/core/class-admin.php:775
 msgid "Total weight of dangerous goods"
@@ -1490,7 +1488,7 @@ msgstr "Väärä tieto pyydetty, yritä uudelleen"
 
 #: ../../../../modules/wordpress/posti-shipping/core/class-manifest.php:382
 msgid "Wrong response."
-msgstr "Väärä vastaus"
+msgstr "Väärä vastaus."
 
 #. 1: Shipment tracking link with text "track your order" 2: Shipment tracking code
 #: ../../../../modules/wordpress/posti-shipping/templates/pakettikauppa/tracking-email-html.php:36
@@ -1507,7 +1505,7 @@ msgid ""
 "information, see %2$s"
 msgstr ""
 "Voit kytkeä päälle toimitustapoja kassalle toimitusluokan asetuksista: %1$s. "
-"Lisätietoja, katso %2$s."
+"Lisätietoja, katso %2$s"
 
 #: ../../../../modules/wordpress/posti-shipping/core/class-wc-blocks-integration.php:113
 msgid "You can choose the pickup point on the Checkout page"
@@ -1520,6 +1518,4 @@ msgstr "Voit valita noutopisteen kassalla"
 #| "You can track your order at %1$s.\n"
 #| "\n"
 msgid "You can track your order at %1$s."
-msgstr ""
-"\n"
-"Voit seurata seurata lähetystäsi täältä: %1$s"
+msgstr "Voit seurata seurata lähetystäsi täältä: %1$s."

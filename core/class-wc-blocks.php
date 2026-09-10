@@ -17,15 +17,21 @@ if ( ! class_exists(__NAMESPACE__ . '\Wc_Blocks') ) {
    */
   class Wc_Blocks {
     /**
+     * Core instance
+     *
      * @var Core
      */
-    private $core = null;
+    public $core = null;
+
+    private $ajax_actions_registered = false;
 
     public function __construct( Core $plugin ) {
       $this->core = $plugin;
     }
 
     public function load() {
+      $this->register_ajax_actions();
+
       add_action('before_woocommerce_init', array($this, 'declare_compatibility'));
       add_action('woocommerce_blocks_loaded', array($this, 'init'));
     }
@@ -40,10 +46,10 @@ if ( ! class_exists(__NAMESPACE__ . '\Wc_Blocks') ) {
       require_once 'class-wc-blocks-integration.php';
 
       add_action('woocommerce_blocks_checkout_block_registration', function( $integration_registry ) {
-        $integration_registry->register( new Wc_Blocks_Integration($this->core) );
+        $integration_registry->register( new Wc_Blocks_Integration($this) );
       });
       add_action('woocommerce_blocks_cart_block_registration', function( $integration_registry ) {
-        $integration_registry->register( new Wc_Blocks_Integration($this->core) );
+        $integration_registry->register( new Wc_Blocks_Integration($this) );
       });
 
       if ( function_exists('woocommerce_store_api_register_endpoint_data') ) {
@@ -108,6 +114,95 @@ if ( ! class_exists(__NAMESPACE__ . '\Wc_Blocks') ) {
           'readonly'    => true,
         ),
       );
+    }
+
+    public function register_ajax_actions() {
+      if ( $this->ajax_actions_registered ) {
+        return;
+      }
+      $this->ajax_actions_registered = true;
+
+      add_action('wp_ajax_pakettikauppa_blocks_get_pickup_points', array($this, 'get_pickup_points_callback'));
+      add_action('wp_ajax_nopriv_pakettikauppa_blocks_get_pickup_points', array($this, 'get_pickup_points_callback'));
+      add_action('wp_ajax_pakettikauppa_blocks_get_custom_pickup_points', array($this, 'get_pickup_points_by_free_input_callback'));
+      add_action('wp_ajax_nopriv_pakettikauppa_blocks_get_custom_pickup_points', array($this, 'get_pickup_points_by_free_input_callback'));
+    }
+
+    public function get_pickup_points_callback() {
+      if ( $_SERVER['REQUEST_METHOD'] !== 'POST' ) {
+        return wp_send_json_error('Request method must be POST');
+      }
+
+      if ( ! $this->core->shipment ) {
+        return wp_send_json_error('Plugin is not ready');
+      }
+
+      $request_body = json_decode(file_get_contents('php://input'));
+      if ( ! is_object($request_body)
+        || ! property_exists($request_body, '_wpnonce')
+        || ! wp_verify_nonce($request_body->_wpnonce, $this->core->prefix . '_blocks_nonce')
+      ) {
+        return wp_send_json_error('Unauthorized request');
+      }
+
+      $postcode = sanitize_text_field($request_body->destination->postcode);
+      if ( empty($postcode) ) {
+        return wp_send_json_error('A postcode is required to get the pickup points');
+      }
+      $street_address = sanitize_text_field($request_body->destination->address) . ', ' . sanitize_text_field($request_body->destination->city);
+
+      try {
+        $pickup_points = $this->core->shipment->get_pickup_points(
+          $postcode,
+          $street_address,
+          sanitize_text_field($request_body->destination->country),
+          sanitize_text_field($request_body->service)
+        );
+      } catch (\Exception $e) {
+        wp_send_json_error('Error: ' . $e->getMessage());
+      }
+
+      if ( empty($pickup_points) ) {
+        wp_send_json_error('Received pickup points list is empty');
+      }
+      wp_send_json_success($pickup_points);
+    }
+
+    public function get_pickup_points_by_free_input_callback() {
+      if ( $_SERVER['REQUEST_METHOD'] !== 'POST' ) {
+        return wp_send_json_error('Request method must be POST');
+      }
+      
+      if ( ! $this->core->shipment ) {
+        return wp_send_json_error('Plugin is not ready');
+      }
+
+      $request_body = json_decode(file_get_contents('php://input'));
+      if ( ! is_object($request_body)
+        || ! property_exists($request_body, '_wpnonce')
+        || ! wp_verify_nonce($request_body->_wpnonce, $this->core->prefix . '_blocks_nonce')
+      ) {
+        return wp_send_json_error('Unauthorized request');
+      }
+
+      $address = sanitize_text_field($request_body->address);
+      if ( empty($address) ) {
+        return wp_send_json_error('A postcode is required to get the pickup points');
+      }
+
+      try {
+        $pickup_points = $this->core->shipment->get_pickup_points_by_free_input(
+          $address,
+          sanitize_text_field($request_body->service)
+        );
+      } catch (\Exception $e) {
+        wp_send_json_error('Error: ' . $e->getMessage());
+      }
+
+      if ( empty($pickup_points) ) {
+        wp_send_json_error('Received pickup points list is empty');
+      }
+      wp_send_json_success($pickup_points);
     }
   }
 }

@@ -67,6 +67,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
       add_action('wp_ajax_pakettikauppa_meta_box_bulk', array( $this, 'ajax_meta_box_bulk' ));
       add_action('admin_menu', array( $this, 'add_submenu' ));
       add_action('wp_ajax_pakettikauppa_get_pickup_points', array( $this, 'ajax_get_pickup_points' ));
+      add_action('wp_ajax_pakettikauppa_get_mapping', array( $this, 'ajax_get_pickup_points_mapping' ));
 
       $this->shipment = $this->core->shipment;
 
@@ -737,6 +738,9 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
       wp_enqueue_script($this->core->prefix . '_admin_js', $this->core->dir_url . 'assets/js/admin.js', array( 'jquery' ), $this->core->version, true);
       wp_localize_script($this->core->prefix . '_admin_js', 'pakettikauppa_params', array(
         'express_freight_services' => Shipment::get_express_freight_services(),
+        'mapping_nonce'            => wp_create_nonce($this->core->prefix . '_nonce'),
+        'sender_country_field'     => 'woocommerce_' . $this->core->shippingmethod . '_sender_country',
+        'mapping_loading_text'     => esc_html__('Loading shipping methods…', 'woo-pakettikauppa'),
       ));
     }
 
@@ -926,8 +930,12 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
      * Template for shipping label in Order metabox.
      *
      * @param array $label Label information
+     * @param int $post_id Order id
+     * @param array $all_additional_services Additional services available for all methods, keyed by
+     *                                        service_id, used to re-resolve names in the current admin
+     *                                        user's language instead of the names stored at label creation time.
      */
-    private function tpl_shipping_label( $label, $post_id ) {
+    private function tpl_shipping_label( $label, $post_id, $all_additional_services = array() ) {
       ?>
       <?php if ( ! empty($label['tracking_code']) ) : ?>
         <?php $order = wc_get_order($post_id); ?>
@@ -960,12 +968,20 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
               <?php
               $services = '';
               $exclude = array( '2106', '3102' );
+              $current_service_names = array();
+              if ( ! empty($all_additional_services[ $label['service_id'] ]) ) {
+                foreach ( $all_additional_services[ $label['service_id'] ] as $serv_obj ) {
+                  $current_service_names[ (string) $serv_obj->service_code ] = $serv_obj->name;
+                }
+              }
               foreach ( $label['additional_services'] as $serv_key => $serv_content ) {
                 if ( ! in_array($serv_key, $exclude) && isset($serv_content['name']) ) {
                   if ( ! empty($services) ) {
                     $services .= ', ';
                   }
-                  $services .= $serv_content['name'];
+                  // Re-resolve the name in the admin's current language when possible,
+                  // falling back to the name stored when the label was created.
+                  $services .= isset($current_service_names[ (string) $serv_key ]) ? $current_service_names[ (string) $serv_key ] : $serv_content['name'];
                 }
               }
               ?>
@@ -1201,7 +1217,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
         if ( ! empty($labels) ) {
           $this->tpl_section_title(__('Shipping labels', 'woo-pakettikauppa'));
           foreach ( $labels as $label ) {
-            $this->tpl_shipping_label($label, $order->get_id());
+            $this->tpl_shipping_label($label, $order->get_id(), $all_additional_services);
           }
         }
         if ( (! empty($labels) || ! empty($return_shipments)) && ! empty($service_id) ) {
@@ -1564,6 +1580,35 @@ if ( ! class_exists(__NAMESPACE__ . '\Admin') ) {
       $api_check = $this->shipment->check_api_credentials($account_number, $secret_key);
       echo json_encode($api_check);
       wp_die();
+    }
+
+    /**
+     * Re-render the shipping methods mapping for a given sender country.
+     * Triggered when the sender country select changes in the settings page,
+     * so available carrier services update without saving and reloading.
+     */
+    public function ajax_get_pickup_points_mapping() {
+      if ( ! wp_verify_nonce(sanitize_key($_POST['_wpnonce'] ?? ''), $this->core->prefix . '_nonce') ) {
+        wp_send_json_error(array( 'msg' => 'Unauthorized request' ));
+      }
+
+      if ( ! current_user_can('manage_woocommerce') ) {
+        wp_send_json_error(array( 'msg' => 'Forbidden' ));
+      }
+
+      $sender_country = isset($_POST['sender_country']) ? sanitize_text_field(wp_unslash($_POST['sender_country'])) : '';
+
+      $method = $this->core->shipping_method_instance;
+      if ( ! $method ) {
+        if ( ! class_exists('\Woo_Pakettikauppa_Core\Shipping_Method') ) {
+          require_once __DIR__ . '/class-shipping-method.php';
+        }
+        $method = new \Woo_Pakettikauppa_Core\Shipping_Method();
+      }
+
+      $html = $method->render_pickup_points_mapping($sender_country);
+
+      wp_send_json_success(array( 'html' => $html ));
     }
 
     /**
