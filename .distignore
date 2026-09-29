@@ -1,0 +1,9 @@
+/.github
+/.gitignore
+/.gitattributes
+/.travis.yml
+/phpcs.xml
+/phpunit.xml.dist
+/README.md
+/composer.*
+.distignore
