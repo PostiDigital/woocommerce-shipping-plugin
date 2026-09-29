@@ -58,6 +58,10 @@ export const Block = ({ checkoutExtensionData, extension }) => {
         };
     });
     const debouncedShippingAddress = useDebounce(shippingAddress, 1500);
+    const prefersCollection = useSelect((select) => {
+        const store = select('wc/store/checkout');
+        return store.prefersCollection();
+    });
 
     /* Declare the internal functions of this function */
     function showWarning( ...msgs ) {
@@ -301,12 +305,10 @@ export const Block = ({ checkoutExtensionData, extension }) => {
 
     /* Save selected pickup point and show error message if not selected */
     useEffect(() => {
-        if ( validationError ) {
-            clearValidationError(validationErrorId);
-            setContainerErrorClass('');
-        }
+        clearValidationError(validationErrorId);
+        setContainerErrorClass('');
 
-        const hasPickups = currentData.rate?.instance && isMethodHavePickups(currentData.rate.instance);
+        const hasPickups = ! prefersCollection && currentData.rate?.instance && isMethodHavePickups(currentData.rate.instance);
         const selectedValue = hasPickups ? currentData.pickup_points.selected : '';
 
         setExtensionData(
@@ -330,9 +332,17 @@ export const Block = ({ checkoutExtensionData, extension }) => {
         }
     }, [
         setExtensionData,
+        prefersCollection,
         currentData.rate?.id,
         currentData.pickup_points?.selected
     ]);
+
+    /* Clear validation error when block is removed (e.g. switched to local pickup) */
+    useEffect(() => {
+        return () => {
+            clearValidationError(validationErrorId);
+        };
+    }, []);
 
     /* Debug data */
     useEffect(() => {
