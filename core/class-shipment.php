@@ -937,7 +937,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
 
         $lock_ttl = 30; // seconds
         $loop_wait = 200000; // 200ms in microseconds
-        $max_wait = 10; // seconds
+        $max_wait = 5; // seconds
         $max_loops = (int) (($max_wait * 1000000) / $loop_wait); // calculate how many loops fit into max wait
 
         // Bail out early if we already know these credentials do not work, instead of hitting the API again
