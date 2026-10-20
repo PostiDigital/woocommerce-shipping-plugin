@@ -883,6 +883,12 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
         add_action('admin_post_' . $this->core->prefix . '_retry_token', array( $this, 'retry_token_request' ));
       }
 
+      add_action($this->core->prefix . '_refresh_token', array( $this, 'refresh_token_in_background' ));
+      if ( ! is_admin() ) {
+        // Request the token in the background while the visitor is browsing, before it is needed at checkout
+        add_action('template_redirect', array( $this, 'schedule_token_refresh' ));
+      }
+
       // The token is requested lazily on the first API call (see get_client()), except on the
       // shipping settings page, where token errors are shown as an admin notice
       if ( is_admin() && isset($_GET['page'], $_GET['tab']) && $_GET['page'] === 'wc-settings' && $_GET['tab'] === 'shipping' ) {
@@ -914,6 +920,51 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
       $this->get_client();
 
       return $this->access_token;
+    }
+
+    /**
+     * Schedule the access token request via Action Scheduler if there is no valid token.
+     * If the action did not run yet when the token is needed, it is requested directly as usual.
+     */
+    public function schedule_token_refresh() {
+      if ( ! $this->use_posti_auth || ! function_exists('as_enqueue_async_action') || ! function_exists('as_has_scheduled_action') ) {
+        return;
+      }
+
+      $failed_transient_name = $this->get_failed_token_transient_name();
+      if ( $failed_transient_name === null ) {
+        return;
+      }
+
+      // Nothing to do if the token is valid, it is being requested right now or requests are blocked after a failure
+      if ( ! $this->is_token_expired(get_transient($this->core->prefix . '_access_token'))
+        || get_transient($this->core->prefix . '_access_token_lock') !== false
+        || get_transient($failed_transient_name) !== false ) {
+        return;
+      }
+
+      $hook = $this->core->prefix . '_refresh_token';
+      if ( as_has_scheduled_action($hook, array(), $this->core->prefix) ) {
+        return;
+      }
+
+      as_enqueue_async_action($hook, array(), $this->core->prefix);
+    }
+
+    /**
+     * Action Scheduler callback for the access token request.
+     */
+    public function refresh_token_in_background() {
+      $this->get_client();
+    }
+
+    /**
+     * @param mixed $token Token saved in transient
+     *
+     * @return bool True if there is no token or it is expired
+     */
+    private function is_token_expired( $token ) {
+      return empty($token) || (isset($token->timestamp) && ($token->timestamp + $token->expires_in - 100) < time());
     }
 
     /**
@@ -956,7 +1007,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
         $token = get_transient($transient_name);
 
         // check if we hame timestamp saved and check if token is not expired
-        if ( empty($token) || (isset($token->timestamp) && ($token->timestamp + $token->expires_in - 100) < time()) ) {
+        if ( $this->is_token_expired($token) ) {
           // check the lock for this request
           if ( get_transient($lock_name) === false ) {
             // lock execution from other requests
