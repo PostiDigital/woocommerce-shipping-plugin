@@ -44,6 +44,9 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
     public $id;
     public $config;
     private $errors = array();
+    private $use_posti_auth = false;
+    private $client_authorized = false;
+    private $access_token = null;
 
     public function __construct( Core $plugin ) {
       $this->core = $plugin;
@@ -185,7 +188,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
       }
 
       $shipment = $this->create_shipment_from_order($order, $service_id, $additional_services, $selected_products, array( 'return_shipment' => true ));
-      $estimated = $this->client->estimateShippingCost($shipment);
+      $estimated = $this->get_client()->estimateShippingCost($shipment);
 
       if ( isset($estimated->total_price) ) {
         $estimated_price = $estimated->total_price;
@@ -672,7 +675,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
      * @return string Pickup point name
      */
     public function get_pickup_name( $pickup_id, $service_id ) {
-      $pickup_info = json_decode($this->client->getPickupPointInfo($pickup_id, $service_id), true);
+      $pickup_info = json_decode($this->get_client()->getPickupPointInfo($pickup_id, $service_id), true);
       if ( isset($pickup_info['name']) ) {
         return $pickup_info['name'] . ' (#' . $pickup_id . ')';
       } else {
@@ -871,12 +874,58 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
       $this->client->setComment($this->core->api_comment);
       $this->client->setSenderSystemName('Woocommerce');
 
-      // If we don't have an account number or secret key, we can't load the API client
+      $this->client_authorized = false;
+      $this->access_token      = null;
+      $this->use_posti_auth    = ! empty($configs[$mode]['use_posti_auth']);
+
+      // The token is requested lazily on the first API call (see get_client()), except on the
+      // shipping settings page, where token errors are shown as an admin notice
+      if ( is_admin() && isset($_GET['page'], $_GET['tab']) && $_GET['page'] === 'wc-settings' && $_GET['tab'] === 'shipping' ) {
+        $this->get_client();
+      }
+    }
+
+    /**
+     * Get the API client, requesting the access token first if it was not done yet in this request.
+     *
+     * @return Client
+     */
+    public function get_client() {
+      if ( ! $this->client_authorized ) {
+        // Mark as authorized before trying, so a failed attempt is not repeated within the same request
+        $this->client_authorized = true;
+        $this->authorize_client();
+      }
+
+      return $this->client;
+    }
+
+    /**
+     * Get the Posti OAuth access token, requesting it if needed.
+     *
+     * @return string|null
+     */
+    public function get_access_token() {
+      $this->get_client();
+
+      return $this->access_token;
+    }
+
+    /**
+     * Request the Posti OAuth access token (or take it from cache) and pass it to the API client.
+     */
+    private function authorize_client() {
+      $settings = $this->get_settings();
+
+      $account_number = isset($settings['account_number']) ? $settings['account_number'] : '';
+      $secret_key     = isset($settings['secret_key']) ? $settings['secret_key'] : '';
+
+      // If we don't have an account number or secret key, we can't authorize the API client
       if ($account_number === '' || $secret_key === '') {
         return;
       }
 
-      if ( $configs[$mode]['use_posti_auth'] ) {
+      if ( $this->use_posti_auth ) {
         $transient_name = $this->core->prefix . '_access_token';
         $lock_name      = $this->core->prefix . '_access_token_lock';
 
@@ -963,7 +1012,8 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
           }
         }
 
-        $this->client->setAccessToken($token->access_token);
+        $this->access_token = $token->access_token;
+        $this->client->setAccessToken($this->access_token);
       }
     }
 
@@ -990,7 +1040,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
      */
     public function get_shipment_status( $tracking_code ) {
       if ( ! empty($tracking_code) ) {
-        $data = $this->client->getShipmentStatus($tracking_code);
+        $data = $this->get_client()->getShipmentStatus($tracking_code);
         if ( ! empty($data) && isset($data[0]) ) {
           return $data[0]->{'status_code'};
         }
@@ -1247,13 +1297,13 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
       }
 
       try {
-        $this->client->createTrackingCode($shipment, $language);
+        $this->get_client()->createTrackingCode($shipment, $language);
       } catch ( \Exception $e ) {
         /* translators: %s: Error message */
         throw new \Exception(wp_sprintf(__('Tracking code creation failed: %s', 'woo-pakettikauppa'), $e->getMessage()));
       }
 
-      return $this->client->getResponse();
+      return $this->get_client()->getResponse();
     }
 
     private function get_sender_data() {
@@ -1547,7 +1597,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
      * @throws Exception
      */
     public function fetch_shipping_labels( $tracking_codes, $labels_size = null ) {
-      return $this->client->fetchShippingLabels($tracking_codes, $labels_size);
+      return $this->get_client()->fetchShippingLabels($tracking_codes, $labels_size);
     }
 
     /**
@@ -1584,7 +1634,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
         $pickup_points_type = $type;
       }
 
-      $pickup_point_data = $this->client->searchPickupPoints(trim($postcode), trim($street_address), trim($country), $service_provider, $pickup_point_limit, $pickup_points_type);
+      $pickup_point_data = $this->get_client()->searchPickupPoints(trim($postcode), trim($street_address), trim($country), $service_provider, $pickup_point_limit, $pickup_points_type);
 
       if ( $pickup_point_data === 'Bad request' ) {
         throw new \Exception($this->core->text->something_went_wrong_while_searching_pickup_points_error());
@@ -1612,7 +1662,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
         $pickup_points_type = $type;
       }
 
-      $pickup_point_data = $this->client->searchPickupPointsByText(trim($input), $service_provider, $pickup_point_limit, $pickup_points_type);
+      $pickup_point_data = $this->get_client()->searchPickupPointsByText(trim($input), $service_provider, $pickup_point_limit, $pickup_points_type);
 
       if ( $pickup_point_data === 'Bad request' ) {
         throw new \Exception($this->core->text->something_went_wrong_while_searching_pickup_points_error());
@@ -1816,7 +1866,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Shipment') ) {
 
       if ( empty($all_shipping_methods) ) {
         try {
-          $all_shipping_methods = $this->client->listShippingMethods($params);
+          $all_shipping_methods = $this->get_client()->listShippingMethods($params);
         } catch ( \Exception $ex ) {
           $all_shipping_methods = null;
         }

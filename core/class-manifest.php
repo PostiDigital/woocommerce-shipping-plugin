@@ -479,11 +479,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Manifest') ) {
             if ( ! $url ) {
                 throw new \Exception(__('Order pickup URL not set.', 'woo-pakettikauppa'));
             }
-            $transient_name = $this->core->prefix . '_access_token';
-            $token = get_transient($transient_name);
-            if ( is_object($token) && property_exists($token, 'access_token') ) {
-                $token = $token->access_token;
-            }
+            $token = $this->core->shipment->get_access_token();
             if ( ! $token ) {
                 throw new \Exception(__('Token not found. Please check credentials', 'woo-pakettikauppa'));
             }
