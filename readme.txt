@@ -51,6 +51,10 @@ Yes! If you encounter any issues related to this plugin, please report at [Posti
 4. Settings screen in admin
 
 == Changelog ==
+= 3.11.1 =
+* Bug fix for local pickup
+* Bug fix for too long product list in shipment creation
+* Improved token fetching logic
 
 = 3.11.0 =
 * Bug fix for Woocommerce 11.1 with block checkout and pickup point search
