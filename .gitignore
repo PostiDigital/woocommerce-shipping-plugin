@@ -1,3 +1,4 @@
 /nbproject/
 /blocks-builder/node_modules/
 /vendor/pakettikauppa/api-library/examples
+.DS_Store

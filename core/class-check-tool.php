@@ -1,6 +1,6 @@
 <?php
 
-namespace Woo_Pakettikauppa_Core;
+namespace Woo_Posti_Core;
 
 // Prevent direct access to this script
 if ( ! defined('ABSPATH') ) {
@@ -12,7 +12,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Check_Tool') ) {
     class Check_Tool {
 
         /**
-         * @var Core
+         * @var \Woo_Posti_Shipping
          */
         private $core = null;
 
@@ -36,7 +36,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Check_Tool') ) {
           ),
         );
 
-        public function __construct( Core $plugin ) {
+        public function __construct( \Woo_Posti_Shipping $plugin ) {
             $this->core = $plugin;
 
             $this->shipment = $this->core->shipment;

@@ -1,5 +1,5 @@
 <?php
-namespace Woo_Pakettikauppa_Core;
+namespace Woo_Posti_Core;
 
 if ( ! defined('ABSPATH') ) {
   exit();
@@ -19,13 +19,13 @@ if ( ! class_exists(__NAMESPACE__ . '\Wc_Blocks') ) {
     /**
      * Core instance
      *
-     * @var Core
+     * @var \Woo_Posti_Shipping
      */
     public $core = null;
 
     private $ajax_actions_registered = false;
 
-    public function __construct( Core $plugin ) {
+    public function __construct( \Woo_Posti_Shipping $plugin ) {
       $this->core = $plugin;
     }
 
