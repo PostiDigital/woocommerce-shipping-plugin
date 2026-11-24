@@ -633,13 +633,17 @@ trait Shipment_Creation_Trait {
   }
 
   private function get_sender_data() {
+    $decode = function ( $value ) {
+      return is_string($value) ? html_entity_decode($value, ENT_QUOTES, 'UTF-8') : $value;
+    };
+
     return array(
-      'name1' => $this->settings['sender_name'],
+      'name1' => $decode($this->settings['sender_name']),
       'name2' => null,
-      'address1' => $this->settings['sender_address'],
+      'address1' => $decode($this->settings['sender_address']),
       'address2' => null,
-      'postcode' => $this->settings['sender_postal_code'],
-      'city' => $this->settings['sender_city'],
+      'postcode' => $decode($this->settings['sender_postal_code']),
+      'city' => $decode($this->settings['sender_city']),
       'phone' => $this->settings['sender_phone'],
       'email' => $this->settings['sender_email'],
       'country' => (empty($this->settings['sender_country']) ? 'FI' : $this->settings['sender_country'])

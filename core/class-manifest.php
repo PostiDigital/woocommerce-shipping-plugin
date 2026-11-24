@@ -449,11 +449,11 @@ if ( ! class_exists(__NAMESPACE__ . '\Manifest') ) {
 
                     $consignor = $parties->addChild('Party');
                     $consignor->addAttribute('role', 'CONSIGNOR');
-                    $consignor->addChild('Name1', $settings['sender_name']);
+                    $consignor->addChild('Name1', $this->xml_setting_value($settings['sender_name']));
                     $consignor_location = $consignor->addChild('Location');
-                    $consignor_location->addChild('Street1', $settings['sender_address']);
-                    $consignor_location->addChild('Postcode', $settings['sender_postal_code']);
-                    $consignor_location->addChild('City', $settings['sender_city']);
+                    $consignor_location->addChild('Street1', $this->xml_setting_value($settings['sender_address']));
+                    $consignor_location->addChild('Postcode', $this->xml_setting_value($settings['sender_postal_code']));
+                    $consignor_location->addChild('City', $this->xml_setting_value($settings['sender_city']));
                     $consignor_location->addChild('Country', $settings['sender_country']);
 
                     $payer = $parties->addChild('Party');
@@ -462,7 +462,7 @@ if ( ! class_exists(__NAMESPACE__ . '\Manifest') ) {
                     $account1->addAttribute('type', 'SAP_CUSTOMER');
                     $account2 = $payer->addChild('Account', $settings['order_pickup_invoice_id']);
                     $account2->addAttribute('type', 'SAP_INVOICE');
-                    $payer->addChild('Name1', $settings['sender_name']);
+                    $payer->addChild('Name1', $this->xml_setting_value($settings['sender_name']));
 
                     $items = $shipment->addChild('GoodsItems');
                     foreach ( $_data['products'] as $_product ) {
@@ -491,6 +491,12 @@ if ( ! class_exists(__NAMESPACE__ . '\Manifest') ) {
         * @param string $body
         * @return bool|string
         */
+        private function xml_setting_value( $value ) {
+            $value = html_entity_decode((string) $value, ENT_QUOTES, 'UTF-8');
+
+            return htmlspecialchars($value, ENT_XML1 | ENT_QUOTES, 'UTF-8');
+        }
+
         private function do_post( $url, $body, $token ) {
             $headers = array();
             $headers[] = 'Content-type: text/xml; charset=utf-8';
